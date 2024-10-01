@@ -1,0 +1,73 @@
+package com.etdon.winj.function.${LIBRARY_LOWER_CASE};
+
+import com.etdon.commons.builder.FluentBuilder;
+import com.etdon.commons.conditional.Conditional;
+import com.etdon.commons.conditional.Preconditions;
+import com.etdon.winj.common.NativeName;
+import com.etdon.winj.function.NativeFunction;
+import com.etdon.winj.constant.Library;
+import com.etdon.winj.library.SymbolLookupCache;
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
+
+import static com.etdon.winj.type.NativeDataType.*;
+
+@NativeName(${FUNCTION_NAME}.NATIVE_NAME)
+public final class ${FUNCTION_NAME} extends NativeFunction {
+
+    public static final String LIBRARY = Library.${LIBRARY};
+    public static final String NATIVE_NAME = "${FUNCTION_NAME}";
+    public static final FunctionDescriptor ${FORMATTED_FUNCTION_NAME}_SIGNATURE = FunctionDescriptor.of(
+${SIGNATURE}
+    );
+
+${FIELDS}
+
+    private ${FUNCTION_NAME}(@NotNull final Builder builder) {
+
+        super(LIBRARY, NATIVE_NAME, ${FORMATTED_FUNCTION_NAME}_SIGNATURE);
+
+${CONSTRUCTOR}
+
+    }
+
+    @Override
+    protected Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+
+        return super.obtainHandle(linker, symbolLookup).invoke(
+${CALLER}
+        );
+
+    }
+
+    public static Builder builder() {
+
+        return new Builder();
+
+    }
+
+    public static final class Builder implements FluentBuilder<${FUNCTION_NAME}> {
+
+${BUILDER_FIELDS}
+
+        private Builder() {
+
+        }
+
+${BUILDER_METHODS}
+
+        @NotNull
+        @Override
+        public ${FUNCTION_NAME} build() {
+${BUILDER_BUILD}
+            return new ${FUNCTION_NAME}(this);
+
+        }
+
+    }
+
+}
+
