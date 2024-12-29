@@ -187,6 +187,7 @@ public final class Window implements MemorySegmentable {
 
     }
 
+    @NotNull
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
