@@ -7,3 +7,18 @@
 
 > [!NOTE]    
 > winj is in early development and currently **not** feature complete.
+
+```xml
+<repository>
+    <id>etdon-repo</id>
+    <url>https://repo.etdon.com/repository/maven-releases/</url>
+</repository>
+```
+
+```xml
+<dependency>
+    <groupId>com.etdon</groupId>
+    <artifactId>winj</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
