@@ -14,7 +14,7 @@
 > [!IMPORTANT]
 > Requirements:
 > - Java 22<p>
-> ℹ️ *The reason why Java 22 (non-LTS) has been prioritized over Java 21 (LTS) is the finalization of the FFM API in the latter.*
+> ℹ️ *The reason why Java 22 (non-LTS) has been prioritized over Java 21 (LTS) is the finalization of the FFM API.*
 
 🪶 Maven:
 ```xml
