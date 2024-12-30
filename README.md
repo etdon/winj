@@ -2,11 +2,11 @@
     <img src="https://i.imgur.com/8rpcn5R.png">    
 </p>
 
-### Introduction
+## Introduction
 
 <b>winj</b> is your go-to Java library for seamless Windows API access, leveraging the recently added FFM API. With zero third-party runtime dependencies, it offers an easy-to-use interface that simplifies native functionality integration, allowing developers to harness the full power of Windows effortlessly. Whether you’re managing system resources or enhancing your application’s features, winj makes Windows development in Java a breeze!  
 
-### Getting Started
+## Getting Started
 
 > [!NOTE]    
 > 👷 winj is in early development and currently **not** feature complete.
@@ -45,7 +45,7 @@ dependencies {
 }
 ```
 
-### Building
+## Building
 The build management tool used for this project is [Apache Maven](https://maven.apache.org/). Executing the following command will install the compiled artifact into your local repository if no critical issues occur during any of the lifecycle phases.
 ```
 mvn clean install
