@@ -1,13 +1,22 @@
-## Simplifying Windows API Access for Effortless Java Development
-<p align="center">  
-    <img src="https://i.imgur.com/77wWjcY.png" width="600" height="450">    
-</p>  
-<b>winj</b> is your go-to Java library for seamless Windows API access, leveraging the recently added FFM API. With zero external dependencies, it offers an easy-to-use interface that simplifies native functionality integration, allowing developers to harness the full power of Windows effortlessly. Whether you’re managing system resources or enhancing your application’s features, winj makes Windows development in Java a breeze!  
-<br/><br/>
+<p align="left">  
+    <img src="https://i.imgur.com/77wWjcY.png" width="400" height="300">    
+</p>
+
+### Introduction
+
+<b>winj</b> is your go-to Java library for seamless Windows API access, leveraging the recently added FFM API. With zero third-party runtime dependencies, it offers an easy-to-use interface that simplifies native functionality integration, allowing developers to harness the full power of Windows effortlessly. Whether you’re managing system resources or enhancing your application’s features, winj makes Windows development in Java a breeze!  
+
+### Getting Started
 
 > [!NOTE]    
-> winj is in early development and currently **not** feature complete.
+> 👷 winj is in early development and currently **not** feature complete.
 
+> [!IMPORTANT]
+> Requirements:
+> - Java 22<p>
+> ℹ️ *The reason why Java 22 (non-LTS) has been prioritized over Java 21 (LTS) is the finalization of the FFM API in the latter.*
+
+🪶 Maven:
 ```xml
 <repository>
     <id>etdon-repo</id>
@@ -21,4 +30,23 @@
     <artifactId>winj</artifactId>
     <version>1.0.0</version>
 </dependency>
+```
+
+🐘 Gradle:
+```groovy
+maven {         
+    url = uri("https://repo.etdon.com/repository/maven-releases/")
+}
+```
+
+```groovy
+dependencies {
+    implementation 'com.etdon:winj:1.0.0'
+}
+```
+
+### Building
+The build management tool used for this project is [Apache Maven](https://maven.apache.org/). Executing the following command will install the compiled artifact into your local repository if no critical issues occur during any of the lifecycle phases.
+```
+mvn clean install
 ```
