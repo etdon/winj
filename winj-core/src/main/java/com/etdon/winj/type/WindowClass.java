@@ -14,7 +14,7 @@ import java.lang.foreign.MemorySegment;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
-public final class Window implements MemorySegmentable {
+public final class WindowClass implements MemorySegmentable {
 
     public static final MemoryLayout WNDCLASSEXA = MemoryLayout.structLayout(
             JAVA_INT.withName("cbSize"),
@@ -112,9 +112,9 @@ public final class Window implements MemorySegmentable {
      */
     private MemorySegment smallIconHandle = MemorySegment.NULL;
 
-    public Window(final MemorySegment procedurePointer,
-                  final MemorySegment procedureOwner,
-                  final MemorySegment className) {
+    public WindowClass(final MemorySegment procedurePointer,
+                       final MemorySegment procedureOwner,
+                       final MemorySegment className) {
 
         this.size = (int) WNDCLASSEXA.byteSize();
         this.procedurePointer = procedurePointer;
@@ -123,17 +123,17 @@ public final class Window implements MemorySegmentable {
 
     }
 
-    public Window(final int classStyle,
-                  final MemorySegment procedurePointer,
-                  final int extraClassBytes,
-                  final int extraWindowBytes,
-                  final MemorySegment procedureOwner,
-                  final MemorySegment iconResourceHandle,
-                  final MemorySegment cursorHandle,
-                  final MemorySegment backgroundBrushHandle,
-                  final MemorySegment menuName,
-                  final MemorySegment className,
-                  final MemorySegment smallIconHandle) {
+    public WindowClass(final int classStyle,
+                       final MemorySegment procedurePointer,
+                       final int extraClassBytes,
+                       final int extraWindowBytes,
+                       final MemorySegment procedureOwner,
+                       final MemorySegment iconResourceHandle,
+                       final MemorySegment cursorHandle,
+                       final MemorySegment backgroundBrushHandle,
+                       final MemorySegment menuName,
+                       final MemorySegment className,
+                       final MemorySegment smallIconHandle) {
 
         this.size = (int) WNDCLASSEXA.byteSize();
         this.classStyle = classStyle;
@@ -150,7 +150,7 @@ public final class Window implements MemorySegmentable {
 
     }
 
-    public Window(@NotNull final Arena arena, @NotNull MemorySegment memorySegment) {
+    public WindowClass(@NotNull final Arena arena, @NotNull MemorySegment memorySegment) {
 
         if (memorySegment.byteSize() == 0)
             memorySegment = memorySegment.reinterpret(WNDCLASSEXA.byteSize(), arena, null);
@@ -170,7 +170,7 @@ public final class Window implements MemorySegmentable {
 
     }
 
-    private Window(final Builder builder) {
+    private WindowClass(final Builder builder) {
 
         this.size = (int) WNDCLASSEXA.byteSize();
         Conditional.executeIfNotNull(builder.classStyle, () -> this.classStyle = builder.classStyle);
@@ -287,7 +287,7 @@ public final class Window implements MemorySegmentable {
 
     }
 
-    public static final class Builder implements FluentBuilder<Window> {
+    public static final class Builder implements FluentBuilder<WindowClass> {
 
         private Integer classStyle;
         private MemorySegment procedurePointer;
@@ -304,7 +304,7 @@ public final class Window implements MemorySegmentable {
         /**
          * Overrides the builder internal class style value with the provided value.
          *
-         * @param classStyle The class style. {@link Window#classStyle}
+         * @param classStyle The class style. {@link WindowClass#classStyle}
          * @return The builder instance.
          */
         public Builder classStyle(final int classStyle) {
@@ -446,13 +446,13 @@ public final class Window implements MemorySegmentable {
 
         @NotNull
         @Override
-        public Window build() {
+        public WindowClass build() {
 
             Preconditions.checkNotNull(this.procedurePointer);
             Preconditions.checkNotNull(this.procedureOwner);
             Preconditions.checkNotNull(this.className);
 
-            return new Window(this);
+            return new WindowClass(this);
 
         }
 

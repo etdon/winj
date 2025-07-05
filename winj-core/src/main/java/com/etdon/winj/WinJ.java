@@ -30,7 +30,7 @@ import com.etdon.winj.render.debug.queue.StringDebugRenderQueueItem;
 import com.etdon.winj.type.LowLevelKeyboardInput;
 import com.etdon.winj.type.Message;
 import com.etdon.winj.type.PaintData;
-import com.etdon.winj.type.Window;
+import com.etdon.winj.type.WindowClass;
 import com.etdon.winj.util.Flag;
 import org.jetbrains.annotations.NotNull;
 
@@ -171,7 +171,7 @@ public class WinJ {
 
             final MemorySegment className = arena.allocateFrom("testClassName", StandardCharsets.UTF_16LE);
             final MemorySegment backgroundBrushHandle = (MemorySegment) this.nativeCaller.call(GetStockObject.builder().id(StockObject.WHITE_BRUSH).build());
-            final MemorySegment wndClassEx = Window.builder()
+            final MemorySegment wndClassEx = WindowClass.builder()
                     .procedurePointer(windowProcedureStub)
                     .procedureOwner(moduleHandle)
                     .className(className)

@@ -15,7 +15,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static java.lang.foreign.ValueLayout.JAVA_BOOLEAN;
 
-public class NtQueryDefaultLocale extends NativeFunction {
+public final class NtQueryDefaultLocale extends NativeFunction {
 
     public static final String LIBRARY = Library.NTDLL;
     public static final String NATIVE_NAME = "NtQueryDefaultLocale";
