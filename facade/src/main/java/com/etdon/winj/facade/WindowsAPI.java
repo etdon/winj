@@ -18,7 +18,6 @@ public class WindowsAPI {
     public WindowsAPI(@NotNull final WinJ winJ) {
 
         Preconditions.checkNotNull(winJ);
-
         this.winJ = winJ;
         this.arena = winJ.getArena();
         this.nativeCaller = winJ.getNativeCaller();
@@ -35,7 +34,6 @@ public class WindowsAPI {
     public static WindowsAPI of(@NotNull final WinJ winJ) {
 
         Preconditions.checkNotNull(winJ);
-
         return new WindowsAPI(winJ);
 
     }

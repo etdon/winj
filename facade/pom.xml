@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.etdon</groupId>
-        <artifactId>winj-parent</artifactId>
+        <groupId>com.etdon.winj</groupId>
+        <artifactId>parent</artifactId>
         <version>1.0.1</version>
     </parent>
 
-    <artifactId>winj-demo</artifactId>
+    <artifactId>facade</artifactId>
     <version>1.0.0</version>
 
     <build>
@@ -25,22 +25,6 @@
                 <configuration>
                     <source>${targetVersion}</source>
                     <target>${targetVersion}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.1</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.etdon.winj.demo.Demo</mainClass>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                        <manifestEntries>
-                            <Enable-Native-Access>ALL-UNNAMED</Enable-Native-Access>
-                        </manifestEntries>
-                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -75,13 +59,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.etdon</groupId>
-            <artifactId>winj-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.etdon</groupId>
-            <artifactId>winj-facade</artifactId>
+            <groupId>com.etdon.winj</groupId>
+            <artifactId>core</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

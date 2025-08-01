@@ -4,7 +4,6 @@ import com.etdon.winj.WinJ;
 import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.facade.Window;
 import com.etdon.winj.facade.WindowsAPI;
-import com.etdon.winj.render.debug.queue.DebugRenderQueueItem;
 import com.etdon.winj.render.debug.queue.StringDebugRenderQueueItem;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +28,7 @@ public final class Demo {
         try (final Arena arena = Arena.ofConfined()) {
             final WinJ winJ = new WinJ(arena);
             final NativeContext nativeContext = NativeContext.of(arena, winJ.getNativeCaller());
-            final WindowsAPI windowsAPI = new WindowsAPI(winJ);
+            final WindowsAPI windowsAPI = WindowsAPI.of(winJ);
             final Window window = windowsAPI.getForegroundWindow();
             final String text = window.getText(nativeContext);
             System.out.println("Text: " + text);

@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.etdon</groupId>
-        <artifactId>winj-parent</artifactId>
+        <groupId>com.etdon.winj</groupId>
+        <artifactId>parent</artifactId>
         <version>1.0.1</version>
     </parent>
 
-    <artifactId>winj-core</artifactId>
+    <artifactId>core</artifactId>
     <version>1.0.0</version>
 
     <build>

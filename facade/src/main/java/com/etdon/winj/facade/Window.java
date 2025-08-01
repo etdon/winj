@@ -39,7 +39,6 @@ public class Window extends Handle {
 
         // Consider null character for text length validation.
         Preconditions.checkState(validatedTextLength + 1 == textLength);
-
         return textBuffer.getString(0, StandardCharsets.UTF_16LE);
 
     }

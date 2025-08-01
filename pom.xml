@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.etdon</groupId>
-    <artifactId>winj-parent</artifactId>
+    <groupId>com.etdon.winj</groupId>
+    <artifactId>parent</artifactId>
     <version>1.0.1</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>winj-core</module>
-        <module>winj-gen</module>
-        <module>winj-facade</module>
-        <module>winj-demo</module>
+        <module>core</module>
+        <module>gen</module>
+        <module>facade</module>
+        <module>demo</module>
     </modules>
 
     <properties>
