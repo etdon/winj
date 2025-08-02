@@ -54,7 +54,9 @@ public final class LCIDToLocaleName extends NativeFunction {
     private final int localeNameBufferSize;
 
     /**
-     *
+     * Before Windows 7: Reserved; should always be 0.
+     * <p>
+     * Starting with Windows 7: Can be set to LOCALE_ALLOW_NEUTRAL_NAMES to allow the return of a neutral name.
      */
     private int flags = 0;
 
@@ -127,7 +129,6 @@ public final class LCIDToLocaleName extends NativeFunction {
 
             Preconditions.checkNotNull(localeId);
             Preconditions.checkNotNull(localeNameBufferSize);
-
             return new LCIDToLocaleName(this);
 
         }

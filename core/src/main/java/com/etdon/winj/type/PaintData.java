@@ -76,7 +76,6 @@ public final class PaintData implements MemorySegmentable {
 
         Preconditions.checkNotNull(deviceContextHandle);
         Preconditions.checkNotNull(rectangle);
-
         this.deviceContextHandle = deviceContextHandle;
         this.eraseBackground = eraseBackground;
         this.rectangle = rectangle;

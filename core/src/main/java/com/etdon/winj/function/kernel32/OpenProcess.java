@@ -26,6 +26,8 @@ public final class OpenProcess extends NativeFunction {
     /**
      * The access to the process object. This access right is checked against the security descriptor for the process.
      * This parameter can be one or more of the process access rights.
+     *
+     * @see com.etdon.winj.constant.process.ProcessAccessRight
      */
     private final int access;
 

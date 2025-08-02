@@ -1,4 +1,4 @@
-package com.etdon.winj.process;
+package com.etdon.winj.constant.process;
 
 public final class ProcessAccessRight {
 

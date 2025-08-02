@@ -23,6 +23,10 @@ public final class NativeDataType {
      */
     public static final ValueLayout LPCWSTR = ADDRESS.withName("LPCWSTR");
     /**
+     * A pointer to a constant null-terminated string of 8-bit Windows (ANSI) characters.
+     */
+    public static final ValueLayout LPCSTR = ADDRESS.withName("LPCSTR");
+    /**
      * A pointer to an LCID.
      */
     public static final ValueLayout PLCID = ADDRESS.withName("PLCID");
@@ -86,7 +90,7 @@ public final class NativeDataType {
     /**
      * A 32-bit unsigned integer. The range is 0 through 4294967295 decimal.
      */
-    public static final ValueLayout DWORD = LONG.withName("DWORD");
+    public static final ValueLayout DWORD = JAVA_INT.withName("DWORD");
     /**
      * A handle to a hook.
      */
@@ -159,6 +163,26 @@ public final class NativeDataType {
      * A byte (8 bits).
      */
     public static final ValueLayout BYTE = JAVA_BYTE.withName("BYTE");
+    /**
+     * An address to an exported function or variable.
+     */
+    public static final ValueLayout FARPROC = ADDRESS.withName("FARPROC");
+    /**
+     * Pointer to the SECURITY_ATTRIBUTES structure.
+     */
+    public static final ValueLayout LPSECURITY_ATTRIBUTES = ADDRESS.withName("LPSECURITY_ATTRIBUTES");
+    /**
+     *
+     */
+    public static final ValueLayout PSID = ADDRESS.withName("PSID");
+    /**
+     *
+     */
+    public static final ValueLayout PACL = ADDRESS.withName("PACL");
+    /**
+     *
+     */
+    public static final ValueLayout LPTHREAD_START_ROUTINE = ADDRESS.withName("LPTHREAD_START_ROUTINE");
 
     private NativeDataType() {
 

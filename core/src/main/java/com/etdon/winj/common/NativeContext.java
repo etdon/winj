@@ -3,7 +3,6 @@ package com.etdon.winj.common;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.function.NativeCaller;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.foreign.Arena;
 

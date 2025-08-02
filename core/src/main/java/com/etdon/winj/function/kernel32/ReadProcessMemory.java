@@ -143,7 +143,6 @@ public final class ReadProcessMemory extends NativeFunction {
             Preconditions.checkNotNull(this.baseAddress);
             Preconditions.checkNotNull(this.buffer);
             Preconditions.checkNotNull(this.count);
-
             return new ReadProcessMemory(this);
 
         }
