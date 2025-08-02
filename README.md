@@ -25,11 +25,19 @@
 ```
 
 ```xml
-<dependency>
-    <groupId>com.etdon</groupId>
-    <artifactId>winj</artifactId>
-    <version>1.0.0</version>
-</dependency>
+
+<dependencies>
+    <dependency>
+        <groupId>com.etdon.winj</groupId>
+        <artifactId>core</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+    <dependency>
+        <groupId>com.etdon.winj</groupId>
+        <artifactId>facade</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+</dependencies>
 ```
 
 🐘 Gradle:
@@ -41,7 +49,8 @@ maven {
 
 ```groovy
 dependencies {
-    implementation 'com.etdon:winj:1.0.0'
+    implementation 'com.etdon.winj:core:1.0.0'
+    implementation 'com.etdon.winj:facade:1.0.0'
 }
 ```
 
