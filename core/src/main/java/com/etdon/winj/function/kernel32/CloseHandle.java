@@ -52,7 +52,7 @@ public final class CloseHandle extends NativeFunction {
 
     }
 
-    public static CloseHandle of(@NotNull final MemorySegment handle) {
+    public static CloseHandle ofHandle(@NotNull final MemorySegment handle) {
 
         Preconditions.checkNotNull(handle);
         return new CloseHandle(handle);

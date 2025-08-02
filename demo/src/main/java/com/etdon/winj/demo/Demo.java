@@ -139,12 +139,12 @@ public final class Demo {
             //
         }
 
-        success = (int) nativeContext.getCaller().call(CloseHandle.of(remoteThreadHandle)) > 0;
+        success = (int) nativeContext.getCaller().call(CloseHandle.ofHandle(remoteThreadHandle)) > 0;
         if (!success) {
             //
         }
 
-        success = (int) nativeContext.getCaller().call(CloseHandle.of(processHandle)) > 0;
+        success = (int) nativeContext.getCaller().call(CloseHandle.ofHandle(processHandle)) > 0;
         if (!success) {
             //
         }

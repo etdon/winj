@@ -223,10 +223,10 @@ public class WinJ {
 
             try (final Arena confinedArena = Arena.ofConfined()) {
                 int state;
-                MemorySegment message;
+                final MemorySegment message = confinedArena.allocate(Message.MSG.byteSize());
                 while ((state = (int) (this.nativeCaller.call(
                         GetMessageW.builder()
-                                .messagePointer((message = confinedArena.allocate(Message.MSG.byteSize())))
+                                .messagePointer(message)
                                 .build()))
                 ) != 0) {
                     if (state != -1) {
