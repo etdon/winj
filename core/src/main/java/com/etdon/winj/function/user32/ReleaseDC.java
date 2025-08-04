@@ -2,6 +2,7 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,14 +14,15 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.NativeDataType.*;
 
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-releasedc")
 public final class ReleaseDC extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "ReleaseDC";
     public static final FunctionDescriptor RELEASE_DC_SIGNATURE = FunctionDescriptor.of(
             INTEGER,
-            HWND,
-            HDC
+            HWND.withName("hWnd"),
+            HDC.withName("hDc")
     );
 
     /**

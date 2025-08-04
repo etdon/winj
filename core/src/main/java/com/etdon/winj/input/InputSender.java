@@ -6,7 +6,6 @@ import com.etdon.winj.WinJ;
 import com.etdon.winj.constant.InputType;
 import com.etdon.winj.constant.KeyboardEventFlag;
 import com.etdon.winj.constant.VirtualKeyMapType;
-import com.etdon.winj.function.kernel32.GetLastError;
 import com.etdon.winj.function.user32.MapVirtualKeyExW;
 import com.etdon.winj.function.user32.SendInput;
 import com.etdon.winj.type.input.Input;
@@ -36,7 +35,7 @@ public class InputSender {
      * @param keyCode The key code.
      * @see KeyCode
      */
-    public void simulateKeyPress(final int keyCode) {
+    public int simulateKeyPress(final int keyCode) {
 
         try {
             final int scanCode = (int) this.nativeCaller.call(
@@ -72,15 +71,13 @@ public class InputSender {
                     .build()
                     .createMemorySegment(this.arena), 0, inputArray, Input.INPUT.byteSize(), Input.INPUT.byteSize());
 
-            final int c = (int) this.nativeCaller.call(
+            return (int) this.nativeCaller.call(
                     SendInput.builder()
                             .inputArray(inputArray)
                             .inputCount(2)
                             .inputByteSize((int) Input.INPUT.byteSize())
                             .build()
             );
-            System.out.println("SENT: " + c);
-            System.out.println("LAST ERROR: " + this.nativeCaller.call(GetLastError.getInstance()));
         } catch (final Throwable ex) {
             throw new RuntimeException(ex);
         }
