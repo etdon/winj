@@ -1,30 +1,45 @@
 package com.etdon.winj.demo;
 
-import com.etdon.winj.WinJ;
+import com.etdon.commons.conditional.Preconditions;
+import com.etdon.commons.di.ServiceProvider;
+import com.etdon.commons.util.ColorUtils;
+import com.etdon.commons.util.Exceptional;
+import com.etdon.jbinder.function.NativeCaller;
 import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.constant.*;
-import com.etdon.winj.constant.memory.AllocationType;
-import com.etdon.winj.constant.memory.FreeType;
-import com.etdon.winj.constant.memory.HeapAllocationFlag;
-import com.etdon.winj.constant.memory.MemoryProtection;
-import com.etdon.winj.constant.process.ProcessAccessRight;
-import com.etdon.winj.constant.thread.ThreadAccessRight;
 import com.etdon.winj.facade.Window;
 import com.etdon.winj.facade.WindowsAPI;
+import com.etdon.winj.function.gdi32.GetStockObject;
+import com.etdon.winj.function.gdi32.SetBkMode;
+import com.etdon.winj.function.gdi32.SetTextColor;
 import com.etdon.winj.function.kernel32.*;
-import com.etdon.winj.function.ntdll.*;
+import com.etdon.winj.function.ntdll.NtGetTickCount;
+import com.etdon.winj.function.ntdll.NtQueryDefaultLocale;
+import com.etdon.winj.function.psapi.EnumDeviceDrivers;
+import com.etdon.winj.function.psapi.GetDeviceDriverBaseNameW;
+import com.etdon.winj.function.psapi.GetDeviceDriverFileNameW;
+import com.etdon.winj.function.user32.*;
+import com.etdon.winj.hook.HookManager;
+import com.etdon.winj.hook.ManagedHook;
+import com.etdon.winj.procedure.LowLevelKeyboardProcedure;
+import com.etdon.winj.procedure.WindowProcedure;
+import com.etdon.winj.render.debug.queue.DebugRenderQueue;
 import com.etdon.winj.render.debug.queue.StringDebugRenderQueueItem;
-import com.etdon.winj.type.*;
+import com.etdon.winj.type.LowLevelKeyboardInput;
+import com.etdon.winj.type.Message;
+import com.etdon.winj.type.PaintData;
+import com.etdon.winj.type.WindowClass;
 import com.etdon.winj.util.Flag;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.foreign.AddressLayout;
 import java.lang.foreign.Arena;
+import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.ValueLayout;
 import java.nio.charset.StandardCharsets;
 
 import static com.etdon.winj.type.NativeDataType.*;
+import static java.lang.foreign.MemorySegment.NULL;
+import static java.lang.foreign.ValueLayout.*;
 
 public final class Demo {
 
@@ -40,275 +55,284 @@ public final class Demo {
 
     }
 
+    private final WindowsAPI windowsAPI;
+    private final ServiceProvider serviceProvider;
+    private final HookManager hookManager;
+    private final NativeCaller nativeCaller;
+    private final Linker linker;
+    private final DebugRenderQueue debugRenderQueue;
+
+    private Demo() {
+
+        this.windowsAPI = new WindowsAPI(Arena.ofAuto());
+        this.serviceProvider = windowsAPI.getServiceProvider();
+        this.hookManager = new HookManager(this.serviceProvider);
+        this.serviceProvider.register(this.hookManager);
+        this.nativeCaller = this.serviceProvider.get(NativeCaller.class);
+        this.linker = this.serviceProvider.get(Linker.class);
+        this.debugRenderQueue = this.serviceProvider.get(DebugRenderQueue.class);
+
+    }
+
     private void initialize() {
 
         try (final Arena arena = Arena.ofConfined()) {
-            final WinJ winJ = new WinJ(arena);
-            final NativeContext nativeContext = NativeContext.of(arena, winJ.getNativeCaller());
-            final WindowsAPI windowsAPI = WindowsAPI.of(winJ);
-            final Window window = windowsAPI.getForegroundWindow();
-            final String text = window.getText(nativeContext);
-            System.out.println("Text: " + text);
-            winJ.getDebugRenderQueue().add(StringDebugRenderQueueItem.repeating("Hello!"));
+            final MemorySegment windowProcedureStub = new WindowProcedure().upcallStub(this.linker, arena, this, "handleWindowProc");
+            final MemorySegment moduleHandle = (MemorySegment) this.nativeCaller.call(GetModuleHandleW.builder().build());
+            System.out.println("moduleHandle Address: " + moduleHandle.address());
 
-            final MemorySegment ntImagePath = arena.allocate(UnicodeString.UNICODE_STRING.byteSize());
-            nativeContext.getCaller().call(
-                    RtlInitUnicodeString.builder()
-                            .destinationStringPointer(ntImagePath)
-                            .sourceStringPointer(arena.allocateFrom("\\??\\C:\\Windows\\System32\\mmc.exe", StandardCharsets.UTF_16LE))
-                            .build()
-            );
-
-            final MemorySegment commandLine = arena.allocate(UnicodeString.UNICODE_STRING.byteSize());
-            nativeContext.getCaller().call(
-                    RtlInitUnicodeString.builder()
-                            .destinationStringPointer(commandLine)
-                            .sourceStringPointer(arena.allocateFrom("C:\\Windows\\System32\\mmc.exe", StandardCharsets.UTF_16LE))
-                            .build()
-            );
-
-            final MemorySegment currentDirectory = arena.allocate(UnicodeString.UNICODE_STRING.byteSize());
-            nativeContext.getCaller().call(
-                    RtlInitUnicodeString.builder()
-                            .destinationStringPointer(currentDirectory)
-                            .sourceStringPointer(arena.allocateFrom("C:\\Windows\\System32", StandardCharsets.UTF_16LE))
-                            .build()
-            );
-
-            final MemorySegment processParametersPointer = arena.allocate(AddressLayout.ADDRESS);
-            int ntStatus = (int) nativeContext.getCaller().call(
-                    RtlCreateProcessParametersEx.builder()
-                            .processParametersPointerOutput(processParametersPointer)
-                            .imagePathNamePointer(ntImagePath)
-                            .currentDirectoryPointer(currentDirectory)
-                            .commandLinePointer(commandLine)
-                            .flags(UserProcessParametersFlag.RTL_USER_PROC_PARAMS_NORMALIZED)
-                            .build()
-            );
-            if (ntStatus != 0) {
-                System.out.printf("RtlCreateProcessParametersEx: NTSTATUS=0x%08X%n", ntStatus);
-            }
-            final MemorySegment processParameters = processParametersPointer.get(ValueLayout.ADDRESS, 0);
-
-            final ProcessCreateInfo processCreateInfo = ProcessCreateInfo.builder()
-                    .size(ProcessCreateInfo.PS_CREATE_INFO.byteSize())
-                    .state(ProcessCreateState.PS_CREATE_INITIAL_STATE)
-                    .info(ProcessCreateInitialState.empty())
-                    .build();
-            final MemorySegment processCreateInfoPointer = processCreateInfo.createMemorySegment(arena);
-
-            final MemorySegment objectAttributes = arena.allocate(ObjectAttributes.OBJECT_ATTRIBUTES.byteSize());
-            final MemorySegment parentHandlePointer = arena.allocate(HANDLE.byteSize());
-            final MemorySegment clientId = ClientId.builder()
-                    .uniqueProcess(27676)
+            final MemorySegment className = arena.allocateFrom("testClassName", StandardCharsets.UTF_16LE);
+            final MemorySegment backgroundBrushHandle = (MemorySegment) this.nativeCaller.call(GetStockObject.builder().id(StockObject.WHITE_BRUSH).build());
+            final MemorySegment wndClassEx = WindowClass.builder()
+                    .procedurePointer(windowProcedureStub)
+                    .procedureOwner(moduleHandle)
+                    .className(className)
+                    .backgroundBrushHandle(backgroundBrushHandle)
                     .build()
                     .createMemorySegment(arena);
-            ntStatus = (int) nativeContext.getCaller().call(
-                    NtOpenProcess.builder()
-                            .processHandleOutputPointer(parentHandlePointer)
-                            .desiredAccess(ThreadAccessRight.THREAD_ALL_ACCESS)
-                            .objectAttributesPointer(objectAttributes)
-                            .clientIdPointer(clientId)
-                            .build()
-            );
-            if (ntStatus != 0) {
-                System.out.printf("NtOpenProcess: NTSTATUS=0x%08X%n", ntStatus);
-            }
-            final MemorySegment parentHandle = parentHandlePointer.get(ValueLayout.ADDRESS, 0);
 
-            final int attributeCount = 3;
-            final long totalLength = SIZE_T.byteSize() + (attributeCount * ProcessAttribute.PS_ATTRIBUTE.byteSize());
-            final MemorySegment heapHandle = (MemorySegment) nativeContext.getCaller().call(GetProcessHeap.getInstance());
-            final MemorySegment attributeListPointer = (MemorySegment) nativeContext.getCaller().call(
-                    RtlAllocateHeap.builder()
-                            .heapHandle(heapHandle)
-                            .flags(HeapAllocationFlag.HEAP_ZERO_MEMORY)
-                            .size(totalLength)
-                            .build()
-            );
-            final MemorySegment attributeList = attributeListPointer.reinterpret(totalLength);
+            final int classId = (int) this.nativeCaller.call(RegisterClassExW.builder().windowClassPointer(wndClassEx).build());
+            if (classId == 0)
+                throw new RuntimeException("Failed to register class " + wndClassEx + ": " + this.nativeCaller.call(GetLastError.getInstance()));
+            System.out.println("Registered classId: " + classId);
 
-            final UnicodeString imagePath = new UnicodeString(arena, ntImagePath);
-            final MemorySegment policy = arena.allocateFrom(ValueLayout.JAVA_LONG,
-                    Flag.combine(
-                            ProcessCreationMitigationPolicy.PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_ON,
-                            ProcessCreationMitigationPolicy.PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_ALWAYS_ON
-                    )
-            );
-            final ProcessAttributeList processAttributeList = ProcessAttributeList.builder()
-                    .totalLength(totalLength)
-                    .attribute(
-                            ProcessAttribute.builder()
-                                    .attribute(ProcessAttributeValue.PS_ATTRIBUTE_IMAGE_NAME)
-                                    .size(imagePath.getLength())
-                                    .value(imagePath.getBuffer())
-                                    .build()
-                                    .createMemorySegment(arena)
-                    )
-                    .attribute(
-                            ProcessAttribute.builder()
-                                    .attribute(ProcessAttributeValue.PS_ATTRIBUTE_PARENT_PROCESS)
-                                    .size(HANDLE.byteSize())
-                                    .value(parentHandle)
-                                    .build()
-                                    .createMemorySegment(arena)
-                    )
-                    .attribute(
-                            ProcessAttribute.builder()
-                                    .attribute(ProcessAttributeValue.PS_ATTRIBUTE_MITIGATION_OPTIONS)
-                                    .size(DWORD64.byteSize())
-                                    .value(policy)
-                                    .build()
-                                    .createMemorySegment(arena)
-                    )
+            final MemorySegment keyboardHookStub = new LowLevelKeyboardProcedure().upcallStub(this.linker, arena, this, "handleLowLevelKeyboardProc");
+            final ManagedHook managedHook = ManagedHook.builder()
+                    .id("llKeyboardHook")
+                    .type(HookType.WH_KEYBOARD_LL)
+                    .stub(keyboardHookStub)
+                    .owner(moduleHandle)
                     .build();
-            MemorySegment.copy(processAttributeList.createMemorySegment(arena), 0, attributeList, 0, totalLength);
+            this.hookManager.register(managedHook);
 
-            final MemorySegment processHandle = arena.allocate(HANDLE.byteSize());
-            final MemorySegment threadHandle = arena.allocate(HANDLE.byteSize());
-            ntStatus = (int) nativeContext.getCaller().call(
-                    NtCreateUserProcess.builder()
-                            .processHandleOutputPointer(processHandle)
-                            .threadHandleOutputPointer(threadHandle)
-                            .processDesiredAccess(ProcessAccessRight.PROCESS_ALL_ACCESS)
-                            .threadDesiredAccess(ThreadAccessRight.THREAD_ALL_ACCESS)
-                            .processParameters(processParameters)
-                            .createInfo(processCreateInfoPointer)
-                            .attributeList(attributeList)
+            final MemorySegment windowName = arena.allocateFrom("Demo Window", StandardCharsets.UTF_16LE);
+            final MemorySegment windowHandle = (MemorySegment) this.nativeCaller.call(
+                    CreateWindowExW.builder()
+                            .extendedStyle(ExtendedWindowStyle.DEFAULT)
+                            .className(className)
+                            .windowName(windowName)
+                            .style(WindowStyle.WS_SYSMENU | WindowStyle.WS_CAPTION | WindowStyle.WS_BORDER | WindowStyle.WS_SIZEBOX | WindowStyle.WS_MINIMIZEBOX | WindowStyle.WS_MAXIMIZEBOX)
+                            .x(500)
+                            .y(500)
+                            .width(300)
+                            .height(300)
+                            .moduleHandle(moduleHandle)
                             .build()
             );
-            if (ntStatus != 0) {
-                System.out.printf("NtCreateUserProcess: NTSTATUS=0x%08X%n", ntStatus);
-            }
 
-            boolean success = (int) nativeContext.getCaller().call(CloseHandle.ofHandle(parentHandle)) > 0;
-            if (!success) {
-                System.out.println("CloseHandle Error: " + nativeContext.getCaller().call(GetLastError.getInstance()));
-            }
+            if (windowHandle.address() == 0)
+                throw new RuntimeException("Failed to obtain HWND: " + windowHandle.address() + " (Error: " + this.nativeCaller.call(GetLastError.getInstance()) + ")");
 
-            success = (int) nativeContext.getCaller().call(
-                    RtlFreeHeap.builder()
-                            .heapHandle(heapHandle)
-                            .baseAddress(attributeList)
+            this.nativeCaller.call(
+                    ShowWindow.builder()
+                            .handle(windowHandle)
+                            .presentation(WindowPresentation.SW_SHOW)
                             .build()
-            ) > 0;
-            if (!success) {
-                System.out.println("RtlFreeHeap Error: " + nativeContext.getCaller().call(GetLastError.getInstance()));
-            }
-            ntStatus = (int) nativeContext.getCaller().call(RtlDestroyProcessParameters.ofProcessParameters(processParameters));
-            if (ntStatus != 0) {
-                System.out.printf("RtlDestroyProcessParameters: NTSTATUS=0x%08X%n", ntStatus);
-            }
+            );
 
-            winJ.demo();
+            final NativeContext nativeContext = NativeContext.of(arena, this.nativeCaller);
+            final Window window = this.windowsAPI.getForegroundWindow();
+            final String text = window.getText(nativeContext);
+            this.debugRenderQueue.add(StringDebugRenderQueueItem.repeating("Hello!"));
+            this.printDrivers(arena);
+
+            int state;
+            final MemorySegment message = arena.allocate(Message.MSG.byteSize());
+            while ((state = (int) (this.nativeCaller.call(
+                    GetMessageW.builder()
+                            .messagePointer(message)
+                            .build()))
+            ) != 0) {
+                if (state != -1) {
+                    this.nativeCaller.call(TranslateMessage.ofMessagePointer(message));
+                    this.nativeCaller.call(DispatchMessageW.ofMessagePointer(message));
+                } else {
+                    Exceptional.of(RuntimeException.class, "Received message state -1, last error: {}", this.nativeCaller.call(GetLastError.getInstance()));
+                }
+            }
         } catch (final Throwable ex) {
             throw new RuntimeException(ex);
         }
 
     }
 
-    public void injectDll(@NotNull final NativeContext nativeContext, final int pid, @NotNull final String path) throws Throwable {
+    public void printDrivers(@NotNull final Arena arena) throws Throwable {
 
-        final Arena arena = nativeContext.getArena();
-        final MemorySegment processHandle = (MemorySegment) nativeContext.getCaller().call(
-                OpenProcess.builder()
-                        .access(ProcessAccessRight.PROCESS_ALL_ACCESS)
-                        .inheritHandle(false)
-                        .processId(pid)
+        this.debugRenderQueue.add(StringDebugRenderQueueItem.repeating("PID: " + this.nativeCaller.call(GetCurrentProcessId.getInstance()).toString()));
+        this.debugRenderQueue.add(StringDebugRenderQueueItem.repeating("ntGetTickCount: " + this.nativeCaller.call(NtGetTickCount.getInstance())));
+        final MemorySegment languageIdPointer = arena.allocate(JAVA_INT, 1);
+        this.nativeCaller.call(
+                NtQueryDefaultLocale.builder()
+                        .userProfile(false)
+                        .defaultLocaleIdPointer(languageIdPointer)
                         .build()
         );
-        if (processHandle.address() == 0) {
-            //
-        }
-
-        final MemorySegment kernelModuleHandle = (MemorySegment) nativeContext.getCaller().call(
-                GetModuleHandleW.builder()
-                        .moduleName(arena.allocateFrom("kernel32.dll", StandardCharsets.UTF_16LE))
+        final int languageId = languageIdPointer.get(JAVA_INT, 0);
+        final MemorySegment localeNamePointer = arena.allocate(85);
+        this.nativeCaller.call(
+                LCIDToLocaleName.builder()
+                        .localeId(languageId)
+                        .localeNamePointer(localeNamePointer)
+                        .localeNameBufferSize((int) localeNamePointer.byteSize())
                         .build()
         );
-        if (kernelModuleHandle.address() == 0) {
-            //
-        }
+        this.debugRenderQueue.add(StringDebugRenderQueueItem.repeating("ntQueryDefaultLocale: " + localeNamePointer.getString(0, StandardCharsets.UTF_16LE)));
 
-        final MemorySegment loadLibraryPointer = (MemorySegment) nativeContext.getCaller().call(
-                GetProcAddress.builder()
-                        .moduleHandle(kernelModuleHandle)
-                        .localeNamePointer(arena.allocateFrom("LoadLibraryA"))
+        final MemorySegment driverArray = arena.allocate(LPVOID, 1024).fill((byte) 0);
+        final MemorySegment driverArrayNeededBytes = arena.allocate(LPDWORD);
+        final boolean result = ((int) this.nativeCaller.call(
+                EnumDeviceDrivers.builder()
+                        .sizedDriverArrayPointer(driverArray)
+                        .bytesNeededPointer(driverArrayNeededBytes)
                         .build()
-        );
-        if (loadLibraryPointer.address() == 0) {
-            //
+        ) > 0);
+        if (result) {
+            final int driverCount = (int) (driverArrayNeededBytes.get(JAVA_INT, 0) / ADDRESS.byteSize());
+            System.out.println("Driver count: " + driverCount);
+            for (int i = 0; i < driverCount; i++) {
+                final MemorySegment driverAddress = driverArray.getAtIndex(ADDRESS.withByteAlignment(8), i);
+                System.out.println("Index " + i + " driver address: " + Long.toUnsignedString(driverAddress.address()));
+                final MemorySegment lpBaseName = arena.allocate(JAVA_CHAR, 200);
+                final int nameCharsCopied = (int) this.nativeCaller.call(
+                        GetDeviceDriverBaseNameW.builder()
+                                .driverAddress(driverAddress)
+                                .sizedBaseNameBufferPointer(lpBaseName)
+                                .build()
+                );
+                if (nameCharsCopied > 0 && nameCharsCopied <= 200) {
+                    System.out.println("Driver name: " + lpBaseName.getString(0, StandardCharsets.UTF_16LE));
+                } else {
+                    throw new RuntimeException("Failed to copy driver name chars at address: " + Long.toUnsignedString(driverAddress.address()));
+                }
+                final MemorySegment lpFileName = arena.allocate(JAVA_CHAR, 200);
+                final int filenameCharsCopied = (int) this.nativeCaller.call(
+                        GetDeviceDriverFileNameW.builder()
+                                .driverAddress(driverAddress)
+                                .sizedFileNameBufferPointer(lpFileName)
+                                .build()
+                );
+                if (filenameCharsCopied > 0 && filenameCharsCopied <= 200) {
+                    System.out.println("Driver filename: " + lpFileName.getString(0, StandardCharsets.UTF_16LE));
+                } else {
+                    throw new RuntimeException("Failed to copy driver filename at address: " + Long.toUnsignedString(driverAddress.address()));
+                }
+            }
+        } else {
+            throw new RuntimeException("Failed to read drivers.");
         }
+        // END_DRIVERS
 
-        final MemorySegment dllPath = arena.allocateFrom(path);
-        final MemorySegment allocatedBaseAddress = (MemorySegment) nativeContext.getCaller().call(
-                VirtualAllocEx.builder()
-                        .processHandle(processHandle)
-                        .size(dllPath.byteSize())
-                        .allocationType(AllocationType.MEM_RESERVE | AllocationType.MEM_COMMIT)
-                        .memoryProtection(MemoryProtection.PAGE_READWRITE)
-                        .build()
-        );
-        if (allocatedBaseAddress.address() == 0) {
-            //
-        }
+    }
 
-        final MemorySegment bytesWritten = arena.allocate(SIZE_T.byteSize());
-        boolean success = (int) nativeContext.getCaller().call(
-                WriteProcessMemory.builder()
-                        .processHandle(processHandle)
-                        .baseAddressPointer(allocatedBaseAddress)
-                        .bufferPointer(dllPath)
-                        .size(dllPath.byteSize())
-                        .bytesWrittenOutputPointer(bytesWritten)
-                        .build()
-        ) > 0;
-        if (!success) {
-            //
-        }
+    public MemorySegment handleWindowProc(@NotNull final MemorySegment windowHandle, final int messageId, final long firstParameter, final long secondParameter) {
 
-        final MemorySegment remoteThreadHandle = (MemorySegment) nativeContext.getCaller().call(
-                CreateRemoteThread.builder()
-                        .processHandle(processHandle)
-                        .threadStartRoutinePointer(loadLibraryPointer)
-                        .parameterPointer(allocatedBaseAddress)
-                        .build()
-        );
-        if (remoteThreadHandle.address() == 0) {
-            //
-        }
-
-        int result = (int) nativeContext.getCaller().call(
-                WaitForSingleObject.builder()
-                        .handle(remoteThreadHandle)
-                        .timeoutMillis(WaitTime.INFINITE)
-                        .build()
-        );
-
-        success = (int) nativeContext.getCaller().call(
-                VirtualFreeEx.builder()
-                        .processHandle(processHandle)
-                        .addressPointer(allocatedBaseAddress)
-                        .freeType(FreeType.MEM_RELEASE)
-                        .build()
-        ) > 0;
-        if (!success) {
-            //
-        }
-
-        success = (int) nativeContext.getCaller().call(CloseHandle.ofHandle(remoteThreadHandle)) > 0;
-        if (!success) {
-            //
-        }
-
-        success = (int) nativeContext.getCaller().call(CloseHandle.ofHandle(processHandle)) > 0;
-        if (!success) {
-            //
+        try (final Arena confinedArena = Arena.ofConfined()) {
+            return switch (messageId) {
+                case MessageId.WM_DESTROY -> {
+                    this.hookManager.close();
+                    this.nativeCaller.call(PostQuitMessage.ofExitCode(0));
+                    yield NULL;
+                }
+                case MessageId.WM_PAINT -> {
+                    this.handlePaint(windowHandle, confinedArena);
+                    yield NULL;
+                }
+                case MessageId.WM_KEYDOWN -> {
+                    final int keyCode = (int) firstParameter;
+                    if (keyCode == KeyCode.VK_X)
+                        System.out.println("Pressed X");
+                    yield NULL;
+                }
+                default -> (MemorySegment) this.nativeCaller.call(
+                        DefWindowProcW.builder()
+                                .windowHandle(windowHandle)
+                                .message(messageId)
+                                .firstParameter(firstParameter)
+                                .secondParameter(secondParameter)
+                                .build()
+                );
+            };
+        } catch (final Throwable ex) {
+            throw new RuntimeException(ex);
         }
 
     }
 
-    private Demo() {
+    private void handlePaint(@NotNull final MemorySegment windowHandle, @NotNull final Arena arena) throws Throwable {
+
+        final MemorySegment lpPaint = arena.allocate(PaintData.PAINTSTRUCT.byteSize());
+        final MemorySegment deviceContextHandle = (MemorySegment) this.nativeCaller.call(BeginPaint.builder().windowHandle(windowHandle).paintDataPointer(lpPaint).build());
+        this.nativeCaller.call(SetTextColor.builder().deviceContextHandle(deviceContextHandle).color(ColorUtils.compress(255, 0, 0)).build());
+        this.nativeCaller.call(SetBkMode.builder().deviceContextHandle(deviceContextHandle).mode(BackgroundMode.OPAQUE).build());
+
+        this.debugRenderQueue.apply(deviceContextHandle);
+
+        this.nativeCaller.call(ReleaseDC.builder().windowHandle(windowHandle).deviceContextHandle(deviceContextHandle).build());
+        final int endPaintStatus = (int) this.nativeCaller.call(EndPaint.builder().windowHandle(windowHandle).paintDataPointer(lpPaint).build());
+        Preconditions.checkState(endPaintStatus != 0);
+
+    }
+
+    /**
+     * Bypass LLKHF_INJECTED:
+     * <p>
+     * lowLevelKeyboardInput.setFlags(lowLevelKeyboardInput.getFlags() & ~LowLevelKeyboardHookFlag.LLKHF_INJECTED);
+     * <p>
+     * return (long) callNextHookEx.invoke(NULL, nCode, wParam, lowLevelKeyboardInput.createMemorySegment(confinedArena));
+     * <p>
+     * Or modify the present one:
+     * <p>
+     * final MemorySegment memorySegment = lParam.reinterpret(LowLevelKeyboardInput.KBDLLHOOKSTRUCT.byteSize(), confinedArena, null);
+     * <p>
+     * memorySegment.set(JAVA_INT, 8, lowLevelKeyboardInput.getFlags() & ~LowLevelKeyboardHookFlag.LLKHF_INJECTED);
+     */
+    public MemorySegment handleLowLevelKeyboardProc(final int code, final long firstParameter, final long secondParameter) {
+
+        try (final Arena confinedArena = Arena.ofConfined()) {
+            final MemorySegment lParamMemorySegment = MemorySegment.ofAddress(secondParameter);
+            final LowLevelKeyboardInput lowLevelKeyboardInput = new LowLevelKeyboardInput(confinedArena, lParamMemorySegment);
+            if (firstParameter == MessageId.WM_KEYDOWN) {
+                final int keyCode = lowLevelKeyboardInput.getVirtualKeyCode();
+                System.out.println("WM_KEYDOWN: " + keyCode + " (" + (char) keyCode + ")");
+                System.out.println("INJECTED: " + Flag.check(lowLevelKeyboardInput.getFlags(), LowLevelKeyboardHookFlag.LLKHF_INJECTED));
+            } else if (firstParameter == MessageId.WM_KEYUP) {
+                final int keyCode = lowLevelKeyboardInput.getVirtualKeyCode();
+                System.out.println("WM_KEYUP: " + keyCode + " (" + (char) keyCode + ")");
+                System.out.println("INJECTED: " + Flag.check(lowLevelKeyboardInput.getFlags(), LowLevelKeyboardHookFlag.LLKHF_INJECTED));
+            }
+
+            return (MemorySegment) this.nativeCaller.call(
+                    CallNextHookEx.builder()
+                            .code(code)
+                            .firstParameter(firstParameter)
+                            .secondParameter(secondParameter)
+                            .build()
+            );
+        } catch (final Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+
+    }
+
+    private long handleDebugProc(final int nCode, final long wParam, final long lParam) {
+
+        try {
+            if (nCode < 0) {
+                return (long) this.nativeCaller.call(
+                        CallNextHookEx.builder()
+                                .code(nCode)
+                                .firstParameter(wParam)
+                                .secondParameter(lParam)
+                                .build()
+                );
+            } else if (nCode == 0) {
+                return 1;
+            } else {
+                return 1;
+            }
+        } catch (final Throwable ex) {
+            throw new RuntimeException(ex);
+        }
 
     }
 

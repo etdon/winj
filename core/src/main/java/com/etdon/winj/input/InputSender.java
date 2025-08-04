@@ -1,8 +1,8 @@
 package com.etdon.winj.input;
 
 import com.etdon.jbinder.function.NativeCaller;
+import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.constant.KeyCode;
-import com.etdon.winj.WinJ;
 import com.etdon.winj.constant.InputType;
 import com.etdon.winj.constant.KeyboardEventFlag;
 import com.etdon.winj.constant.VirtualKeyMapType;
@@ -22,10 +22,10 @@ public class InputSender {
     private final Arena arena;
     private final NativeCaller nativeCaller;
 
-    public InputSender(@NotNull final WinJ winJ) {
+    public InputSender(@NotNull final NativeContext nativeContext) {
 
-        this.arena = winJ.getArena();
-        this.nativeCaller = winJ.getNativeCaller();
+        this.arena = nativeContext.getArena();
+        this.nativeCaller = nativeContext.getCaller();
 
     }
 
