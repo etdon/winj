@@ -23,8 +23,16 @@ public final class ProcessAttributeList implements MemorySegmentable {
     );
     public static final ValueLayout PPS_ATTRIBUTE_LIST = ADDRESS.withName("PPS_ATTRIBUTE_LIST");
 
+    /**
+     * The size of the entire structure in bytes, including the header.
+     */
     private long totalLength;
 
+    /**
+     * The array of PS_ATTRIBUTE structures.
+     *
+     * @see ProcessAttribute
+     */
     private MemorySegment[] attributes;
 
     public ProcessAttributeList(final long totalLength,

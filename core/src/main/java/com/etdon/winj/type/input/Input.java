@@ -3,6 +3,7 @@ package com.etdon.winj.type.input;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.common.NativeDocumentation;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
@@ -12,6 +13,7 @@ import java.lang.foreign.MemorySegment;
 import static com.etdon.winj.type.NativeDataType.DWORD;
 import static java.lang.foreign.ValueLayout.*;
 
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-input")
 public final class Input implements MemorySegmentable {
 
     public static final MemoryLayout INPUT = MemoryLayout.structLayout(
@@ -21,18 +23,20 @@ public final class Input implements MemorySegmentable {
                     HardwareInput.HARDWAREINPUT,
                     KeyboardInput.KEYBDINPUT,
                     MouseInput.MOUSEINPUT
-            )
+            ).withName("DUMMYUNIONNAME")
     ).withByteAlignment(8);
 
     /**
      * The type of the input event.
+     *
+     * @see com.etdon.winj.constant.InputType
      */
-    private final int type;
+    private int type;
 
     /**
-     * The data.
+     * The information about a simulated event.
      */
-    private final InputData data;
+    private InputData data;
 
     public Input(@NotNull final Arena arena, @NotNull MemorySegment memorySegment) {
 
@@ -68,9 +72,22 @@ public final class Input implements MemorySegmentable {
 
     }
 
+    public void setType(final int type) {
+
+        this.type = type;
+
+    }
+
     public InputData getData() {
 
         return this.data;
+
+    }
+
+    public void setData(@NotNull final InputData data) {
+
+        Preconditions.checkNotNull(data);
+        this.data = data;
 
     }
 
@@ -109,7 +126,6 @@ public final class Input implements MemorySegmentable {
 
             Preconditions.checkNotNull(this.type);
             Preconditions.checkNotNull(this.data);
-
             return new Input(this);
 
         }

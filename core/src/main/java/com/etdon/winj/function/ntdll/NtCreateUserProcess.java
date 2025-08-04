@@ -88,6 +88,8 @@ public final class NtCreateUserProcess extends NativeFunction {
     /**
      * Optional. A pointer to an RTL_USER_PROCESS_PARAMETERS structure that specifies the parameters for the new
      * process.
+     *
+     * @see UserProcessParameters
      */
     private MemorySegment processParameters = MemorySegment.NULL;
 

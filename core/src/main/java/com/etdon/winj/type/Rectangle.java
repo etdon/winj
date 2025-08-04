@@ -141,7 +141,6 @@ public final class Rectangle implements MemorySegmentable {
             Preconditions.checkNotNull(this.top);
             Preconditions.checkNotNull(this.right);
             Preconditions.checkNotNull(this.bottom);
-
             return new Rectangle(this);
 
         }
