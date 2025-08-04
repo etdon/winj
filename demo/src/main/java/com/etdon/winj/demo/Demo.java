@@ -128,9 +128,20 @@ public final class Demo {
             final MemorySegment objectAttributes = arena.allocate(ObjectAttributes.OBJECT_ATTRIBUTES.byteSize());
             final MemorySegment parentHandle = arena.allocate(HANDLE.byteSize());
             final MemorySegment clientId = ClientId.builder()
-                    .uniqueProcess(arena.allocateFrom(ValueLayout.JAVA_LONG, 14952))
+                    .uniqueProcess(27676)
                     .build()
                     .createMemorySegment(arena);
+            ntStatus = (int) nativeContext.getCaller().call(
+                    NtOpenProcess.builder()
+                            .processHandleOutputPointer(parentHandle)
+                            .desiredAccess(ThreadAccessRight.THREAD_ALL_ACCESS)
+                            .objectAttributesPointer(objectAttributes)
+                            .clientIdPointer(clientId)
+                            .build()
+            );
+            if (ntStatus != 0) {
+                System.out.printf("NtOpenProcess: NTSTATUS=0x%08X%n", ntStatus);
+            }
 
             final boolean success = (int) nativeContext.getCaller().call(
                     RtlFreeHeap.builder()

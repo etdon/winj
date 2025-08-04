@@ -10,9 +10,11 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 
 import static com.etdon.winj.type.NativeDataType.HANDLE;
 import static java.lang.foreign.ValueLayout.ADDRESS;
+import static java.lang.foreign.ValueLayout.JAVA_LONG;
 
 public final class ClientId implements MemorySegmentable {
 
@@ -20,13 +22,14 @@ public final class ClientId implements MemorySegmentable {
             HANDLE.withName("UniqueProcess"),
             HANDLE.withName("UniqueThread")
     );
+    public static final ValueLayout PCLIENT_ID = ADDRESS.withName("PCLIENT_ID");
 
-    private final MemorySegment uniqueProcess;
+    private final long uniqueProcess;
 
-    private MemorySegment uniqueThread = MemorySegment.NULL;
+    private long uniqueThread;
 
-    public ClientId(@NotNull final MemorySegment uniqueProcess,
-                    @Nullable final MemorySegment uniqueThread) {
+    public ClientId(final int uniqueProcess,
+                    final int uniqueThread) {
 
         Preconditions.checkNotNull(uniqueProcess);
         this.uniqueProcess = uniqueProcess;
@@ -39,8 +42,8 @@ public final class ClientId implements MemorySegmentable {
         if (memorySegment.byteSize() == 0)
             memorySegment = memorySegment.reinterpret(CLIENT_ID.byteSize(), arena, null);
 
-        this.uniqueProcess = memorySegment.get(ADDRESS, 0);
-        this.uniqueThread = memorySegment.get(ADDRESS, ADDRESS.byteSize());
+        this.uniqueProcess = memorySegment.get(JAVA_LONG, 0);
+        this.uniqueThread = memorySegment.get(JAVA_LONG, JAVA_LONG.byteSize());
 
     }
 
@@ -56,8 +59,8 @@ public final class ClientId implements MemorySegmentable {
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         final MemorySegment memorySegment = arena.allocate(CLIENT_ID.byteSize());
-        memorySegment.set(ADDRESS, 0, this.uniqueProcess);
-        memorySegment.set(ADDRESS, ADDRESS.byteSize(), this.uniqueThread);
+        memorySegment.set(JAVA_LONG, 0, this.uniqueProcess);
+        memorySegment.set(JAVA_LONG, JAVA_LONG.byteSize(), this.uniqueThread);
 
         return memorySegment;
 
@@ -71,17 +74,17 @@ public final class ClientId implements MemorySegmentable {
 
     public static final class Builder implements FluentBuilder<ClientId> {
 
-        private MemorySegment uniqueProcess;
-        private MemorySegment uniqueThread;
+        private Long uniqueProcess;
+        private Long uniqueThread;
 
-        public Builder uniqueProcess(@NotNull final MemorySegment uniqueProcess) {
+        public Builder uniqueProcess(final long uniqueProcess) {
 
             this.uniqueProcess = uniqueProcess;
             return this;
 
         }
 
-        public Builder uniqueThread(@NotNull final MemorySegment uniqueThread) {
+        public Builder uniqueThread(final long uniqueThread) {
 
             this.uniqueThread = uniqueThread;
             return this;

@@ -234,6 +234,10 @@ public final class NativeDataType {
      * Sets Used By Fonts.
      */
     public static final ValueLayout PCWSTR = ADDRESS.withName("PCWSTR");
+    /**
+     *
+     */
+    public static final ValueLayout NTSTATUS = JAVA_INT.withName("NTSTATUS");
 
     private NativeDataType() {
 
