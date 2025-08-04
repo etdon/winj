@@ -4,11 +4,18 @@
 
 ## Introduction
 
-<b>winj</b> is your go-to Java library for seamless Windows API access, leveraging the recently added FFM API. With zero third-party runtime dependencies, it offers an easy-to-use interface that simplifies native functionality integration, allowing developers to harness the full power of Windows effortlessly. Whether you’re managing system resources or enhancing your application’s features, winj makes Windows development in Java a breeze!  
+<b>winj</b> is your go-to Java library for seamless Windows API access, leveraging the FFM API. With zero third-party
+runtime dependencies, it offers an easy-to-use interface that simplifies native functionality integration, allowing
+developers to harness the full power of Windows effortlessly.
 
-## Design Philosophy
-- More control regarding allocations in the form of arenas.
-- Provides both high level and lower level bindings.
+## Details
+
+- Gives the user more control over the memory (de)allocation through extensive use of arenas.
+- Bindings are provided for both higher level API functions and types as well as lower level ones which are often
+  completely missing in similar libraries.
+- Function calls and types are constructed cleanly with fluent builders.
+- Facades (`facade` module) are built around more complex and constant flows like hook management as well
+  as logically tied components.
 
 ## Getting Started
 
@@ -18,9 +25,10 @@
 > [!IMPORTANT]
 > Requirements:
 > - Java 22<p>
-> ℹ️ *The reason why Java 22 (non-LTS) has been prioritized over Java 21 (LTS) is the finalization of the FFM API.*
+    > ℹ️ *Java 22 (non-LTS) has been prioritized over Java 21 (LTS) because of the finalization of the FFM API.*
 
 🪶 Maven:
+
 ```xml
 <repository>
     <id>etdon-repo</id>
@@ -29,7 +37,6 @@
 ```
 
 ```xml
-
 <dependencies>
     <dependency>
         <groupId>com.etdon.winj</groupId>
@@ -45,8 +52,9 @@
 ```
 
 🐘 Gradle:
+
 ```groovy
-maven {         
+maven {
     url = uri("https://repo.etdon.com/repository/maven-releases/")
 }
 ```
@@ -58,8 +66,24 @@ dependencies {
 }
 ```
 
+Required VM Options:
+
+```xml
+<manifestEntries>
+    <Enable-Native-Access>ALL-UNNAMED</Enable-Native-Access>
+</manifestEntries>
+```
+
+```
+--enable-native-access=ALL-UNNAMED
+```
+
 ## Building
-The build management tool used for this project is [Apache Maven](https://maven.apache.org/). Executing the following command will install the compiled artifact into your local repository if no critical issues occur during any of the lifecycle phases.
+
+The build management tool used for this project is [Apache Maven](https://maven.apache.org/). Executing the following
+command will install the compiled artifact into your local repository if no critical issues occur during any of the
+lifecycle phases.
+
 ```
 mvn clean install
 ```
