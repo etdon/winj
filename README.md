@@ -16,24 +16,16 @@ developers to harness the full power of Windows effortlessly.
 - Function calls and types are constructed cleanly with fluent builders.
 - Facades (`facade` module) are built around more complex and constant flows like hook management as well
   as logically tied components.
+
+# Warnings
+
+- The bindings are far from complete, you can however define new bindings in your own project without modifying the library directly.
+- No production promises: Names and locations might change, things might get refactored changing the fundamental structure. Published
+full release versions will remain untouched (unless critical fixes are needed) and changes will only be shipped with the next version.
+Snapshot versions might change at any time.
   
-## Comparisons
+## Examples
 
-JNA
-```java
-final HWND hwnd = User32.INSTANCE.GetForegroundWindow();
-final char[] buffer = new char[512];
-User32.INSTANCE.GetWindowText(hwnd, buffer, 512);
-final String windowText = Native.toString(buffer);
-```
-```java
-WNDCLASSEX wClass = new WNDCLASSEX();
-wClass.hInstance = hInst;
-wClass.lpfnWndProc = Win32WindowDemo.this;
-wClass.lpszClassName = windowClass;
-```
-
-winj
 ```java
 // Re-usable
 final WinJ winj = new WinJ(arena);
@@ -128,7 +120,7 @@ Required VM Options:
 --enable-native-access=ALL-UNNAMED
 ```
 
-## Building
+## 📦 Building
 
 The build management tool used for this project is [Apache Maven](https://maven.apache.org/). Executing the following
 command will install the compiled artifact into your local repository if no critical issues occur during any of the
