@@ -71,15 +71,15 @@ public final class ShowWindow extends NativeFunction {
 
     }
 
-    public static Builder builder() {
-
-        return new Builder();
-
-    }
-
     public static ShowWindow ofHandle(@NotNull final MemorySegment handle) {
 
         return new ShowWindow(handle);
+
+    }
+
+    public static Builder builder() {
+
+        return new Builder();
 
     }
 

@@ -12,7 +12,7 @@ import static com.etdon.winj.type.NativeDataType.*;
 /**
  * TODO: Implement
  */
-public class SecurityDescriptor implements MemorySegmentable {
+public final class SecurityDescriptor implements MemorySegmentable {
 
     public static final MemoryLayout SECURITY_DESCRIPTOR = MemoryLayout.structLayout(
             BYTE.withName("Revision"),

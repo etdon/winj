@@ -47,6 +47,10 @@ public final class NativeDataType {
      */
     public static final ValueLayout HANDLE = PVOID.withName("HANDLE");
     /**
+     * A pointer to a handle.
+     */
+    public static final ValueLayout PHANDLE = PVOID.withName("PHANDLE");
+    /**
      * A handle to a window.
      */
     public static final ValueLayout HWND = HANDLE.withName("HWND");
@@ -84,9 +88,17 @@ public final class NativeDataType {
      */
     public static final ValueLayout SIZE_T = JAVA_LONG.withName("SIZE_T");
     /**
+     * A pointer to a SIZE_T.
+     */
+    public static final ValueLayout PSIZE_T = ADDRESS.withName("PSIZE_T");
+    /**
      * A 32-bit signed integer. The range is -2147483648 through 2147483647 decimal.
      */
     public static final ValueLayout LONG = JAVA_INT.withName("LONG");
+    /**
+     * An unsigned LONG. The range is 0 through 4294967295 decimal.
+     */
+    public static final ValueLayout ULONG = LONG.withName("ULONG");
     /**
      * A 32-bit unsigned integer. The range is 0 through 4294967295 decimal.
      */
@@ -118,7 +130,7 @@ public final class NativeDataType {
     /**
      * An unsigned {@link NativeDataType#LONG_PTR}.
      */
-    public static final ValueLayout ULONG_PTR = ADDRESS.withName("ULONG_PTR");
+    public static final ValueLayout ULONG_PTR = JAVA_LONG.withName("ULONG_PTR");
     /**
      * Signed result of message processing.
      */
@@ -183,6 +195,45 @@ public final class NativeDataType {
      *
      */
     public static final ValueLayout LPTHREAD_START_ROUTINE = ADDRESS.withName("LPTHREAD_START_ROUTINE");
+    /**
+     * The ACCESS_MASK data type is a DWORD value that defines standard, specific, and generic rights. These rights are
+     * used in access control entries (ACEs) and are the primary means of specifying the requested or granted access to
+     * an object.
+     */
+    public static final ValueLayout ACCESS_MASK = DWORD.withName("ACCESS_MASK");
+    /**
+     * A 16-bit integer. The range is -32768 through 32767 decimal.
+     */
+    public static final ValueLayout SHORT = JAVA_SHORT.withName("SHORT");
+    /**
+     * An unsigned SHORT. The range is 0 through 65535 decimal.
+     */
+    public static final ValueLayout USHORT = SHORT.withName("USHORT");
+    /**
+     *
+     */
+    public static final ValueLayout PWCH = ADDRESS.withName("PWCH");
+    /**
+     * A 64-bit unsigned integer. The range is 0 through 18446744073709551615 decimal.
+     */
+    public static final ValueLayout ULONGLONG = JAVA_LONG.withName("ULONGLONG");
+    /**
+     * A pointer to a ULONGLONG.
+     */
+    public static final ValueLayout PULONGLONG = ADDRESS.withName("PULONGLONG");
+    /**
+     * An 8-bit Windows (ANSI) character.
+     */
+    public static final ValueLayout CHAR = JAVA_CHAR.withName("CHAR");
+    /**
+     * An unsigned CHAR.
+     */
+    public static final ValueLayout UCHAR = CHAR.withName("UCHAR");
+    /**
+     * A pointer to a constant null-terminated string of 16-bit Unicode characters. For more information, see Character
+     * Sets Used By Fonts.
+     */
+    public static final ValueLayout PCWSTR = ADDRESS.withName("PCWSTR");
 
     private NativeDataType() {
 

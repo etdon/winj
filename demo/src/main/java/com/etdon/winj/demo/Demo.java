@@ -1,22 +1,37 @@
 package com.etdon.winj.demo;
 
+import com.etdon.jbinder.util.MemoryUtils;
 import com.etdon.winj.WinJ;
 import com.etdon.winj.common.NativeContext;
+import com.etdon.winj.constant.ProcessAttributeValue;
+import com.etdon.winj.constant.ProcessCreateState;
+import com.etdon.winj.constant.UserProcessParametersFlag;
 import com.etdon.winj.constant.WaitTime;
 import com.etdon.winj.constant.memory.AllocationType;
 import com.etdon.winj.constant.memory.FreeType;
+import com.etdon.winj.constant.memory.HeapAllocationFlag;
 import com.etdon.winj.constant.memory.MemoryProtection;
 import com.etdon.winj.constant.process.ProcessAccessRight;
+import com.etdon.winj.constant.thread.ThreadAccessRight;
 import com.etdon.winj.facade.Window;
 import com.etdon.winj.facade.WindowsAPI;
 import com.etdon.winj.function.kernel32.*;
+import com.etdon.winj.function.ntdll.NtCreateUserProcess;
+import com.etdon.winj.function.ntdll.RtlAllocateHeap;
+import com.etdon.winj.function.ntdll.RtlCreateProcessParametersEx;
+import com.etdon.winj.function.ntdll.RtlInitUnicodeString;
 import com.etdon.winj.render.debug.queue.StringDebugRenderQueueItem;
+import com.etdon.winj.type.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.foreign.AddressLayout;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
+import static com.etdon.winj.type.NativeDataType.HANDLE;
 import static com.etdon.winj.type.NativeDataType.SIZE_T;
 
 public final class Demo {
@@ -43,6 +58,72 @@ public final class Demo {
             final String text = window.getText(nativeContext);
             System.out.println("Text: " + text);
             winJ.getDebugRenderQueue().add(StringDebugRenderQueueItem.repeating("Hello!"));
+
+            final MemorySegment ntImagePath = arena.allocate(UnicodeString.UNICODE_STRING.byteSize());
+            nativeContext.getCaller().call(
+                    RtlInitUnicodeString.builder()
+                            .destinationStringPointer(ntImagePath)
+                            .sourceStringPointer(arena.allocateFrom("\\??\\C:\\Windows\\System32\\mmc.exe", StandardCharsets.UTF_16LE))
+                            .build()
+            );
+
+            final MemorySegment processParametersPointer = arena.allocate(AddressLayout.ADDRESS);
+            int ntStatus = (int) nativeContext.getCaller().call(
+                    RtlCreateProcessParametersEx.builder()
+                            .processParametersPointerOutput(processParametersPointer)
+                            .imagePathNamePointer(ntImagePath)
+                            .flags(UserProcessParametersFlag.RTL_USER_PROC_PARAMS_NORMALIZED)
+                            .build()
+            );
+            if (ntStatus != 0) {
+                System.out.printf("RtlCreateProcessParametersEx: NTSTATUS=0x%08X%n", ntStatus);
+            }
+
+            final ProcessCreateInfo processCreateInfo = ProcessCreateInfo.builder()
+                    .size(ProcessCreateInfo.PS_CREATE_INFO.byteSize())
+                    .state(ProcessCreateState.PS_CREATE_INITIAL_STATE)
+                    .info(ProcessCreateInitialState.empty())
+                    .build();
+
+            final MemorySegment processCreateInfoPointer = processCreateInfo.createMemorySegment(arena);
+            final MemorySegment heapHandle = (MemorySegment) nativeContext.getCaller().call(GetProcessHeap.getInstance());
+            final MemorySegment attributeListPointer = (MemorySegment) nativeContext.getCaller().call(
+                    RtlAllocateHeap.builder()
+                            .heapHandle(heapHandle)
+                            .flags(HeapAllocationFlag.HEAP_ZERO_MEMORY)
+                            .size(ProcessAttributeList.PS_ATTRIBUTE_LIST.byteSize())
+                            .build()
+            );
+            final ProcessAttributeList processAttributeList = new ProcessAttributeList(arena, attributeListPointer);
+            final UnicodeString imagePath = new UnicodeString(arena, ntImagePath);
+            final ProcessAttribute processAttribute = ProcessAttribute.builder()
+                    .attribute(ProcessAttributeValue.PS_ATTRIBUTE_IMAGE_NAME)
+                    .size(imagePath.getLength())
+                    .value(imagePath.getBuffer())
+                    .build();
+            processAttributeList.setTotalLength(ProcessAttributeList.PS_ATTRIBUTE_LIST.byteSize());
+            final MemorySegment[] attributes = new MemorySegment[1];
+            attributes[0] = processAttribute.createMemorySegment(arena);
+            processAttributeList.setAttributes(attributes);
+            final MemorySegment processAttributeListPointer = processAttributeList.createMemorySegment(arena);
+
+            final MemorySegment processHandle = arena.allocate(HANDLE.byteSize());
+            final MemorySegment threadHandle = arena.allocate(HANDLE.byteSize());
+            ntStatus = (int) nativeContext.getCaller().call(
+                    NtCreateUserProcess.builder()
+                            .processHandleOutputPointer(processHandle)
+                            .threadHandleOutputPointer(threadHandle)
+                            .processDesiredAccess(ProcessAccessRight.PROCESS_ALL_ACCESS)
+                            .threadDesiredAccess(ThreadAccessRight.THREAD_ALL_ACCESS)
+                            .processParameters(processParametersPointer.get(ValueLayout.ADDRESS, 0))
+                            .createInfo(processCreateInfoPointer)
+                            .attributeList(processAttributeListPointer)
+                            .build()
+            );
+            if (ntStatus != 0) {
+                System.out.printf("NtCreateUserProcess: NTSTATUS=0x%08X%n", ntStatus);
+            }
+
             winJ.demo();
         } catch (final Throwable ex) {
             throw new RuntimeException(ex);

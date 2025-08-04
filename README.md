@@ -6,6 +6,10 @@
 
 <b>winj</b> is your go-to Java library for seamless Windows API access, leveraging the recently added FFM API. With zero third-party runtime dependencies, it offers an easy-to-use interface that simplifies native functionality integration, allowing developers to harness the full power of Windows effortlessly. Whether you’re managing system resources or enhancing your application’s features, winj makes Windows development in Java a breeze!  
 
+## Design Philosophy
+- More control regarding allocations in the form of arenas.
+- Provides both high level and lower level bindings.
+
 ## Getting Started
 
 > [!NOTE]    
