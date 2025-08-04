@@ -16,7 +16,7 @@ developers to harness the full power of Windows effortlessly.
 - Function calls and types are constructed cleanly with fluent builders.
 - Facades (`facade` module) are built around more complex and constant flows like hook management as well
   as logically tied components.
-- Lightweight with zero third-party runtime dependencies.
+- Lightweight with zero third-party runtime dependencies (less than 1 MB in compiled size).
 
 # Warnings
 
