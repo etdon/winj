@@ -28,9 +28,8 @@ Snapshot versions might change at any time.
 
 ```java
 // Re-usable
-final WinJ winj = new WinJ(arena);
-final WindowsAPI windowsAPI = WindowsAPI.of(winj);
-final NativeContext nativeContext = NativeContext.of(arena, winj.getNativeCaller());
+final WindowsAPI windowsAPI = WindowsAPI.of(arena);
+final NativeContext nativeContext = NativeContext.of(arena, this.nativeCaller);
 
 final Window window = windowsAPI.getForegroundWindow();
 final String windowText = window.getText(nativeContext);
