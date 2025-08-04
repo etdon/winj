@@ -125,6 +125,13 @@ public final class Demo {
                 System.out.printf("NtCreateUserProcess: NTSTATUS=0x%08X%n", ntStatus);
             }
 
+            final MemorySegment objectAttributes = arena.allocate(ObjectAttributes.OBJECT_ATTRIBUTES.byteSize());
+            final MemorySegment parentHandle = arena.allocate(HANDLE.byteSize());
+            final MemorySegment clientId = ClientId.builder()
+                    .uniqueProcess(arena.allocateFrom(ValueLayout.JAVA_LONG, 14952))
+                    .build()
+                    .createMemorySegment(arena);
+
             final boolean success = (int) nativeContext.getCaller().call(
                     RtlFreeHeap.builder()
                             .heapHandle(heapHandle)
