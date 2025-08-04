@@ -235,9 +235,13 @@ public final class NativeDataType {
      */
     public static final ValueLayout PCWSTR = ADDRESS.withName("PCWSTR");
     /**
-     *
+     * NTSTATUS is a standard 32-bit datatype for system-supplied status code values.
      */
     public static final ValueLayout NTSTATUS = JAVA_INT.withName("NTSTATUS");
+    /**
+     * A DWORD64 is a 64-bit unsigned integer.
+     */
+    public static final ValueLayout DWORD64 = JAVA_LONG.withName("DWORD64");
 
     private NativeDataType() {
 

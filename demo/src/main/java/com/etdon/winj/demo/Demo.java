@@ -2,10 +2,7 @@ package com.etdon.winj.demo;
 
 import com.etdon.winj.WinJ;
 import com.etdon.winj.common.NativeContext;
-import com.etdon.winj.constant.ProcessAttributeValue;
-import com.etdon.winj.constant.ProcessCreateState;
-import com.etdon.winj.constant.UserProcessParametersFlag;
-import com.etdon.winj.constant.WaitTime;
+import com.etdon.winj.constant.*;
 import com.etdon.winj.constant.memory.AllocationType;
 import com.etdon.winj.constant.memory.FreeType;
 import com.etdon.winj.constant.memory.HeapAllocationFlag;
@@ -18,6 +15,7 @@ import com.etdon.winj.function.kernel32.*;
 import com.etdon.winj.function.ntdll.*;
 import com.etdon.winj.render.debug.queue.StringDebugRenderQueueItem;
 import com.etdon.winj.type.*;
+import com.etdon.winj.util.Flag;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.AddressLayout;
@@ -26,8 +24,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.nio.charset.StandardCharsets;
 
-import static com.etdon.winj.type.NativeDataType.HANDLE;
-import static com.etdon.winj.type.NativeDataType.SIZE_T;
+import static com.etdon.winj.type.NativeDataType.*;
 
 public final class Demo {
 
@@ -62,11 +59,29 @@ public final class Demo {
                             .build()
             );
 
+            final MemorySegment commandLine = arena.allocate(UnicodeString.UNICODE_STRING.byteSize());
+            nativeContext.getCaller().call(
+                    RtlInitUnicodeString.builder()
+                            .destinationStringPointer(commandLine)
+                            .sourceStringPointer(arena.allocateFrom("C:\\Windows\\System32\\mmc.exe", StandardCharsets.UTF_16LE))
+                            .build()
+            );
+
+            final MemorySegment currentDirectory = arena.allocate(UnicodeString.UNICODE_STRING.byteSize());
+            nativeContext.getCaller().call(
+                    RtlInitUnicodeString.builder()
+                            .destinationStringPointer(currentDirectory)
+                            .sourceStringPointer(arena.allocateFrom("C:\\Windows\\System32", StandardCharsets.UTF_16LE))
+                            .build()
+            );
+
             final MemorySegment processParametersPointer = arena.allocate(AddressLayout.ADDRESS);
             int ntStatus = (int) nativeContext.getCaller().call(
                     RtlCreateProcessParametersEx.builder()
                             .processParametersPointerOutput(processParametersPointer)
                             .imagePathNamePointer(ntImagePath)
+                            .currentDirectoryPointer(currentDirectory)
+                            .commandLinePointer(commandLine)
                             .flags(UserProcessParametersFlag.RTL_USER_PROC_PARAMS_NORMALIZED)
                             .build()
             );
@@ -82,7 +97,26 @@ public final class Demo {
                     .build();
             final MemorySegment processCreateInfoPointer = processCreateInfo.createMemorySegment(arena);
 
-            final int attributeCount = 1;
+            final MemorySegment objectAttributes = arena.allocate(ObjectAttributes.OBJECT_ATTRIBUTES.byteSize());
+            final MemorySegment parentHandlePointer = arena.allocate(HANDLE.byteSize());
+            final MemorySegment clientId = ClientId.builder()
+                    .uniqueProcess(27676)
+                    .build()
+                    .createMemorySegment(arena);
+            ntStatus = (int) nativeContext.getCaller().call(
+                    NtOpenProcess.builder()
+                            .processHandleOutputPointer(parentHandlePointer)
+                            .desiredAccess(ThreadAccessRight.THREAD_ALL_ACCESS)
+                            .objectAttributesPointer(objectAttributes)
+                            .clientIdPointer(clientId)
+                            .build()
+            );
+            if (ntStatus != 0) {
+                System.out.printf("NtOpenProcess: NTSTATUS=0x%08X%n", ntStatus);
+            }
+            final MemorySegment parentHandle = parentHandlePointer.get(ValueLayout.ADDRESS, 0);
+
+            final int attributeCount = 3;
             final long totalLength = SIZE_T.byteSize() + (attributeCount * ProcessAttribute.PS_ATTRIBUTE.byteSize());
             final MemorySegment heapHandle = (MemorySegment) nativeContext.getCaller().call(GetProcessHeap.getInstance());
             final MemorySegment attributeListPointer = (MemorySegment) nativeContext.getCaller().call(
@@ -95,6 +129,12 @@ public final class Demo {
             final MemorySegment attributeList = attributeListPointer.reinterpret(totalLength);
 
             final UnicodeString imagePath = new UnicodeString(arena, ntImagePath);
+            final MemorySegment policy = arena.allocateFrom(ValueLayout.JAVA_LONG,
+                    Flag.combine(
+                            ProcessCreationMitigationPolicy.PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_ON,
+                            ProcessCreationMitigationPolicy.PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_ALWAYS_ON
+                    )
+            );
             final ProcessAttributeList processAttributeList = ProcessAttributeList.builder()
                     .totalLength(totalLength)
                     .attribute(
@@ -102,6 +142,22 @@ public final class Demo {
                                     .attribute(ProcessAttributeValue.PS_ATTRIBUTE_IMAGE_NAME)
                                     .size(imagePath.getLength())
                                     .value(imagePath.getBuffer())
+                                    .build()
+                                    .createMemorySegment(arena)
+                    )
+                    .attribute(
+                            ProcessAttribute.builder()
+                                    .attribute(ProcessAttributeValue.PS_ATTRIBUTE_PARENT_PROCESS)
+                                    .size(HANDLE.byteSize())
+                                    .value(parentHandle)
+                                    .build()
+                                    .createMemorySegment(arena)
+                    )
+                    .attribute(
+                            ProcessAttribute.builder()
+                                    .attribute(ProcessAttributeValue.PS_ATTRIBUTE_MITIGATION_OPTIONS)
+                                    .size(DWORD64.byteSize())
+                                    .value(policy)
                                     .build()
                                     .createMemorySegment(arena)
                     )
@@ -125,25 +181,12 @@ public final class Demo {
                 System.out.printf("NtCreateUserProcess: NTSTATUS=0x%08X%n", ntStatus);
             }
 
-            final MemorySegment objectAttributes = arena.allocate(ObjectAttributes.OBJECT_ATTRIBUTES.byteSize());
-            final MemorySegment parentHandle = arena.allocate(HANDLE.byteSize());
-            final MemorySegment clientId = ClientId.builder()
-                    .uniqueProcess(27676)
-                    .build()
-                    .createMemorySegment(arena);
-            ntStatus = (int) nativeContext.getCaller().call(
-                    NtOpenProcess.builder()
-                            .processHandleOutputPointer(parentHandle)
-                            .desiredAccess(ThreadAccessRight.THREAD_ALL_ACCESS)
-                            .objectAttributesPointer(objectAttributes)
-                            .clientIdPointer(clientId)
-                            .build()
-            );
-            if (ntStatus != 0) {
-                System.out.printf("NtOpenProcess: NTSTATUS=0x%08X%n", ntStatus);
+            boolean success = (int) nativeContext.getCaller().call(CloseHandle.ofHandle(parentHandle)) > 0;
+            if (!success) {
+                System.out.println("CloseHandle Error: " + nativeContext.getCaller().call(GetLastError.getInstance()));
             }
 
-            final boolean success = (int) nativeContext.getCaller().call(
+            success = (int) nativeContext.getCaller().call(
                     RtlFreeHeap.builder()
                             .heapHandle(heapHandle)
                             .baseAddress(attributeList)
