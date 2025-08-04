@@ -18,7 +18,7 @@ developers to harness the full power of Windows effortlessly.
   as logically tied components.
 - Lightweight with zero third-party runtime dependencies (less than 1 MB in compiled size).
 
-# Warnings
+## Warnings
 
 - The bindings are far from complete, you can however define new bindings in your own project without modifying the library directly.
 - No production promises: Names and locations might change, things might get refactored changing the fundamental structure. Published
