@@ -9,6 +9,7 @@ import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.constant.*;
 import com.etdon.winj.facade.Window;
 import com.etdon.winj.facade.WindowsAPI;
+import com.etdon.winj.facade.hack.execute.ShellcodeRunner;
 import com.etdon.winj.function.gdi32.GetStockObject;
 import com.etdon.winj.function.gdi32.SetBkMode;
 import com.etdon.winj.function.gdi32.SetTextColor;
@@ -32,9 +33,7 @@ import com.etdon.winj.type.WindowClass;
 import com.etdon.winj.util.Flag;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.foreign.Arena;
-import java.lang.foreign.Linker;
-import java.lang.foreign.MemorySegment;
+import java.lang.foreign.*;
 import java.nio.charset.StandardCharsets;
 
 import static com.etdon.winj.type.NativeDataType.*;
@@ -77,6 +76,7 @@ public final class Demo {
     private void initialize() {
 
         try (final Arena arena = Arena.ofConfined()) {
+            this.demoShellcodeRunner();
             final MemorySegment windowProcedureStub = new WindowProcedure().upcallStub(this.linker, arena, this, "handleWindowProc");
             final MemorySegment moduleHandle = (MemorySegment) this.nativeCaller.call(GetModuleHandleW.builder().build());
             System.out.println("moduleHandle Address: " + moduleHandle.address());
@@ -330,6 +330,23 @@ public final class Demo {
             } else {
                 return 1;
             }
+        } catch (final Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+
+    }
+
+    private void demoShellcodeRunner() {
+
+        final byte[] shellcode = new byte[]{
+                (byte) 0xC3
+        };
+
+        try (final Arena arena = Arena.ofConfined()) {
+            final NativeContext nativeContext = NativeContext.of(arena, this.nativeCaller);
+            final ShellcodeRunner shellcodeRunner = new ShellcodeRunner(nativeContext);
+            final MemorySegment runner = shellcodeRunner.allocateRunner();
+            shellcodeRunner.execute(runner, shellcode);
         } catch (final Throwable ex) {
             throw new RuntimeException(ex);
         }

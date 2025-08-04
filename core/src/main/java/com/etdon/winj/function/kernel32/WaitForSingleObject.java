@@ -6,6 +6,7 @@ import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
+import com.etdon.winj.constant.WaitTime;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.FunctionDescriptor;
@@ -53,6 +54,15 @@ public final class WaitForSingleObject extends NativeFunction {
      */
     private int timeoutMillis = -1;
 
+    private WaitForSingleObject(@NotNull final MemorySegment handle) {
+
+        super(LIBRARY, NATIVE_NAME, WAIT_FOR_SINGLE_OBJECT_SIGNATURE);
+
+        this.handle = handle;
+        this.timeoutMillis = WaitTime.INFINITE;
+
+    }
+
     private WaitForSingleObject(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, WAIT_FOR_SINGLE_OBJECT_SIGNATURE);
@@ -71,6 +81,12 @@ public final class WaitForSingleObject extends NativeFunction {
     public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
         return super.obtainHandle(linker, symbolLookup).invoke(this.handle, this.timeoutMillis);
+
+    }
+
+    public static WaitForSingleObject infinite(@NotNull final MemorySegment handle) {
+
+        return new WaitForSingleObject(handle);
 
     }
 
