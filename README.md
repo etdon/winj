@@ -16,6 +16,56 @@ developers to harness the full power of Windows effortlessly.
 - Function calls and types are constructed cleanly with fluent builders.
 - Facades (`facade` module) are built around more complex and constant flows like hook management as well
   as logically tied components.
+  
+## Comparisons
+
+JNA
+```java
+final HWND hwnd = User32.INSTANCE.GetForegroundWindow();
+final char[] buffer = new char[512];
+User32.INSTANCE.GetWindowText(hwnd, buffer, 512);
+final String windowText = Native.toString(buffer);
+```
+```java
+WNDCLASSEX wClass = new WNDCLASSEX();
+wClass.hInstance = hInst;
+wClass.lpfnWndProc = Win32WindowDemo.this;
+wClass.lpszClassName = windowClass;
+```
+
+winj
+```java
+// Re-usable
+final WinJ winj = new WinJ(arena);
+final WindowsAPI windowsAPI = WindowsAPI.of(winj);
+final NativeContext nativeContext = NativeContext.of(arena, winj.getNativeCaller());
+
+final Window window = windowsAPI.getForegroundWindow();
+final String windowText = window.getText(nativeContext);
+```
+```java
+final MemorySegment windowHandle = (MemorySegment) this.nativeCaller.call(
+    CreateWindowExW.builder()
+        .className(className)
+        .windowName(windowName)
+        .moduleHandle(moduleHandle)
+        .style(
+            Flag.combine(
+                WindowStyle.WS_SYSMENU,
+                WindowStyle.WS_CAPTION,
+                WindowStyle.WS_BORDER
+            )
+        )
+        .build()
+);
+
+this.nativeCaller.call(
+    ShowWindow.builder()
+        .handle(windowHandle)
+        .presentation(WindowPresentation.SW_SHOW)
+        .build()
+);
+```
 
 ## Getting Started
 
@@ -25,7 +75,7 @@ developers to harness the full power of Windows effortlessly.
 > [!IMPORTANT]
 > Requirements:
 > - Java 22<p>
-    > ℹ️ *Java 22 (non-LTS) has been prioritized over Java 21 (LTS) because of the finalization of the FFM API.*
+> ℹ️ *Java 22 (non-LTS) has been prioritized over Java 21 (LTS) because of the finalization of the FFM API.*
 
 🪶 Maven:
 
