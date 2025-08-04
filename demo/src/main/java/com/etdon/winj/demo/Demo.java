@@ -1,6 +1,5 @@
 package com.etdon.winj.demo;
 
-import com.etdon.jbinder.util.MemoryUtils;
 import com.etdon.winj.WinJ;
 import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.constant.ProcessAttributeValue;
@@ -16,10 +15,7 @@ import com.etdon.winj.constant.thread.ThreadAccessRight;
 import com.etdon.winj.facade.Window;
 import com.etdon.winj.facade.WindowsAPI;
 import com.etdon.winj.function.kernel32.*;
-import com.etdon.winj.function.ntdll.NtCreateUserProcess;
-import com.etdon.winj.function.ntdll.RtlAllocateHeap;
-import com.etdon.winj.function.ntdll.RtlCreateProcessParametersEx;
-import com.etdon.winj.function.ntdll.RtlInitUnicodeString;
+import com.etdon.winj.function.ntdll.*;
 import com.etdon.winj.render.debug.queue.StringDebugRenderQueueItem;
 import com.etdon.winj.type.*;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +25,6 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 import static com.etdon.winj.type.NativeDataType.HANDLE;
 import static com.etdon.winj.type.NativeDataType.SIZE_T;
@@ -78,34 +73,40 @@ public final class Demo {
             if (ntStatus != 0) {
                 System.out.printf("RtlCreateProcessParametersEx: NTSTATUS=0x%08X%n", ntStatus);
             }
+            final MemorySegment processParameters = processParametersPointer.get(ValueLayout.ADDRESS, 0);
 
             final ProcessCreateInfo processCreateInfo = ProcessCreateInfo.builder()
                     .size(ProcessCreateInfo.PS_CREATE_INFO.byteSize())
                     .state(ProcessCreateState.PS_CREATE_INITIAL_STATE)
                     .info(ProcessCreateInitialState.empty())
                     .build();
-
             final MemorySegment processCreateInfoPointer = processCreateInfo.createMemorySegment(arena);
+
+            final int attributeCount = 1;
+            final long totalLength = SIZE_T.byteSize() + (attributeCount * ProcessAttribute.PS_ATTRIBUTE.byteSize());
             final MemorySegment heapHandle = (MemorySegment) nativeContext.getCaller().call(GetProcessHeap.getInstance());
             final MemorySegment attributeListPointer = (MemorySegment) nativeContext.getCaller().call(
                     RtlAllocateHeap.builder()
                             .heapHandle(heapHandle)
                             .flags(HeapAllocationFlag.HEAP_ZERO_MEMORY)
-                            .size(ProcessAttributeList.PS_ATTRIBUTE_LIST.byteSize())
+                            .size(totalLength)
                             .build()
             );
-            final ProcessAttributeList processAttributeList = new ProcessAttributeList(arena, attributeListPointer);
+            final MemorySegment attributeList = attributeListPointer.reinterpret(totalLength);
+
             final UnicodeString imagePath = new UnicodeString(arena, ntImagePath);
-            final ProcessAttribute processAttribute = ProcessAttribute.builder()
-                    .attribute(ProcessAttributeValue.PS_ATTRIBUTE_IMAGE_NAME)
-                    .size(imagePath.getLength())
-                    .value(imagePath.getBuffer())
+            final ProcessAttributeList processAttributeList = ProcessAttributeList.builder()
+                    .totalLength(totalLength)
+                    .attribute(
+                            ProcessAttribute.builder()
+                                    .attribute(ProcessAttributeValue.PS_ATTRIBUTE_IMAGE_NAME)
+                                    .size(imagePath.getLength())
+                                    .value(imagePath.getBuffer())
+                                    .build()
+                                    .createMemorySegment(arena)
+                    )
                     .build();
-            processAttributeList.setTotalLength(ProcessAttributeList.PS_ATTRIBUTE_LIST.byteSize());
-            final MemorySegment[] attributes = new MemorySegment[1];
-            attributes[0] = processAttribute.createMemorySegment(arena);
-            processAttributeList.setAttributes(attributes);
-            final MemorySegment processAttributeListPointer = processAttributeList.createMemorySegment(arena);
+            MemorySegment.copy(processAttributeList.createMemorySegment(arena), 0, attributeList, 0, totalLength);
 
             final MemorySegment processHandle = arena.allocate(HANDLE.byteSize());
             final MemorySegment threadHandle = arena.allocate(HANDLE.byteSize());
@@ -115,13 +116,27 @@ public final class Demo {
                             .threadHandleOutputPointer(threadHandle)
                             .processDesiredAccess(ProcessAccessRight.PROCESS_ALL_ACCESS)
                             .threadDesiredAccess(ThreadAccessRight.THREAD_ALL_ACCESS)
-                            .processParameters(processParametersPointer.get(ValueLayout.ADDRESS, 0))
+                            .processParameters(processParameters)
                             .createInfo(processCreateInfoPointer)
-                            .attributeList(processAttributeListPointer)
+                            .attributeList(attributeList)
                             .build()
             );
             if (ntStatus != 0) {
                 System.out.printf("NtCreateUserProcess: NTSTATUS=0x%08X%n", ntStatus);
+            }
+
+            final boolean success = (int) nativeContext.getCaller().call(
+                    RtlFreeHeap.builder()
+                            .heapHandle(heapHandle)
+                            .baseAddress(attributeList)
+                            .build()
+            ) > 0;
+            if (!success) {
+                System.out.println("RtlFreeHeap Error: " + nativeContext.getCaller().call(GetLastError.getInstance()));
+            }
+            ntStatus = (int) nativeContext.getCaller().call(RtlDestroyProcessParameters.ofProcessParameters(processParameters));
+            if (ntStatus != 0) {
+                System.out.printf("RtlDestroyProcessParameters: NTSTATUS=0x%08X%n", ntStatus);
             }
 
             winJ.demo();
