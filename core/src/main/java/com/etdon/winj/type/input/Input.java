@@ -3,7 +3,6 @@ package com.etdon.winj.type.input;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.MemorySegmentable;
-import com.etdon.jbinder.foreign.Union;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
@@ -15,16 +14,14 @@ import static java.lang.foreign.ValueLayout.*;
 
 public final class Input implements MemorySegmentable {
 
-    public static final Union INPUT_UNION = Union.of(
-            HardwareInput.HARDWAREINPUT,
-            KeyboardInput.KEYBDINPUT,
-            MouseInput.MOUSEINPUT
-    );
-
     public static final MemoryLayout INPUT = MemoryLayout.structLayout(
             DWORD.withName("type"),
             MemoryLayout.paddingLayout(4),
-            INPUT_UNION.getLargestMember().withName("DUMMYUNIONNAME").withByteAlignment(8)
+            MemoryLayout.unionLayout(
+                    HardwareInput.HARDWAREINPUT,
+                    KeyboardInput.KEYBDINPUT,
+                    MouseInput.MOUSEINPUT
+            )
     ).withByteAlignment(8);
 
     /**
