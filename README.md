@@ -74,7 +74,7 @@ this.nativeCaller.call(
 ```xml
 <repository>
     <id>etdon-repo</id>
-    <url>https://repo.etdon.com/repository/maven-releases/</url>
+    <url>https://repo.etdon.com/repository/maven-snapshots/</url>
 </repository>
 ```
 
@@ -83,12 +83,12 @@ this.nativeCaller.call(
     <dependency>
         <groupId>com.etdon.winj</groupId>
         <artifactId>core</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>com.etdon.winj</groupId>
         <artifactId>facade</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
@@ -97,14 +97,14 @@ this.nativeCaller.call(
 
 ```groovy
 maven {
-    url = uri("https://repo.etdon.com/repository/maven-releases/")
+    url = uri("https://repo.etdon.com/repository/maven-snapshots/")
 }
 ```
 
 ```groovy
 dependencies {
-    implementation 'com.etdon.winj:core:1.0.0'
-    implementation 'com.etdon.winj:facade:1.0.0'
+    implementation 'com.etdon.winj:core:1.0.1-SNAPSHOT'
+    implementation 'com.etdon.winj:facade:1.0.1-SNAPSHOT'
 }
 ```
 
