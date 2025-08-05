@@ -4,11 +4,15 @@ import com.etdon.commons.conditional.Preconditions;
 import com.etdon.commons.di.ServiceProvider;
 import com.etdon.commons.util.ColorUtils;
 import com.etdon.commons.util.Exceptional;
+import com.etdon.jbinder.SymbolLookupCache;
 import com.etdon.jbinder.function.NativeCaller;
 import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.constant.*;
 import com.etdon.winj.facade.Window;
 import com.etdon.winj.facade.WindowsAPI;
+import com.etdon.winj.facade.hack.execute.Opcode;
+import com.etdon.winj.facade.hack.execute.Shellcode;
+import com.etdon.winj.facade.hack.execute.ShellcodeHelper;
 import com.etdon.winj.facade.hack.execute.ShellcodeRunner;
 import com.etdon.winj.function.gdi32.GetStockObject;
 import com.etdon.winj.function.gdi32.SetBkMode;
@@ -76,7 +80,6 @@ public final class Demo {
     private void initialize() {
 
         try (final Arena arena = Arena.ofConfined()) {
-            this.demoShellcodeRunner();
             final MemorySegment windowProcedureStub = new WindowProcedure().upcallStub(this.linker, arena, this, "handleWindowProc");
             final MemorySegment moduleHandle = (MemorySegment) this.nativeCaller.call(GetModuleHandleW.builder().build());
             System.out.println("moduleHandle Address: " + moduleHandle.address());
@@ -338,11 +341,28 @@ public final class Demo {
 
     private void demoShellcodeRunner() {
 
-        final byte[] shellcode = new byte[]{
-                (byte) 0xC3
-        };
-
         try (final Arena arena = Arena.ofConfined()) {
+            final ShellcodeHelper shellcodeHelper = new ShellcodeHelper(this.serviceProvider.getOrThrow(SymbolLookupCache.class));
+            final byte[] shellcode = Shellcode.builder()
+                    .instructions(
+                            Opcode.Prefix.REX_W,
+                            Opcode.Group.G_83,
+                            Opcode.Mode.builder()
+                                    .mod(11)
+                                    .reg(101)
+                                    .rm(100)
+                                    .build()
+                    )
+                    .value((byte) 0x20) // RSP subtract
+                    .instructions(0x48, 0xC7, 0xC1)
+                    .value((byte) 0x5) // Exit code
+                    .padding(3)
+                    .instructions(0x48, 0xB8)
+                    .address(shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "ExitProcess"))
+                    .instructions(0xFF, 0xD0)
+                    .build()
+                    .export();
+
             final NativeContext nativeContext = NativeContext.of(arena, this.nativeCaller);
             final ShellcodeRunner shellcodeRunner = new ShellcodeRunner(nativeContext);
             final MemorySegment runner = shellcodeRunner.allocateRunner();
