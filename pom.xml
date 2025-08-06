@@ -64,6 +64,17 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>etdon-repo</id>
+            <url>https://repo.etdon.com/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>etdon-repo-snapshots</id>
+            <url>https://repo.etdon.com/repository/maven-snapshots/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.etdon</groupId>
@@ -73,7 +84,7 @@
         <dependency>
             <groupId>com.etdon</groupId>
             <artifactId>commons</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

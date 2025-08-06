@@ -343,7 +343,7 @@ public final class Demo {
 
         try (final Arena arena = Arena.ofConfined()) {
             final ShellcodeHelper shellcodeHelper = new ShellcodeHelper(this.serviceProvider.getOrThrow(SymbolLookupCache.class));
-            final byte[] shellcode = Shellcode.builder()
+            final byte[] exitProcess = Shellcode.builder()
                     .instructions(
                             Opcode.Prefix.REX_W,
                             Opcode.Group.G_83,
@@ -363,10 +363,28 @@ public final class Demo {
                     .build()
                     .export();
 
+            final byte[] runCalc = Shellcode.builder()
+                    .instructions(0x48, 0x31, 0xC9)
+                    .instructions(0x48, 0xF7, 0xE1)
+                    .instruction(0x50)
+                    .instructions(0x48, 0xB8)
+                    .stringXOR("calc.exe", 0xFF)
+                    .instructions(0x48, 0xF7, 0xD0)
+                    .instructions(0x50)
+                    .instructions(0x48, 0x89, 0xE1)
+                    .instructions(0x48, 0xFF, 0xC2)
+                    .instructions(0x48, 0x83, 0xEC)
+                    .value(32)
+                    .instructions(0x48, 0xB8)
+                    .address(shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "WinExec"))
+                    .instructions(0xFF, 0xD0)
+                    .build()
+                    .export();
+
             final NativeContext nativeContext = NativeContext.of(arena, this.nativeCaller);
             final ShellcodeRunner shellcodeRunner = new ShellcodeRunner(nativeContext);
             final MemorySegment runner = shellcodeRunner.allocateRunner();
-            shellcodeRunner.execute(runner, shellcode);
+            shellcodeRunner.execute(runner, runCalc);
         } catch (final Throwable ex) {
             throw new RuntimeException(ex);
         }

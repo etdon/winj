@@ -34,6 +34,19 @@ public final class Opcode {
         public static final byte MOV_RM_8 = (byte) 0x88;
         public static final byte MOV_RM_16_32_64 = (byte) 0x89;
         public static final byte MOV_R_8 = (byte) 0x8A;
+        public static final byte XOR_RM_16_32_64 = 0x31;
+        public static final byte XOR_R_8 = (byte) 0x32;
+        public static final byte XOR_R_16_32_64 = (byte) 0x33;
+        public static final byte XOR_AL = (byte) 0x34;
+        public static final byte XOR_AX = (byte) 0x35;
+        public static final byte PUSH_R_64_16 = (byte) 0x50;
+        public static final byte POP_R_64_16 = (byte) 0x58;
+
+    }
+
+    public static final class TwoByte {
+
+        public static final byte[] SYSCALL = {0x0F, 0x05};
 
     }
 

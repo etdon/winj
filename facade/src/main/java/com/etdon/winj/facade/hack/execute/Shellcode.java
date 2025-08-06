@@ -1,8 +1,10 @@
 package com.etdon.winj.facade.hack.execute;
 
 import com.etdon.commons.builder.FluentBuilder;
+import com.etdon.commons.conditional.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,69 +42,40 @@ public class Shellcode {
 
         }
 
-        public Builder instruction(final byte instruction) {
+        public Builder instruction(@NotNull final Number instruction) {
 
-            this.buffer.add(instruction);
+            Preconditions.checkNotNull(instruction);
+            this.buffer.add((byte) instruction.intValue());
             return this;
 
         }
 
-        public Builder instructions(final byte... instructions) {
+        public Builder instructions(@NotNull final Number... instructions) {
 
-            for (final byte instruction : instructions)
-                this.buffer.add(instruction);
+            Preconditions.checkNotNull(instructions);
+            for (final Number instruction : instructions)
+                this.buffer.add((byte) instruction.intValue());
             return this;
 
         }
 
-        public Builder instruction(final int instruction) {
+        public Builder value(@NotNull final Number value) {
 
-            this.buffer.add((byte) instruction);
+            Preconditions.checkNotNull(value);
+            this.buffer.add((byte) value.intValue());
             return this;
 
         }
 
-        public Builder instructions(final int... instructions) {
+        public Builder value(@NotNull final Number... values) {
 
-            for (final int instruction : instructions)
-                this.buffer.add((byte) instruction);
+            Preconditions.checkNotNull(values);
+            for (final Number value : values)
+                this.buffer.add((byte) value.intValue());
             return this;
 
         }
-
-        public Builder value(final byte value) {
-
-            this.buffer.add(value);
-            return this;
-
-        }
-
-        public Builder value(final short value) {
-
-            if (value > Byte.MAX_VALUE) {
-                for (int i = 0; i < Short.BYTES; i++)
-                    this.buffer.add((byte) ((value >> (i * 8)) & 0xFF));
-            }
-            return this;
-
-        }
-
-        public Builder value(final int value) {
-
-            for (int i = 0; i < Integer.BYTES; i++)
-                this.buffer.add((byte) ((value >> (i * 8)) & 0xFF));
-            return this;
-
-        }
-
-        public Builder value(final long value) {
-
-            for (int i = 0; i < Long.BYTES; i++)
-                this.buffer.add((byte) ((value >> (i * 8)) & 0xFF));
-            return this;
-
-        }
-
+        
         public Builder address(final long address) {
 
             for (int i = 0; i < Long.BYTES; i++)
@@ -115,6 +88,42 @@ public class Shellcode {
 
             for (int i = 0; i < count; i++)
                 this.buffer.add((byte) 0x00);
+            return this;
+
+        }
+
+        public Builder string(@NotNull final String input) {
+
+            final byte[] bytes = input.getBytes();
+            for (final byte b : bytes)
+                this.buffer.add(b);
+            return this;
+
+        }
+
+        public Builder string(@NotNull final String input, @NotNull final Charset charset) {
+
+            final byte[] bytes = input.getBytes(charset);
+            for (final byte b : bytes)
+                this.buffer.add(b);
+            return this;
+
+        }
+
+        public Builder stringXOR(@NotNull final String input, final Number key) {
+
+            final byte[] bytes = input.getBytes();
+            for (final byte b : bytes)
+                this.buffer.add((byte) (b ^ key.byteValue()));
+            return this;
+
+        }
+
+        public Builder stringXOR(@NotNull final String input, @NotNull final Charset charset, final Number key) {
+
+            final byte[] bytes = input.getBytes(charset);
+            for (final byte b : bytes)
+                this.buffer.add((byte) (b ^ key.byteValue()));
             return this;
 
         }
