@@ -353,9 +353,9 @@ public final class Demo {
                                     .rm(100)
                                     .build()
                     )
-                    .value((byte) 0x20) // RSP subtract
+                    .value((byte) 0x20)
                     .instructions(0x48, 0xC7, 0xC1)
-                    .value((byte) 0x5) // Exit code
+                    .value((byte) 0x5)
                     .padding(3)
                     .instructions(0x48, 0xB8)
                     .address(shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "ExitProcess"))
@@ -364,20 +364,23 @@ public final class Demo {
                     .export();
 
             final byte[] runCalc = Shellcode.builder()
-                    .instructions(0x48, 0x31, 0xC9)
-                    .instructions(0x48, 0xF7, 0xE1)
-                    .instruction(0x50)
-                    .instructions(0x48, 0xB8)
-                    .stringXOR("calc.exe", 0xFF)
-                    .instructions(0x48, 0xF7, 0xD0)
-                    .instructions(0x50)
-                    .instructions(0x48, 0x89, 0xE1)
-                    .instructions(0x48, 0xFF, 0xC2)
-                    .instructions(0x48, 0x83, 0xEC)
-                    .value(32)
-                    .instructions(0x48, 0xB8)
-                    .address(shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "WinExec"))
-                    .instructions(0xFF, 0xD0)
+                    .instructions(0x48, 0x31, 0xC9) // xor rcx,rcx
+                    .instructions(0x48, 0xF7, 0xE1) // mul rcx
+                    .instruction(0x50) // push rax
+                    .instructions(0x48, 0xB8) // movabs rax,
+                    .stringXOR("calc.exe", 0xFF) // val
+                    .instructions(0x48, 0xF7, 0xD0) // not rax
+                    .instruction(0x50) // push rax
+                    .instructions(0x48, 0x89, 0xE1) // mov rcx,rsp
+                    .instructions(0x48, 0xFF, 0xC2) // inc rdx
+                    .instructions(0x49, 0xBC) // movabs r12,
+                    .address(shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "WinExec")) // val
+                    .instructions(0x48, 0x83, 0xEC, 0x20) // sub rsp,0x20
+                    .instructions(0x41, 0xFF, 0xD4) // call r12
+                    .instructions(0x48, 0x31, 0xC9) // xor rcx,rcx
+                    .instructions(0x49, 0xBD) // movabs r13,
+                    .address(shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "ExitProcess")) // val
+                    .instructions(0x41, 0xFF, 0xD5) // cal r13
                     .build()
                     .export();
 
