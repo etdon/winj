@@ -6,10 +6,10 @@ import com.etdon.jbinder.function.NativeCaller;
 import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.constant.memory.AllocationType;
 import com.etdon.winj.constant.memory.MemoryProtection;
-import com.etdon.winj.function.kernel32.CloseHandle;
-import com.etdon.winj.function.kernel32.CreateThread;
-import com.etdon.winj.function.kernel32.VirtualAlloc;
-import com.etdon.winj.function.kernel32.WaitForSingleObject;
+import com.etdon.winj.function.kernel32.handle.CloseHandle;
+import com.etdon.winj.function.kernel32.process.CreateThread;
+import com.etdon.winj.function.kernel32.memory.VirtualAlloc;
+import com.etdon.winj.function.kernel32.sync.WaitForSingleObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.MemorySegment;

@@ -1,4 +1,4 @@
-package com.etdon.winj.function.kernel32;
+package com.etdon.winj.function.kernel32.process;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
@@ -15,14 +15,13 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
-@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createremotethread")
-public final class CreateRemoteThread extends NativeFunction {
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread")
+public final class CreateThread extends NativeFunction {
 
     public static final String LIBRARY = Library.KERNEL_32;
-    public static final String NATIVE_NAME = "CreateRemoteThread";
-    public static final FunctionDescriptor CREATE_REMOTE_THREAD_SIGNATURE = FunctionDescriptor.of(
+    public static final String NATIVE_NAME = "CreateThread";
+    public static final FunctionDescriptor CREATE_THREAD_SIGNATURE = FunctionDescriptor.of(
             HANDLE,
-            HANDLE.withName("hProcess"),
             LPSECURITY_ATTRIBUTES.withName("lpThreadAttributes"),
             SIZE_T.withName("dwStackSize"),
             LPTHREAD_START_ROUTINE.withName("lpStartAddress"),
@@ -30,13 +29,6 @@ public final class CreateRemoteThread extends NativeFunction {
             DWORD.withName("dwCreationFlags"),
             LPDWORD.withName("lpThreadId")
     );
-
-    /**
-     * A handle to the process in which the thread is to be created. The handle must have the PROCESS_CREATE_THREAD,
-     * PROCESS_QUERY_INFORMATION, PROCESS_VM_OPERATION, PROCESS_VM_WRITE, and PROCESS_VM_READ access rights, and may
-     * fail without these rights on certain platforms. For more information, see Process Security and Access Rights.
-     */
-    private final MemorySegment processHandle;
 
     /**
      * A pointer to a SECURITY_ATTRIBUTES structure that specifies a security descriptor for the new thread and
@@ -64,7 +56,7 @@ public final class CreateRemoteThread extends NativeFunction {
     /**
      * A pointer to a variable to be passed to the thread function.
      */
-    private final MemorySegment parameterPointer;
+    private MemorySegment parameterPointer = MemorySegment.NULL;
 
     /**
      * The flags that control the creation of the thread.
@@ -78,15 +70,14 @@ public final class CreateRemoteThread extends NativeFunction {
      */
     private MemorySegment threadIdentifierOutputPointer = MemorySegment.NULL;
 
-    private CreateRemoteThread(final Builder builder) {
+    private CreateThread(final CreateThread.Builder builder) {
 
-        super(LIBRARY, NATIVE_NAME, CREATE_REMOTE_THREAD_SIGNATURE);
+        super(LIBRARY, NATIVE_NAME, CREATE_THREAD_SIGNATURE);
 
-        this.processHandle = builder.processHandle;
         Conditional.executeIfNotNull(builder.securityAttributesPointer, () -> this.securityAttributesPointer = builder.securityAttributesPointer);
         Conditional.executeIfNotNull(builder.stackSize, () -> this.stackSize = builder.stackSize);
         this.threadStartRoutinePointer = builder.threadStartRoutinePointer;
-        this.parameterPointer = builder.parameterPointer;
+        Conditional.executeIfNotNull(builder.parameterPointer, () -> this.parameterPointer = builder.parameterPointer);
         Conditional.executeIfNotNull(builder.creationFlags, () -> this.creationFlags = builder.creationFlags);
         Conditional.executeIfNotNull(builder.threadIdentifierOutputPointer, () -> this.threadIdentifierOutputPointer = builder.threadIdentifierOutputPointer);
 
@@ -96,7 +87,6 @@ public final class CreateRemoteThread extends NativeFunction {
     public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
         return super.obtainHandle(linker, symbolLookup).invoke(
-                this.processHandle,
                 this.securityAttributesPointer,
                 this.stackSize,
                 this.threadStartRoutinePointer,
@@ -113,9 +103,8 @@ public final class CreateRemoteThread extends NativeFunction {
 
     }
 
-    public static final class Builder implements FluentBuilder<CreateRemoteThread> {
+    public static final class Builder implements FluentBuilder<CreateThread> {
 
-        private MemorySegment processHandle;
         private MemorySegment securityAttributesPointer;
         private Long stackSize;
         private MemorySegment threadStartRoutinePointer;
@@ -124,13 +113,6 @@ public final class CreateRemoteThread extends NativeFunction {
         private MemorySegment threadIdentifierOutputPointer;
 
         private Builder() {
-
-        }
-
-        public Builder processHandle(@NotNull final MemorySegment processHandle) {
-
-            this.processHandle = processHandle;
-            return this;
 
         }
 
@@ -178,12 +160,10 @@ public final class CreateRemoteThread extends NativeFunction {
 
         @NotNull
         @Override
-        public CreateRemoteThread build() {
+        public CreateThread build() {
 
-            Preconditions.checkNotNull(this.processHandle);
             Preconditions.checkNotNull(this.threadStartRoutinePointer);
-            Preconditions.checkNotNull(this.parameterPointer);
-            return new CreateRemoteThread(this);
+            return new CreateThread(this);
 
         }
 

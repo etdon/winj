@@ -3,7 +3,7 @@ package com.etdon.winj.hook;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.commons.di.ServiceProvider;
 import com.etdon.jbinder.function.NativeCaller;
-import com.etdon.winj.function.kernel32.GetLastError;
+import com.etdon.winj.function.kernel32.error.GetLastError;
 import com.etdon.winj.function.user32.SetWindowsHookExW;
 import com.etdon.winj.function.user32.UnhookWindowsHookEx;
 import org.jetbrains.annotations.NotNull;

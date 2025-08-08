@@ -1,4 +1,4 @@
-package com.etdon.winj.function.kernel32;
+package com.etdon.winj.function.kernel32.libloader;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;

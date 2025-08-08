@@ -1,8 +1,9 @@
-package com.etdon.winj.function.kernel32;
+package com.etdon.winj.function.kernel32.locale;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,10 @@ import java.lang.foreign.SymbolLookup;
 import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.*;
 
+/**
+ * Converts a locale identifier to a locale name.
+ */
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winnls/nf-winnls-lcidtolocalename")
 public final class LCIDToLocaleName extends NativeFunction {
 
     public static final String LIBRARY = Library.KERNEL_32;

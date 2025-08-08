@@ -1,4 +1,4 @@
-package com.etdon.winj.function.kernel32;
+package com.etdon.winj.function.kernel32.libloader;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
@@ -14,6 +14,10 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Retrieves the address of an exported function (also known as a procedure) or variable from the specified
+ * dynamic-link library (DLL).
+ */
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getprocaddress")
 public final class GetProcAddress extends NativeFunction {
 

@@ -1,8 +1,9 @@
-package com.etdon.winj.function.kernel32;
+package com.etdon.winj.function.kernel32.memory;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,11 @@ import java.lang.foreign.SymbolLookup;
 import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 
+/**
+ * Writes data to an area of memory in a specified process. The entire area to be written to must be accessible or the
+ * operation fails.
+ */
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-writeprocessmemory")
 public final class WriteProcessMemory extends NativeFunction {
 
     public static final String LIBRARY = Library.KERNEL_32;

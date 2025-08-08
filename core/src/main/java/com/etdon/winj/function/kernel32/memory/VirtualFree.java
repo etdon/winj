@@ -1,4 +1,4 @@
-package com.etdon.winj.function.kernel32;
+package com.etdon.winj.function.kernel32.memory;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
@@ -15,6 +15,12 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Releases, decommits, or releases and decommits a region of pages within the virtual address space of the calling
+ * process.
+ * <p>
+ * To free memory allocated in another process by the VirtualAllocEx function, use the VirtualFreeEx function.
+ */
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualfree")
 public final class VirtualFree extends NativeFunction {
 

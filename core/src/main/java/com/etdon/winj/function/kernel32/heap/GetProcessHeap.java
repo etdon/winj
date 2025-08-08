@@ -1,5 +1,6 @@
-package com.etdon.winj.function.kernel32;
+package com.etdon.winj.function.kernel32.heap;
 
+import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,11 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.HANDLE;
 
+/**
+ * Retrieves a handle to the default heap of the calling process. This handle can then be used in subsequent calls to
+ * the heap functions.
+ */
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-getprocessheap")
 public final class GetProcessHeap extends NativeFunction {
 
     private static class GetProcessHeapSingleton {

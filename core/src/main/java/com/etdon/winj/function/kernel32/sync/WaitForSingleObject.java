@@ -1,4 +1,4 @@
-package com.etdon.winj.function.kernel32;
+package com.etdon.winj.function.kernel32.sync;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
@@ -16,6 +16,12 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Waits until the specified object is in the signaled state or the time-out interval elapses.
+ * <p>
+ * To enter an alertable wait state, use the WaitForSingleObjectEx function. To wait for multiple objects, use
+ * WaitForMultipleObjects.
+ */
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject")
 public final class WaitForSingleObject extends NativeFunction {
 

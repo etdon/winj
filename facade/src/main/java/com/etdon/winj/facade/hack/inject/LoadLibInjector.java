@@ -7,7 +7,15 @@ import com.etdon.winj.constant.memory.AllocationType;
 import com.etdon.winj.constant.memory.FreeType;
 import com.etdon.winj.constant.memory.MemoryProtection;
 import com.etdon.winj.constant.process.ProcessAccessRight;
-import com.etdon.winj.function.kernel32.*;
+import com.etdon.winj.function.kernel32.handle.CloseHandle;
+import com.etdon.winj.function.kernel32.libloader.GetModuleHandleW;
+import com.etdon.winj.function.kernel32.libloader.GetProcAddress;
+import com.etdon.winj.function.kernel32.memory.VirtualAllocEx;
+import com.etdon.winj.function.kernel32.memory.VirtualFreeEx;
+import com.etdon.winj.function.kernel32.memory.WriteProcessMemory;
+import com.etdon.winj.function.kernel32.process.CreateRemoteThread;
+import com.etdon.winj.function.kernel32.process.OpenProcess;
+import com.etdon.winj.function.kernel32.sync.WaitForSingleObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;

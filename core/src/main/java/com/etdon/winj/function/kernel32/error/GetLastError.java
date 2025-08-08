@@ -1,5 +1,6 @@
-package com.etdon.winj.function.kernel32;
+package com.etdon.winj.function.kernel32.error;
 
+import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.DWORD;
 
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror")
 public final class GetLastError extends NativeFunction {
 
     private static class GetLastErrorSingleton {
