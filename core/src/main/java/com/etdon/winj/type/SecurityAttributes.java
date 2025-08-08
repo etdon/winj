@@ -64,7 +64,7 @@ public final class SecurityAttributes extends NativeType {
 
     }
 
-    private SecurityAttributes(@NotNull final Builder builder) {
+    private SecurityAttributes(final Builder builder) {
 
         this.length = builder.length;
         this.securityDescriptorPointer = builder.securityDescriptorPointer;
