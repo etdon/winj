@@ -3,7 +3,7 @@ package com.etdon.winj.type;
 import com.etdon.commons.annotation.RequiresTesting;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.jbinder.common.NativeName;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static com.etdon.winj.type.Rectangle.RECT;
 import static java.lang.foreign.ValueLayout.*;
 
@@ -20,7 +20,7 @@ import static java.lang.foreign.ValueLayout.*;
 @RequiresTesting
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-paintstruct")
 @NativeName("tagPAINTSTRUCT")
-public final class PaintData implements MemorySegmentable {
+public final class PaintData extends NativeType {
 
     public static final MemoryLayout PAINTSTRUCT = MemoryLayout.structLayout(
             HDC.withName("hdc"),
@@ -115,6 +115,14 @@ public final class PaintData implements MemorySegmentable {
 
     @NotNull
     @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return PAINTSTRUCT;
+
+    }
+
+    @NotNull
+    @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         final MemorySegment memorySegment = arena.allocate(PAINTSTRUCT);
@@ -127,6 +135,42 @@ public final class PaintData implements MemorySegmentable {
             memorySegment.set(JAVA_BYTE, 12 + RECT.byteSize() + 8 + i, this.reservedRgb[i]);
 
         return memorySegment;
+
+    }
+
+    public MemorySegment getDeviceContextHandle() {
+
+        return this.deviceContextHandle;
+
+    }
+
+    public int getEraseBackground() {
+
+        return this.eraseBackground;
+
+    }
+
+    public MemorySegment getRectangle() {
+
+        return this.rectangle;
+
+    }
+
+    public int getRestore() {
+
+        return this.restore;
+
+    }
+
+    public int getUpdate() {
+
+        return this.update;
+
+    }
+
+    public byte[] getReservedRgb() {
+
+        return this.reservedRgb;
 
     }
 

@@ -1,4 +1,4 @@
-package com.etdon.winj.type;
+package com.etdon.winj.type.constant;
 
 import java.lang.foreign.ValueLayout;
 

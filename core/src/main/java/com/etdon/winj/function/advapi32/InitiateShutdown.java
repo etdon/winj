@@ -7,7 +7,7 @@ import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.ShutdownFlag;
 import com.etdon.winj.constant.ShutdownReason;
 import com.etdon.winj.constant.Library;
-import com.etdon.winj.type.NativeDataType;
+import com.etdon.winj.type.constant.NativeDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.FunctionDescriptor;

@@ -13,7 +13,7 @@ import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread")
 public final class CreateThread extends NativeFunction {

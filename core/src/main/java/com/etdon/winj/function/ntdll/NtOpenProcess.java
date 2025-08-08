@@ -15,7 +15,7 @@ import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/nf-ntddk-ntopenprocess")
 public final class NtOpenProcess extends NativeFunction {

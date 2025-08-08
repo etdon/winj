@@ -8,7 +8,7 @@ import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
 import java.lang.foreign.SymbolLookup;
 
-import static com.etdon.winj.type.NativeDataType.HANDLE;
+import static com.etdon.winj.type.constant.NativeDataType.HANDLE;
 
 public final class GetProcessHeap extends NativeFunction {
 

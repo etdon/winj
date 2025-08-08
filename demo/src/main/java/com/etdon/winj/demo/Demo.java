@@ -17,6 +17,7 @@ import com.etdon.winj.facade.hack.execute.ShellcodeRunner;
 import com.etdon.winj.function.gdi32.GetStockObject;
 import com.etdon.winj.function.gdi32.SetBkMode;
 import com.etdon.winj.function.gdi32.SetTextColor;
+import com.etdon.winj.function.generic.GenericFunction;
 import com.etdon.winj.function.kernel32.*;
 import com.etdon.winj.function.ntdll.NtGetTickCount;
 import com.etdon.winj.function.ntdll.NtQueryDefaultLocale;
@@ -40,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.foreign.*;
 import java.nio.charset.StandardCharsets;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.MemorySegment.NULL;
 import static java.lang.foreign.ValueLayout.*;
 

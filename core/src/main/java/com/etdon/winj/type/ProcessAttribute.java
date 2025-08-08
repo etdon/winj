@@ -3,7 +3,7 @@ package com.etdon.winj.type;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,10 +11,10 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.*;
 
-public final class ProcessAttribute implements MemorySegmentable {
+public final class ProcessAttribute extends NativeType {
 
     public static final MemoryLayout PS_ATTRIBUTE = MemoryLayout.structLayout(
             ULONG_PTR.withName("Attribute"),
@@ -68,6 +68,14 @@ public final class ProcessAttribute implements MemorySegmentable {
         this.size = builder.size;
         this.value = builder.value;
         Conditional.executeIfNotNull(builder.returnLengthOutputPointer, () -> this.returnLengthOutputPointer = builder.returnLengthOutputPointer);
+
+    }
+
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return PS_ATTRIBUTE;
 
     }
 

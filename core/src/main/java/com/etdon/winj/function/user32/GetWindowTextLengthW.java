@@ -12,8 +12,8 @@ import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
-import static com.etdon.winj.type.NativeDataType.*;
-import static com.etdon.winj.type.NativeDataType.INTEGER;
+import static com.etdon.winj.type.constant.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.INTEGER;
 
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getwindowtextlengthw")
 public final class GetWindowTextLengthW extends NativeFunction {

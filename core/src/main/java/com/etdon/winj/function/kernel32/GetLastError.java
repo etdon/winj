@@ -8,7 +8,7 @@ import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
 import java.lang.foreign.SymbolLookup;
 
-import static com.etdon.winj.type.NativeDataType.DWORD;
+import static com.etdon.winj.type.constant.NativeDataType.DWORD;
 
 public final class GetLastError extends NativeFunction {
 

@@ -2,20 +2,23 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
+import com.etdon.jbinder.common.NativeDocumentation;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
+import static com.etdon.winj.type.constant.NativeDataType.LONG;
 import static java.lang.foreign.ValueLayout.JAVA_LONG;
 
-public final class Point implements MemorySegmentable {
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/windef/ns-windef-point")
+public final class Point extends NativeType {
 
     public static final MemoryLayout POINT = MemoryLayout.structLayout(
-            JAVA_LONG.withName("x"),
-            JAVA_LONG.withName("y")
+            LONG.withName("x"),
+            LONG.withName("y")
     );
 
     /**
@@ -34,7 +37,7 @@ public final class Point implements MemorySegmentable {
             memorySegment = memorySegment.reinterpret(POINT.byteSize(), arena, null);
 
         this.x = memorySegment.get(JAVA_LONG, 0);
-        this.y = memorySegment.get(JAVA_LONG, 8);
+        this.y = memorySegment.get(JAVA_LONG, 4);
 
     }
 
@@ -53,12 +56,21 @@ public final class Point implements MemorySegmentable {
 
     }
 
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return POINT;
+
+    }
+
+    @NotNull
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         final MemorySegment memorySegment = arena.allocate(POINT);
         memorySegment.set(JAVA_LONG, 0, this.x);
-        memorySegment.set(JAVA_LONG, 8, this.y);
+        memorySegment.set(JAVA_LONG, 4, this.y);
 
         return memorySegment;
 

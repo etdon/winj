@@ -2,7 +2,7 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import com.etdon.winj.constant.LowLevelKeyboardHookFlag;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +12,7 @@ import java.lang.foreign.MemorySegment;
 
 import static java.lang.foreign.ValueLayout.*;
 
-public final class LowLevelKeyboardInput implements MemorySegmentable {
+public final class LowLevelKeyboardInput extends NativeType {
 
     public static final MemoryLayout KBDLLHOOKSTRUCT = MemoryLayout.structLayout(
             JAVA_INT.withName("vkCode"),
@@ -75,6 +75,15 @@ public final class LowLevelKeyboardInput implements MemorySegmentable {
 
     }
 
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return KBDLLHOOKSTRUCT;
+
+    }
+
+    @NotNull
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 

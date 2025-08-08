@@ -2,7 +2,7 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
@@ -10,10 +10,10 @@ import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-import static com.etdon.winj.type.NativeDataType.SIZE_T;
+import static com.etdon.winj.type.constant.NativeDataType.SIZE_T;
 import static java.lang.foreign.ValueLayout.*;
 
-public final class ProcessAttributeList implements MemorySegmentable {
+public final class ProcessAttributeList extends NativeType {
 
     public static final MemoryLayout PS_ATTRIBUTE_LIST = MemoryLayout.structLayout(
             SIZE_T.withName("TotalLength"),
@@ -63,6 +63,14 @@ public final class ProcessAttributeList implements MemorySegmentable {
 
         this.totalLength = builder.totalLength;
         this.attributes = builder.attributes;
+
+    }
+
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return PS_ATTRIBUTE_LIST;
 
     }
 

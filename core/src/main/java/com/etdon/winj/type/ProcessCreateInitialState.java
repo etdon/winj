@@ -2,7 +2,7 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import com.etdon.winj.constant.ProcessCreateInitFlag;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,10 +10,10 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
-public final class ProcessCreateInitialState implements MemorySegmentable {
+public final class ProcessCreateInitialState extends NativeType {
 
     public static final MemoryLayout PS_CREATE_INITIAL_STATE = MemoryLayout.structLayout(
             ULONG.withName("InitFlags"),
@@ -58,6 +58,14 @@ public final class ProcessCreateInitialState implements MemorySegmentable {
 
     @NotNull
     @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return PS_CREATE_INITIAL_STATE;
+
+    }
+
+    @NotNull
+    @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         final MemorySegment memorySegment = arena.allocate(PS_CREATE_INITIAL_STATE.byteSize());
@@ -65,6 +73,18 @@ public final class ProcessCreateInitialState implements MemorySegmentable {
         memorySegment.set(JAVA_INT, 4, this.additionalFileAccess);
 
         return memorySegment;
+
+    }
+
+    public int getInitFlags() {
+
+        return this.initFlags;
+
+    }
+
+    public int getAdditionalFileAccess() {
+
+        return this.additionalFileAccess;
 
     }
 

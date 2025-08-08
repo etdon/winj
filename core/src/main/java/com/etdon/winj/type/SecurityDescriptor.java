@@ -1,18 +1,18 @@
 package com.etdon.winj.type;
 
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 
 /**
  * TODO: Implement
  */
-public final class SecurityDescriptor implements MemorySegmentable {
+public final class SecurityDescriptor extends NativeType {
 
     public static final MemoryLayout SECURITY_DESCRIPTOR = MemoryLayout.structLayout(
             BYTE.withName("Revision"),
@@ -23,6 +23,14 @@ public final class SecurityDescriptor implements MemorySegmentable {
             PACL.withName("Sacl"),
             PACL.withName("Dacl")
     );
+
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return SECURITY_DESCRIPTOR;
+
+    }
 
     @NotNull
     @Override

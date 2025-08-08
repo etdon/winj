@@ -11,7 +11,6 @@ import com.etdon.winj.constant.UserProcessParametersFlag;
 import com.etdon.winj.constant.memory.HeapAllocationFlag;
 import com.etdon.winj.constant.process.ProcessAccessRight;
 import com.etdon.winj.constant.thread.ThreadAccessRight;
-import com.etdon.winj.facade.hack.inject.LoadLibInjector;
 import com.etdon.winj.function.kernel32.CloseHandle;
 import com.etdon.winj.function.kernel32.GetLastError;
 import com.etdon.winj.function.kernel32.GetProcessHeap;
@@ -29,8 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-import static com.etdon.winj.type.NativeDataType.*;
-import static com.etdon.winj.type.NativeDataType.HANDLE;
+import static com.etdon.winj.type.constant.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.HANDLE;
 
 /**
  * Used to spawn a child process with a spoofed parent, spoofed command line, spoofed current directory, blocked

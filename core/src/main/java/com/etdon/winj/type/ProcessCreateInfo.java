@@ -3,6 +3,7 @@ package com.etdon.winj.type;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.NativeType;
 import com.etdon.jbinder.common.MemorySegmentable;
 import com.etdon.winj.constant.ProcessCreateState;
 import org.jetbrains.annotations.NotNull;
@@ -12,10 +13,10 @@ import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.*;
 
-public final class ProcessCreateInfo implements MemorySegmentable {
+public final class ProcessCreateInfo extends NativeType {
 
     public static final MemoryLayout PS_CREATE_INFO = MemoryLayout.structLayout(
             SIZE_T.withName("Size"),
@@ -84,6 +85,14 @@ public final class ProcessCreateInfo implements MemorySegmentable {
         this.size = builder.size;
         this.state = builder.state;
         Conditional.executeIfNotNull(builder.info, () -> this.info = builder.info);
+
+    }
+
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return PS_CREATE_INFO;
 
     }
 

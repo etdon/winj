@@ -2,17 +2,19 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
+import com.etdon.jbinder.common.NativeDocumentation;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.*;
 
-public final class Message implements MemorySegmentable {
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-msg")
+public final class Message extends NativeType {
 
     public static final MemoryLayout MSG = MemoryLayout.structLayout(
             HWND.withName("hwnd"),
@@ -81,6 +83,15 @@ public final class Message implements MemorySegmentable {
 
     }
 
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return MSG;
+
+    }
+
+    @NotNull
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 

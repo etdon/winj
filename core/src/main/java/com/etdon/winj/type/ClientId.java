@@ -3,20 +3,19 @@ package com.etdon.winj.type;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-import static com.etdon.winj.type.NativeDataType.HANDLE;
+import static com.etdon.winj.type.constant.NativeDataType.HANDLE;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 import static java.lang.foreign.ValueLayout.JAVA_LONG;
 
-public final class ClientId implements MemorySegmentable {
+public final class ClientId extends NativeType {
 
     public static final MemoryLayout CLIENT_ID = MemoryLayout.structLayout(
             HANDLE.withName("UniqueProcess"),
@@ -56,6 +55,14 @@ public final class ClientId implements MemorySegmentable {
 
     @NotNull
     @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return CLIENT_ID;
+
+    }
+
+    @NotNull
+    @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         final MemorySegment memorySegment = arena.allocate(CLIENT_ID.byteSize());
@@ -63,6 +70,18 @@ public final class ClientId implements MemorySegmentable {
         memorySegment.set(JAVA_LONG, JAVA_LONG.byteSize(), this.uniqueThread);
 
         return memorySegment;
+
+    }
+
+    public long getUniqueProcess() {
+
+        return this.uniqueProcess;
+
+    }
+
+    public long getUniqueThread() {
+
+        return this.uniqueThread;
 
     }
 

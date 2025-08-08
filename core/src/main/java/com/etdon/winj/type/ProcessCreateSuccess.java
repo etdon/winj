@@ -2,17 +2,17 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.*;
 
-public final class ProcessCreateSuccess implements MemorySegmentable {
+public final class ProcessCreateSuccess extends NativeType {
 
     public static final MemoryLayout PS_CREATE_SUCCESS = MemoryLayout.structLayout(
             ULONG.withName("OutputFlags"),
@@ -109,6 +109,14 @@ public final class ProcessCreateSuccess implements MemorySegmentable {
 
     @NotNull
     @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return PS_CREATE_SUCCESS;
+
+    }
+
+    @NotNull
+    @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         final MemorySegment memorySegment = arena.allocate(PS_CREATE_SUCCESS.byteSize());
@@ -124,6 +132,66 @@ public final class ProcessCreateSuccess implements MemorySegmentable {
         memorySegment.set(JAVA_INT, 56, this.manifestSize);
 
         return memorySegment;
+
+    }
+
+    public int getOutputFlags() {
+
+        return this.outputFlags;
+
+    }
+
+    public MemorySegment getFileHandle() {
+
+        return this.fileHandle;
+
+    }
+
+    public MemorySegment getSectionHandle() {
+
+        return this.sectionHandle;
+
+    }
+
+    public long getUserProcessParametersNative() {
+
+        return this.userProcessParametersNative;
+
+    }
+
+    public int getUserProcessParametersWow64() {
+
+        return this.userProcessParametersWow64;
+
+    }
+
+    public int getCurrentParametersFlags() {
+
+        return this.currentParametersFlags;
+
+    }
+
+    public long getPebAddressNative() {
+
+        return this.pebAddressNative;
+
+    }
+
+    public int getPebAddressWow64() {
+
+        return this.pebAddressWow64;
+
+    }
+
+    public long getManifestAddress() {
+
+        return this.manifestAddress;
+
+    }
+
+    public int getManifestSize() {
+
+        return this.manifestSize;
 
     }
 

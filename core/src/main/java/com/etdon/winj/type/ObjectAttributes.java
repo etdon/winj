@@ -1,6 +1,7 @@
 package com.etdon.winj.type;
 
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
+import com.etdon.jbinder.common.NativeDocumentation;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
@@ -8,13 +9,14 @@ import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 
 /**
  * TODO: Implement
  */
-public final class ObjectAttributes implements MemorySegmentable {
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/ntdef/ns-ntdef-_object_attributes")
+public final class ObjectAttributes extends NativeType {
 
     public static final MemoryLayout OBJECT_ATTRIBUTES = MemoryLayout.structLayout(
             ULONG.withName("Length"),
@@ -30,7 +32,15 @@ public final class ObjectAttributes implements MemorySegmentable {
 
     @NotNull
     @Override
-    public MemorySegment createMemorySegment(@NotNull Arena arena) {
+    public MemoryLayout getMemoryLayout() {
+
+        return OBJECT_ATTRIBUTES;
+
+    }
+
+    @NotNull
+    @Override
+    public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         return null;
 

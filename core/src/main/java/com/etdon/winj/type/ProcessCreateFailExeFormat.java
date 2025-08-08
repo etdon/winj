@@ -2,17 +2,17 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.USHORT;
+import static com.etdon.winj.type.constant.NativeDataType.USHORT;
 import static java.lang.foreign.ValueLayout.JAVA_SHORT;
 
-public final class ProcessCreateFailExeFormat implements MemorySegmentable {
+public final class ProcessCreateFailExeFormat extends NativeType {
 
     public static final MemoryLayout PS_CREATE_FAIL_EXE_FORMAT = MemoryLayout.structLayout(
             USHORT.withName("DllCharacteristics")
@@ -43,12 +43,26 @@ public final class ProcessCreateFailExeFormat implements MemorySegmentable {
 
     @NotNull
     @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return PS_CREATE_FAIL_EXE_FORMAT;
+
+    }
+
+    @NotNull
+    @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         final MemorySegment memorySegment = arena.allocate(PS_CREATE_FAIL_EXE_FORMAT.byteSize());
         memorySegment.set(JAVA_SHORT, 0, this.dllCharacteristics);
 
         return memorySegment;
+
+    }
+
+    public short getDllCharacteristics() {
+        
+        return this.dllCharacteristics;
 
     }
 

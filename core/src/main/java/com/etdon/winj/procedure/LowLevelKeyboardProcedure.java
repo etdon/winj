@@ -4,7 +4,7 @@ import com.etdon.jbinder.NativeProcedure;
 
 import java.lang.foreign.FunctionDescriptor;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 
 public final class LowLevelKeyboardProcedure extends NativeProcedure {
 

@@ -13,7 +13,7 @@ import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 
 @NativeName(${FUNCTION_NAME}.NATIVE_NAME)
 public final class ${FUNCTION_NAME} extends NativeFunction {

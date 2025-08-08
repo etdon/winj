@@ -1,6 +1,6 @@
 package com.etdon.winj.type;
 
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.winj.constant.Global;
 import org.jetbrains.annotations.NotNull;
@@ -10,12 +10,15 @@ import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static com.etdon.winj.type.UnicodeString.*;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 
+/**
+ * TODO: Implement
+ */
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-rtl_user_process_parameters")
-public final class UserProcessParameters implements MemorySegmentable {
+public final class UserProcessParameters extends NativeType {
 
     /**
      * Flags: {@link com.etdon.winj.constant.UserProcessParametersFlag}
@@ -66,6 +69,14 @@ public final class UserProcessParameters implements MemorySegmentable {
             ULONG.withName("HeapMemoryTypeMask")
     );
     public static final ValueLayout PRTL_USER_PROCESS_PARAMETERS = ADDRESS.withName("PRTL_USER_PROCESS_PARAMETERS");
+
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return RTL_USER_PROCESS_PARAMETERS;
+
+    }
 
     @NotNull
     @Override

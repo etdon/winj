@@ -2,18 +2,18 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static com.etdon.winj.type.UnicodeString.UNICODE_STRING;
 import static java.lang.foreign.ValueLayout.*;
 
-public final class CurrentDirectory implements MemorySegmentable {
+public final class CurrentDirectory extends NativeType {
 
     public static final MemoryLayout CURDIR = MemoryLayout.structLayout(
             UNICODE_STRING.withName("DosPath"),
@@ -53,6 +53,14 @@ public final class CurrentDirectory implements MemorySegmentable {
 
     @NotNull
     @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return CURDIR;
+
+    }
+
+    @NotNull
+    @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         final MemorySegment memorySegment = arena.allocate(CURDIR);
@@ -60,6 +68,18 @@ public final class CurrentDirectory implements MemorySegmentable {
         memorySegment.set(ADDRESS, UNICODE_STRING.byteSize(), this.handle);
 
         return memorySegment;
+
+    }
+
+    public MemorySegment getDosPath() {
+
+        return this.dosPath;
+
+    }
+
+    public MemorySegment getHandle() {
+
+        return this.handle;
 
     }
 

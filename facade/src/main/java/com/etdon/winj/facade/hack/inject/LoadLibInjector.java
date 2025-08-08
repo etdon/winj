@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.etdon.winj.type.NativeDataType.SIZE_T;
+import static com.etdon.winj.type.constant.NativeDataType.SIZE_T;
 
 public class LoadLibInjector extends Injector {
 

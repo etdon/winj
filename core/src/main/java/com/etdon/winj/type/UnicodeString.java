@@ -2,7 +2,7 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
@@ -10,11 +10,11 @@ import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 import static java.lang.foreign.ValueLayout.JAVA_SHORT;
 
-public final class UnicodeString implements MemorySegmentable {
+public final class UnicodeString extends NativeType {
 
     public static final MemoryLayout UNICODE_STRING = MemoryLayout.structLayout(
             USHORT.withName("Length"),
@@ -57,6 +57,14 @@ public final class UnicodeString implements MemorySegmentable {
         this.length = builder.length;
         this.maximumLength = builder.maximumLength;
         this.buffer = builder.buffer;
+
+    }
+
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return UNICODE_STRING;
 
     }
 

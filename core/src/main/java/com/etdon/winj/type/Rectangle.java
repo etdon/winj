@@ -2,22 +2,25 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
+import com.etdon.jbinder.common.NativeDocumentation;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
+import static com.etdon.winj.type.constant.NativeDataType.LONG;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
-public final class Rectangle implements MemorySegmentable {
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/windef/ns-windef-rect")
+public final class Rectangle extends NativeType {
 
     public static final MemoryLayout RECT = MemoryLayout.structLayout(
-            JAVA_INT,
-            JAVA_INT,
-            JAVA_INT,
-            JAVA_INT
+            LONG.withName("left"),
+            LONG.withName("top"),
+            LONG.withName("right"),
+            LONG.withName("bottom")
     );
 
     /**
@@ -73,6 +76,15 @@ public final class Rectangle implements MemorySegmentable {
 
     }
 
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return RECT;
+
+    }
+
+    @NotNull
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
@@ -83,6 +95,30 @@ public final class Rectangle implements MemorySegmentable {
         memorySegment.set(JAVA_INT, 12, this.bottom);
 
         return memorySegment;
+
+    }
+
+    public int getLeft() {
+
+        return this.left;
+
+    }
+
+    public int getTop() {
+
+        return this.top;
+
+    }
+
+    public int getRight() {
+
+        return this.right;
+
+    }
+
+    public int getBottom() {
+
+        return this.bottom;
 
     }
 

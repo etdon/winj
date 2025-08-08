@@ -13,7 +13,7 @@ import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
-import static com.etdon.winj.type.NativeDataType.PCWSTR;
+import static com.etdon.winj.type.constant.NativeDataType.PCWSTR;
 
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlinitunicodestring")
 public final class RtlInitUnicodeString extends NativeFunction {

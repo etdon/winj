@@ -13,8 +13,8 @@ import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
-import static com.etdon.winj.type.NativeDataType.*;
-import static com.etdon.winj.type.NativeDataType.DWORD;
+import static com.etdon.winj.type.constant.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.DWORD;
 
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc")
 public final class VirtualAlloc extends NativeFunction {

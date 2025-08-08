@@ -3,7 +3,7 @@ package com.etdon.winjgen.type;
 import com.etdon.commons.manage.Registry;
 import com.etdon.commons.tuple.ImmutablePair;
 import com.etdon.commons.tuple.KeyValuePair;
-import com.etdon.winj.type.NativeDataType;
+import com.etdon.winj.type.constant.NativeDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

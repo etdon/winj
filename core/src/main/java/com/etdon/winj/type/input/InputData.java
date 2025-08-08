@@ -1,6 +1,6 @@
 package com.etdon.winj.type.input;
 
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import com.etdon.winj.constant.InputType;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +9,7 @@ import java.lang.foreign.MemorySegment;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class InputData implements MemorySegmentable {
+public abstract class InputData extends NativeType {
 
     private static final Map<Integer, Binder> INPUT_DATA_TYPES = Map.of(
             InputType.INPUT_MOUSE, MouseInput::new,

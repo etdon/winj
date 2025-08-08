@@ -7,7 +7,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.*;
 
 public final class HardwareInput extends InputData {
@@ -52,6 +52,15 @@ public final class HardwareInput extends InputData {
 
     }
 
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return HARDWAREINPUT;
+
+    }
+
+    @NotNull
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
@@ -61,6 +70,24 @@ public final class HardwareInput extends InputData {
         memorySegment.set(JAVA_SHORT, 6, this.highOrderWord);
 
         return memorySegment;
+
+    }
+
+    public int getMessage() {
+
+        return this.message;
+
+    }
+
+    public short getLowOrderWord() {
+
+        return this.lowOrderWord;
+
+    }
+
+    public short getHighOrderWord() {
+
+        return this.highOrderWord;
 
     }
 

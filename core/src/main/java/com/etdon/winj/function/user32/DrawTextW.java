@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.foreign.*;
 import java.nio.charset.StandardCharsets;
 
-import static com.etdon.winj.type.NativeDataType.*;
+import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
 public final class DrawTextW extends NativeFunction {

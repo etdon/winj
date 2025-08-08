@@ -2,17 +2,17 @@ package com.etdon.winj.type;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 
-import static com.etdon.winj.type.NativeDataType.HANDLE;
+import static com.etdon.winj.type.constant.NativeDataType.HANDLE;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 
-public final class ProcessCreateFailExeName implements MemorySegmentable {
+public final class ProcessCreateFailExeName extends NativeType {
 
     public static final MemoryLayout PS_CREATE_FAIL_EXE_NAME = MemoryLayout.structLayout(
             HANDLE.withName("IFEOKey")
@@ -43,12 +43,26 @@ public final class ProcessCreateFailExeName implements MemorySegmentable {
 
     @NotNull
     @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return PS_CREATE_FAIL_EXE_NAME;
+
+    }
+
+    @NotNull
+    @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
         final MemorySegment memorySegment = arena.allocate(PS_CREATE_FAIL_EXE_NAME.byteSize());
         memorySegment.set(ADDRESS, 0, this.ifeoKey);
 
         return memorySegment;
+
+    }
+
+    public MemorySegment getIfeoKey() {
+
+        return this.ifeoKey;
 
     }
 

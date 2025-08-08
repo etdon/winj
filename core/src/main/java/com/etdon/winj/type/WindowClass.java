@@ -3,7 +3,7 @@ package com.etdon.winj.type;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.NativeType;
 import com.etdon.winj.constant.WindowClassStyle;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +14,7 @@ import java.lang.foreign.MemorySegment;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
-public final class WindowClass implements MemorySegmentable {
+public final class WindowClass extends NativeType {
 
     public static final MemoryLayout WNDCLASSEXA = MemoryLayout.structLayout(
             JAVA_INT.withName("cbSize"),
@@ -184,6 +184,14 @@ public final class WindowClass implements MemorySegmentable {
         Conditional.executeIfNotNull(builder.menuName, () -> this.menuName = builder.menuName);
         this.className = builder.className;
         Conditional.executeIfNotNull(builder.smallIconHandle, () -> this.smallIconHandle = builder.smallIconHandle);
+
+    }
+
+    @NotNull
+    @Override
+    public MemoryLayout getMemoryLayout() {
+
+        return WNDCLASSEXA;
 
     }
 

@@ -19,10 +19,10 @@ import java.lang.foreign.ValueLayout;
 public class ShellcodeRunner {
 
     private static final byte[] RUNNER_INSTRUCTIONS = new byte[]{
-            (byte) 0x48, (byte) 0x89, (byte) 0xC8,
-            (byte) 0xFF, (byte) 0xD0,
-            (byte) 0x31, (byte) 0xC0,
-            (byte) 0xC3
+            (byte) 0x48, (byte) 0x89, (byte) 0xC8, // mov rax,rcx
+            (byte) 0xFF, (byte) 0xD0, // call rax
+            (byte) 0x31, (byte) 0xC0, // xor eax, eax
+            (byte) 0xC3 // ret
     };
 
     private final NativeContext nativeContext;

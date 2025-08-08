@@ -5,7 +5,7 @@ import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
-import com.etdon.winj.type.NativeDataType;
+import com.etdon.winj.type.constant.NativeDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.FunctionDescriptor;
