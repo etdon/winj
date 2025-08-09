@@ -10,8 +10,8 @@ import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.constant.*;
 import com.etdon.winj.facade.Window;
 import com.etdon.winj.facade.WindowsAPI;
-import com.etdon.winj.facade.hack.execute.Opcode;
-import com.etdon.winj.facade.hack.execute.Shellcode;
+import com.etdon.winj.facade.op.Opcode;
+import com.etdon.winj.facade.op.Shellcode;
 import com.etdon.winj.facade.hack.execute.ShellcodeHelper;
 import com.etdon.winj.facade.hack.execute.ShellcodeRunner;
 import com.etdon.winj.function.gdi32.GetStockObject;
@@ -350,7 +350,7 @@ public final class Demo {
                     .instructions(
                             Opcode.Prefix.REX_W,
                             Opcode.Group.G_83,
-                            Opcode.Mode.builder()
+                            Opcode.ModRM.builder()
                                     .mod(11)
                                     .reg(101)
                                     .rm(100)
@@ -383,7 +383,7 @@ public final class Demo {
                     .instructions(0x48, 0x31, 0xC9) // xor rcx,rcx
                     .instructions(0x49, 0xBD) // movabs r13,
                     .address(shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "ExitProcess")) // val
-                    .instructions(0x41, 0xFF, 0xD5) // cal r13
+                    .instructions(0x41, 0xFF, 0xD5) // call r13
                     .build()
                     .export();
 
