@@ -378,7 +378,7 @@ public final class Demo {
                     .push(Register.RAX)
                     .mov(Register.RAX,
                             ByteBuffer.wrap(
-                                    new StringMarshal().marshal("calc.exe",
+                                    StringMarshal.getInstance().marshal("calc.exe",
                                             StringMarshalContext.builder()
                                                     .strategy(XorStringMarshalStrategy.withKey(0xFF))
                                                     .build()
