@@ -14,6 +14,9 @@ import com.etdon.winj.facade.op.Opcode;
 import com.etdon.winj.facade.op.Shellcode;
 import com.etdon.winj.facade.hack.execute.ShellcodeHelper;
 import com.etdon.winj.facade.hack.execute.ShellcodeRunner;
+import com.etdon.winj.facade.op.marshal.string.StringMarshal;
+import com.etdon.winj.facade.op.marshal.string.StringMarshalContext;
+import com.etdon.winj.facade.op.marshal.string.XorStringMarshalStrategy;
 import com.etdon.winj.facade.op.register.Register;
 import com.etdon.winj.function.gdi32.GetStockObject;
 import com.etdon.winj.function.gdi32.SetBkMode;
@@ -42,6 +45,8 @@ import com.etdon.winj.util.Flag;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.*;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
@@ -371,8 +376,14 @@ public final class Demo {
                     .xor(Register.RCX, Register.RCX)
                     .mul(Register.RCX)
                     .push(Register.RAX)
-                    .instructions(0x48, 0xB8) // movabs rax,
-                    .stringXOR("calc.exe", 0xFF) // val
+                    .mov(Register.RAX,
+                            ByteBuffer.wrap(
+                                    new StringMarshal().marshal("calc.exe",
+                                            StringMarshalContext.builder()
+                                                    .strategy(XorStringMarshalStrategy.withKey(0xFF))
+                                                    .build()
+                                    )
+                            ).order(ByteOrder.LITTLE_ENDIAN).getLong())
                     .not(Register.RAX)
                     .push(Register.RAX)
                     .mov(Register.RCX, Register.RSP)
