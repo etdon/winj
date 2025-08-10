@@ -226,6 +226,238 @@ public final class Shellcode {
 
         }
 
+        public Builder not(@NotNull final Register destination) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.NOT_RM64,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(2)
+                            .rm(destination.getValue())
+                            .build()
+            );
+            return this;
+
+        }
+
+        public Builder neg(@NotNull final Register destination) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.NEG_RM64,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(3)
+                            .rm(destination.getValue())
+                            .build()
+            );
+            return this;
+
+        }
+
+        public Builder mul(@NotNull final Register source) {
+
+            Preconditions.checkNotNull(source);
+            this.instructions(
+                    Opcode.Prefix.of(source.isExtended(), false, false, true),
+                    Opcode.Primary.MUL_RM64,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(4)
+                            .rm(source.getValue())
+                            .build()
+            );
+            return this;
+
+        }
+
+        public Builder imul(@NotNull final Register source) {
+
+            Preconditions.checkNotNull(source);
+            this.instructions(
+                    Opcode.Prefix.of(source.isExtended(), false, false, true),
+                    Opcode.Primary.IMUL_RM64,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(5)
+                            .rm(source.getValue())
+                            .build()
+            );
+            return this;
+
+        }
+
+        public Builder div(@NotNull final Register source) {
+
+            Preconditions.checkNotNull(source);
+            this.instructions(
+                    Opcode.Prefix.of(source.isExtended(), false, false, true),
+                    Opcode.Primary.DIV_RM64,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(6)
+                            .rm(source.getValue())
+                            .build()
+            );
+            return this;
+
+        }
+
+        public Builder idiv(@NotNull final Register source) {
+
+            Preconditions.checkNotNull(source);
+            this.instructions(
+                    Opcode.Prefix.of(source.isExtended(), false, false, true),
+                    Opcode.Primary.IDIV_RM64,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(7)
+                            .rm(source.getValue())
+                            .build()
+            );
+            return this;
+
+        }
+
+        public Builder add(@NotNull final Register destination, final byte value) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.ADD_RM64_IMM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(0)
+                            .rm(destination.getValue())
+                            .build(),
+                    value
+            );
+            return this;
+
+        }
+
+        public Builder or(@NotNull final Register destination, final byte value) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.OR_RM64_IMM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(1)
+                            .rm(destination.getValue())
+                            .build(),
+                    value
+            );
+            return this;
+
+        }
+
+        public Builder adc(@NotNull final Register destination, final byte value) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.ADC_RM64_IMM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(2)
+                            .rm(destination.getValue())
+                            .build(),
+                    value
+            );
+            return this;
+
+        }
+
+        public Builder sbb(@NotNull final Register destination, final byte value) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.SBB_RM64_IMM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(3)
+                            .rm(destination.getValue())
+                            .build(),
+                    value
+            );
+            return this;
+
+        }
+
+        public Builder and(@NotNull final Register destination, final byte value) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.AND_RM64_IMM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(4)
+                            .rm(destination.getValue())
+                            .build(),
+                    value
+            );
+            return this;
+
+        }
+
+        public Builder sub(@NotNull final Register destination, final byte value) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.SUB_RM64_IMM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(5)
+                            .rm(destination.getValue())
+                            .build(),
+                    value
+            );
+            return this;
+
+        }
+
+        public Builder xor(@NotNull final Register destination, final byte value) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.XOR_RM64_IMM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(6)
+                            .rm(destination.getValue())
+                            .build(),
+                    value
+            );
+            return this;
+
+        }
+
+        public Builder cmp(@NotNull final Register destination, final byte value) {
+
+            Preconditions.checkNotNull(destination);
+            this.instructions(
+                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
+                    Opcode.Primary.CMP_RM64_IMM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(7)
+                            .rm(destination.getValue())
+                            .build(),
+                    value
+            );
+            return this;
+
+        }
+
         public Builder address(final long address) {
 
             for (int i = 0; i < Long.BYTES; i++)

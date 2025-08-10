@@ -14,6 +14,7 @@ import com.etdon.winj.facade.op.Opcode;
 import com.etdon.winj.facade.op.Shellcode;
 import com.etdon.winj.facade.hack.execute.ShellcodeHelper;
 import com.etdon.winj.facade.hack.execute.ShellcodeRunner;
+import com.etdon.winj.facade.op.register.Register;
 import com.etdon.winj.function.gdi32.GetStockObject;
 import com.etdon.winj.function.gdi32.SetBkMode;
 import com.etdon.winj.function.gdi32.SetTextColor;
@@ -367,23 +368,21 @@ public final class Demo {
                     .export();
 
             final byte[] runCalc = Shellcode.builder()
-                    .instructions(0x48, 0x31, 0xC9) // xor rcx,rcx
-                    .instructions(0x48, 0xF7, 0xE1) // mul rcx
-                    .instruction(0x50) // push rax
+                    .xor(Register.RCX, Register.RCX)
+                    .mul(Register.RCX)
+                    .push(Register.RAX)
                     .instructions(0x48, 0xB8) // movabs rax,
                     .stringXOR("calc.exe", 0xFF) // val
-                    .instructions(0x48, 0xF7, 0xD0) // not rax
-                    .instruction(0x50) // push rax
-                    .instructions(0x48, 0x89, 0xE1) // mov rcx,rsp
-                    .instructions(0x48, 0xFF, 0xC2) // inc rdx
-                    .instructions(0x49, 0xBC) // movabs r12,
-                    .address(shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "WinExec")) // val
-                    .instructions(0x48, 0x83, 0xEC, 0x20) // sub rsp,0x20
-                    .instructions(0x41, 0xFF, 0xD4) // call r12
-                    .instructions(0x48, 0x31, 0xC9) // xor rcx,rcx
-                    .instructions(0x49, 0xBD) // movabs r13,
-                    .address(shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "ExitProcess")) // val
-                    .instructions(0x41, 0xFF, 0xD5) // call r13
+                    .not(Register.RAX)
+                    .push(Register.RAX)
+                    .mov(Register.RCX, Register.RSP)
+                    .inc(Register.RDX)
+                    .mov(Register.R12, shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "WinExec"))
+                    .sub(Register.RSP, (byte) 0x20)
+                    .call(Register.R12)
+                    .xor(Register.RCX, Register.RCX)
+                    .mov(Register.R13, shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "ExitProcess"))
+                    .call(Register.R13)
                     .build()
                     .export();
 

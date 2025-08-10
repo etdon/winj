@@ -89,6 +89,27 @@ public final class Opcode {
         public static final byte INC_RM64 = (byte) 0xFF;
         public static final byte DEC_RM64 = (byte) 0xFF;
 
+        public static final byte MUL_RM8 = (byte) 0xF6;
+        public static final byte IMUL_RM8 = (byte) 0xF6;
+        public static final byte DIV_RM8 = (byte) 0xF6;
+        public static final byte IDIV_RM8 = (byte) 0xF6;
+
+        public static final byte NOT_RM64 = (byte) 0xF7;
+        public static final byte NEG_RM64 = (byte) 0xF7;
+        public static final byte MUL_RM64 = (byte) 0xF7;
+        public static final byte IMUL_RM64 = (byte) 0xF7;
+        public static final byte DIV_RM64 = (byte) 0xF7;
+        public static final byte IDIV_RM64 = (byte) 0xF7;
+
+        public static final byte ADD_RM64_IMM8 = (byte) 0x83;
+        public static final byte OR_RM64_IMM8 = (byte) 0x83;
+        public static final byte ADC_RM64_IMM8 = (byte) 0x83;
+        public static final byte SBB_RM64_IMM8 = (byte) 0x83;
+        public static final byte AND_RM64_IMM8 = (byte) 0x83;
+        public static final byte SUB_RM64_IMM8 = (byte) 0x83;
+        public static final byte XOR_RM64_IMM8 = (byte) 0x83;
+        public static final byte CMP_RM64_IMM8 = (byte) 0x83;
+
     }
 
     public static final class TwoByte {
