@@ -58,6 +58,16 @@ this.nativeCaller.call(
         .build()
 );
 ```
+```java
+Shellcode.builder()
+    .mov(Register.R12, shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "WinExec"))
+    .sub(Register.RSP, (byte) 0x20)
+    .call(Register.R12)
+    .xor(Register.RCX, Register.RCX)
+    .mov(Register.R13, shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "ExitProcess"))
+    .call(Register.R13)
+    .build();
+```
 
 ## Getting Started
 
