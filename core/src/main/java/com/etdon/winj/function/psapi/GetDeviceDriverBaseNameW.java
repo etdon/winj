@@ -2,6 +2,8 @@ package com.etdon.winj.function.psapi;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,34 +15,42 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Retrieves the base name of the specified device driver.
+ */
+@NativeName(GetDeviceDriverBaseNameW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getdevicedriverbasenamew")
 public final class GetDeviceDriverBaseNameW extends NativeFunction {
 
     public static final String LIBRARY = Library.PSAPI;
     public static final String NATIVE_NAME = "GetDeviceDriverBaseNameW";
     public static final FunctionDescriptor GET_DEVICE_DRIVER_BASE_NAME_W_SIGNATURE = FunctionDescriptor.of(
             DWORD,
-            LPVOID,
-            LPWSTR,
-            DWORD
+            LPVOID.withName("ImageBase"),
+            LPWSTR.withName("lpBaseName"),
+            DWORD.withName("nSize")
     );
 
     /**
      * The load address of the device driver. This value can be retrieved using the EnumDeviceDrivers function.
      */
+    @NativeName("ImageBase")
     private final MemorySegment driverAddress;
 
     /**
      * A pointer to the buffer that receives the base name of the device driver.
      */
+    @NativeName("lpBaseName")
     private final MemorySegment baseNameBufferPointer;
 
     /**
      * The size of the lpBaseName buffer, in characters. If the buffer is not large enough to store the base name plus
      * the terminating null character, the string is truncated.
      */
+    @NativeName("nSize")
     private final int baseNameBufferSize;
 
-    private GetDeviceDriverBaseNameW(@NotNull final Builder builder) {
+    private GetDeviceDriverBaseNameW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, GET_DEVICE_DRIVER_BASE_NAME_W_SIGNATURE);
 

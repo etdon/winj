@@ -3,6 +3,7 @@ package com.etdon.winj.function.kernel32.process;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +17,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
 /**
  * Opens an existing local process object.
  */
+@NativeName(OpenProcess.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openprocess")
 public final class OpenProcess extends NativeFunction {
 
@@ -34,17 +36,20 @@ public final class OpenProcess extends NativeFunction {
      *
      * @see com.etdon.winj.constant.process.ProcessAccessRight
      */
+    @NativeName("dwDesiredAccess")
     private final int access;
 
     /**
      * If this value is TRUE, processes created by this process will inherit the handle. Otherwise, the processes do
      * not inherit this handle.
      */
+    @NativeName("bInheritHandle")
     private final boolean inheritHandle;
 
     /**
      * The identifier of the local process to be opened.
      */
+    @NativeName("dwProcessId")
     private final int processId;
 
     private OpenProcess(final Builder builder) {

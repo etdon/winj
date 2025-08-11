@@ -3,6 +3,7 @@ package com.etdon.winj.type;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.NativeType;
+import com.etdon.jbinder.common.NativeName;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
@@ -18,6 +19,7 @@ public final class ProcessCreateFailExeName extends NativeType {
             HANDLE.withName("IFEOKey")
     );
 
+    @NativeName("IFEOKey")
     private final MemorySegment ifeoKey;
 
     public ProcessCreateFailExeName(@NotNull final MemorySegment ifeoKey) {

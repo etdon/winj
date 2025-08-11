@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,14 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * ReadProcessMemory copies the data in the specified address range from the address space of the specified process
+ * into the specified buffer of the current process. Any process that has a handle with PROCESS_VM_READ access can call
+ * the function.
+ * <p>
+ * The entire area to be read must be accessible, and if it is not accessible, the function fails.
+ */
+@NativeName(ReadProcessMemory.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-readprocessmemory")
 public final class ReadProcessMemory extends NativeFunction {
 
@@ -33,6 +42,7 @@ public final class ReadProcessMemory extends NativeFunction {
      * A handle to the process with memory that is being read. The handle must have PROCESS_VM_READ access to the
      * process.
      */
+    @NativeName("hProcess")
     private final MemorySegment processHandle;
 
     /**
@@ -40,22 +50,26 @@ public final class ReadProcessMemory extends NativeFunction {
      * system verifies that all data in the base address and memory of the specified size is accessible for read
      * access, and if it is not accessible the function fails.
      */
+    @NativeName("lpBaseAddress")
     private final MemorySegment baseAddress;
 
     /**
      * A pointer to a buffer that receives the contents from the address space of the specified process.
      */
+    @NativeName("lpBuffer")
     private final MemorySegment buffer;
 
     /**
      * The number of bytes to be read from the specified process.
      */
+    @NativeName("nSize")
     private final long count;
 
     /**
      * A pointer to a variable that receives the number of bytes transferred into the specified buffer. If
      * lpNumberOfBytesRead is NULL, the parameter is ignored.
      */
+    @NativeName("lpNumberOfBytesRead")
     private MemorySegment bytesReadPointer = MemorySegment.NULL;
 
     private ReadProcessMemory(final Builder builder) {

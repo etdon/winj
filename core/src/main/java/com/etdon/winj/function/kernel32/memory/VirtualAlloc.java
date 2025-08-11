@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +23,7 @@ import static com.etdon.winj.type.constant.NativeDataType.DWORD;
  * <p>
  * To allocate memory in the address space of another process, use the VirtualAllocEx function.
  */
+@NativeName(VirtualAlloc.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc")
 public final class VirtualAlloc extends NativeFunction {
 
@@ -51,6 +53,7 @@ public final class VirtualAlloc extends NativeFunction {
      * (i.e. SGX1). SGX2 enclaves will permit allocation, and the page must be accepted by the enclave after it has
      * been allocated.
      */
+    @NativeName("lpAddress")
     private MemorySegment addressPointer = MemorySegment.NULL;
 
     /**
@@ -59,6 +62,7 @@ public final class VirtualAlloc extends NativeFunction {
      * lpAddress to lpAddress+dwSize. This means that a 2-byte range straddling a page boundary causes both pages to be
      * included in the allocated region.
      */
+    @NativeName("dwSize")
     private final long size;
 
     /**
@@ -66,6 +70,7 @@ public final class VirtualAlloc extends NativeFunction {
      *
      * @see com.etdon.winj.constant.memory.AllocationType
      */
+    @NativeName("flAllocationType")
     private final int allocationType;
 
     /**
@@ -84,6 +89,7 @@ public final class VirtualAlloc extends NativeFunction {
      *
      * @see com.etdon.winj.constant.memory.MemoryProtection
      */
+    @NativeName("flProtect")
     private final int memoryProtection;
 
     private VirtualAlloc(final Builder builder) {

@@ -26,7 +26,7 @@ ${SIGNATURE}
 
 ${FIELDS}
 
-    private ${FUNCTION_NAME}(@NotNull final Builder builder) {
+    private ${FUNCTION_NAME}(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, ${FORMATTED_FUNCTION_NAME}_SIGNATURE);
 

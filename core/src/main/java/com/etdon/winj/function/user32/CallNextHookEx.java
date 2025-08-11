@@ -3,6 +3,8 @@ package com.etdon.winj.function.user32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -15,42 +17,52 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Passes the hook information to the next hook procedure in the current hook chain. A hook procedure can call this
+ * function either before or after processing the hook information.
+ */
+@NativeName(CallNextHookEx.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-callnexthookex")
 public final class CallNextHookEx extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "CallNextHookEx";
     public static final FunctionDescriptor CALL_NEXT_HOOK_EX_SIGNATURE = FunctionDescriptor.of(
             LRESULT,
-            HHOOK,
-            INTEGER,
-            WPARAM,
-            LPARAM
+            HHOOK.withName("hhk"),
+            INTEGER.withName("nCode"),
+            WPARAM.withName("wParam"),
+            LPARAM.withName("lParam")
     );
 
     /**
      * This parameter is ignored.
      */
+    @NativeName("hhk")
     private MemorySegment hookHandle = MemorySegment.NULL;
 
     /**
      * The hook code passed to the current hook procedure. The next hook procedure uses this code to determine how to
      * process the hook information.
      */
+    @NativeName("nCode")
     private final int code;
 
     /**
      * The wParam value passed to the current hook procedure. The meaning of this parameter depends on the type of hook
      * associated with the current hook chain.
      */
+    @NativeName("wParam")
     private final long firstParameter;
 
     /**
      * The lParam value passed to the current hook procedure. The meaning of this parameter depends on the type of hook
      * associated with the current hook chain.
      */
+    @NativeName("lParam")
     private final long secondParameter;
 
-    private CallNextHookEx(@NotNull final Builder builder) {
+    private CallNextHookEx(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, CALL_NEXT_HOOK_EX_SIGNATURE);
 

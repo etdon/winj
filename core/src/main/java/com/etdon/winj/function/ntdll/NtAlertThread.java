@@ -2,6 +2,8 @@ package com.etdon.winj.function.ntdll;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +15,11 @@ import java.lang.foreign.SymbolLookup;
 
 import static java.lang.foreign.ValueLayout.*;
 
+/**
+ * Alerts and wakes the specified thread that previously entered an alertable wait, causing it to return
+ * STATUS_ALERTED.
+ */
+@NativeName(NtAlertThread.NATIVE_NAME)
 public final class NtAlertThread extends NativeFunction {
 
     public static final String LIBRARY = Library.NTDLL;
@@ -24,6 +31,7 @@ public final class NtAlertThread extends NativeFunction {
     /**
      * Handle to opened Thread Object.
      */
+    @NativeName("ThreadHandle")
     private final MemorySegment threadHandle;
 
     private NtAlertThread(@NotNull final Builder builder) {

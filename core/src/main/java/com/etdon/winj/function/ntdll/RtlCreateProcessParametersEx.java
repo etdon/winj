@@ -3,6 +3,7 @@ package com.etdon.winj.function.ntdll;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import com.etdon.winj.constant.UserProcessParametersFlag;
@@ -17,6 +18,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+@NativeName(RtlCreateProcessParametersEx.NATIVE_NAME)
 public final class RtlCreateProcessParametersEx extends NativeFunction {
 
     public static final String LIBRARY = Library.NTDLL;
@@ -36,29 +38,40 @@ public final class RtlCreateProcessParametersEx extends NativeFunction {
             ULONG.withName("Flags")
     );
 
+    @NativeName("ProcessParameters")
     private final MemorySegment processParametersPointerOutput;
 
+    @NativeName("ImagePathName")
     private final MemorySegment imagePathNamePointer;
 
+    @NativeName("DllPath")
     private MemorySegment dllPathPointer = MemorySegment.NULL;
 
+    @NativeName("CurrentDirectory")
     private MemorySegment currentDirectoryPointer = MemorySegment.NULL;
 
+    @NativeName("CommandLine")
     private MemorySegment commandLinePointer = MemorySegment.NULL;
 
+    @NativeName("Environment")
     private MemorySegment environmentPointer = MemorySegment.NULL;
 
+    @NativeName("WindowTitle")
     private MemorySegment windowTitlePointer = MemorySegment.NULL;
 
+    @NativeName("DesktopInfo")
     private MemorySegment desktopInfoPointer = MemorySegment.NULL;
 
+    @NativeName("ShellInfo")
     private MemorySegment shellInfoPointer = MemorySegment.NULL;
 
+    @NativeName("RuntimeData")
     private MemorySegment runtimeDataPointer = MemorySegment.NULL;
 
     /**
      * {@link com.etdon.winj.constant.UserProcessParametersFlag}
      */
+    @NativeName("Flags")
     private int flags = UserProcessParametersFlag.RTL_USER_PROC_PARAMS_NORMALIZED;
 
     private RtlCreateProcessParametersEx(final Builder builder) {

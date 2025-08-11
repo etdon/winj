@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.WindowHandle;
 import com.etdon.winj.constant.Library;
@@ -14,15 +16,25 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the
+ * specified window and does not return until the window procedure has processed the message.
+ * <p>
+ * To send a message and return immediately, use the SendMessageCallback or SendNotifyMessage function. To post a
+ * message to a thread's message queue and return immediately, use the PostMessage or PostThreadMessage function.
+ */
+@NativeName(SendMessageW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessagew")
 public final class SendMessageW extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "SendMessageW";
     public static final FunctionDescriptor SEND_MESSAGE_W_SIGNATURE = FunctionDescriptor.of(
-            HWND,
-            UINT,
-            WPARAM,
-            LPARAM
+            LRESULT,
+            HWND.withName("hWnd"),
+            UINT.withName("Msg"),
+            WPARAM.withName("wParam"),
+            LPARAM.withName("lParam")
     );
 
     /**
@@ -35,24 +47,28 @@ public final class SendMessageW extends NativeFunction {
      *
      * @see WindowHandle
      */
+    @NativeName("hWnd")
     private final MemorySegment windowHandle;
 
     /**
      * The message to be sent.
      */
+    @NativeName("Msg")
     private final int message;
 
     /**
      * Additional message-specific information.
      */
+    @NativeName("wParam")
     private final long firstParameter;
 
     /**
      * Additional message-specific information.
      */
+    @NativeName("lParam")
     private final long secondParameter;
 
-    private SendMessageW(@NotNull final Builder builder) {
+    private SendMessageW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, SEND_MESSAGE_W_SIGNATURE);
 

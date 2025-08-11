@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import com.etdon.winj.type.ClientId;
@@ -17,6 +18,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+@NativeName(NtOpenProcess.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/nf-ntddk-ntopenprocess")
 public final class NtOpenProcess extends NativeFunction {
 

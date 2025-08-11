@@ -2,6 +2,8 @@ package com.etdon.winj.function.kernel32.libloader;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +15,11 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Retrieves a module handle for the specified module. The module must have been loaded by the calling process.
+ */
+@NativeName(GetModuleHandleW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlew")
 public final class GetModuleHandleW extends NativeFunction {
 
     public static final String LIBRARY = Library.KERNEL_32;
@@ -35,6 +42,7 @@ public final class GetModuleHandleW extends NativeFunction {
      * The GetModuleHandle function does not retrieve handles for modules that were loaded using the
      * LOAD_LIBRARY_AS_DATAFILE flag.
      */
+    @NativeName("lpModuleName")
     private MemorySegment moduleName = MemorySegment.NULL;
 
     private GetModuleHandleW(final Builder builder) {

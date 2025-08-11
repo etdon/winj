@@ -3,6 +3,7 @@ package com.etdon.winj.function.ntdll;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import com.etdon.winj.type.UnicodeString;
@@ -15,6 +16,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.PCWSTR;
 
+@NativeName(RtlInitUnicodeString.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlinitunicodestring")
 public final class RtlInitUnicodeString extends NativeFunction {
 
@@ -28,12 +30,14 @@ public final class RtlInitUnicodeString extends NativeFunction {
     /**
      * A pointer to the UNICODE_STRING structure to be initialized.
      */
+    @NativeName("DestinationString")
     private final MemorySegment destinationStringPointer;
 
     /**
      * A pointer to a null-terminated wide-character string. This string is used to initialize the counted string
      * pointed to by DestinationString.
      */
+    @NativeName("SourceString")
     private final MemorySegment sourceStringPointer;
 
     private RtlInitUnicodeString(final Builder builder) {

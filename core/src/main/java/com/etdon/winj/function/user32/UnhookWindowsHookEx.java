@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +15,11 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Removes a hook procedure installed in a hook chain by the SetWindowsHookEx function.
+ */
+@NativeName(UnhookWindowsHookEx.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-unhookwindowshookex")
 public final class UnhookWindowsHookEx extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
@@ -26,9 +33,10 @@ public final class UnhookWindowsHookEx extends NativeFunction {
      * A handle to the hook to be removed. This parameter is a hook handle obtained by a previous call to
      * SetWindowsHookEx.
      */
+    @NativeName("hhk")
     private final MemorySegment hookHandle;
 
-    private UnhookWindowsHookEx(@NotNull final Builder builder) {
+    private UnhookWindowsHookEx(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, UNHOOK_WINDOWS_HOOK_EX_SIGNATURE);
 

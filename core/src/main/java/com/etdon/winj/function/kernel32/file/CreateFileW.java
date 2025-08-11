@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +25,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  * To perform this operation as a transacted operation, which results in a handle that can be used for transacted I/O,
  * use the CreateFileTransacted function.
  */
+@NativeName(CreateFileW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew")
 public final class CreateFileW extends NativeFunction {
 
@@ -52,6 +54,7 @@ public final class CreateFileW extends NativeFunction {
      * By default, the name is limited to MAX_PATH characters. To extend this limit to 32,767 wide characters, prepend
      * "\\?\" to the path. For more information, see Naming Files, Paths, and Namespaces.
      */
+    @NativeName("lpFileName")
     private final MemorySegment fileNamePointer;
 
     /**
@@ -72,6 +75,7 @@ public final class CreateFileW extends NativeFunction {
      * @see com.etdon.winj.constant.GenericAccessRight
      * @see com.etdon.winj.constant.file.FileAccessRight
      */
+    @NativeName("dwDesiredAccess")
     private int desiredAccess = 0;
 
     /**
@@ -92,6 +96,7 @@ public final class CreateFileW extends NativeFunction {
      *
      * @see com.etdon.winj.constant.file.FileShareMode
      */
+    @NativeName("dwShareMode")
     private int shareMode = 0;
 
     /**
@@ -113,6 +118,7 @@ public final class CreateFileW extends NativeFunction {
      * <p>
      * The bInheritHandle member of the structure specifies whether the returned handle can be inherited.
      */
+    @NativeName("lpSecurityAttributes")
     private MemorySegment securityAttributesPointer = MemorySegment.NULL;
 
     /**
@@ -122,6 +128,7 @@ public final class CreateFileW extends NativeFunction {
      *
      * @see com.etdon.winj.constant.file.FileCreationDisposition
      */
+    @NativeName("dwCreationDisposition")
     private int creationDisposition = 0;
 
     /**
@@ -139,6 +146,7 @@ public final class CreateFileW extends NativeFunction {
      *
      * @see com.etdon.winj.constant.file.FileAttribute
      */
+    @NativeName("dwFlagsAndAttributes")
     private int flagsAndAttributes = 0;
 
     /**
@@ -152,6 +160,7 @@ public final class CreateFileW extends NativeFunction {
      * When opening a new encrypted file, the file inherits the discretionary access control list from its parent
      * directory. For additional information, see File Encryption.
      */
+    @NativeName("hTemplateFile")
     private MemorySegment templateFileHandle = MemorySegment.NULL;
 
     private CreateFileW(final Builder builder) {

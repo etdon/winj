@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,7 @@ import static java.lang.foreign.ValueLayout.*;
 /**
  * Converts a locale identifier to a locale name.
  */
+@NativeName(LCIDToLocaleName.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winnls/nf-winnls-lcidtolocalename")
 public final class LCIDToLocaleName extends NativeFunction {
 
@@ -35,6 +37,7 @@ public final class LCIDToLocaleName extends NativeFunction {
     /**
      * Locale identifier to translate.
      */
+    @NativeName("Locale")
     private final int localeId;
 
     /**
@@ -46,6 +49,7 @@ public final class LCIDToLocaleName extends NativeFunction {
      *     <li>LOCALE_NAME_USER_DEFAULT</li>
      * </ul>
      */
+    @NativeName("lpName")
     private MemorySegment localeNamePointer = MemorySegment.NULL;
 
     /**
@@ -56,6 +60,7 @@ public final class LCIDToLocaleName extends NativeFunction {
      * Alternatively, the application can set this parameter to 0. In this case, the function returns the required size
      * for the locale name buffer.
      */
+    @NativeName("cchName")
     private final int localeNameBufferSize;
 
     /**
@@ -63,6 +68,7 @@ public final class LCIDToLocaleName extends NativeFunction {
      * <p>
      * Starting with Windows 7: Can be set to LOCALE_ALLOW_NEUTRAL_NAMES to allow the return of a neutral name.
      */
+    @NativeName("dwFlags")
     private int flags = 0;
 
     private LCIDToLocaleName(@NotNull final Builder builder) {

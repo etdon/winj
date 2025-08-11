@@ -1,6 +1,7 @@
 package com.etdon.winj.function.kernel32.error;
 
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +12,11 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.DWORD;
 
+/**
+ * Retrieves the calling thread's last-error code value. The last-error code is maintained on a per-thread basis.
+ * Multiple threads do not overwrite each other's last-error code.
+ */
+@NativeName(GetLastError.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror")
 public final class GetLastError extends NativeFunction {
 

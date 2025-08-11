@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,19 +15,26 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * The BeginPaint function prepares the specified window for painting and fills a PAINTSTRUCT structure with
+ * information about the painting.
+ */
+@NativeName(BeginPaint.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-beginpaint")
 public final class BeginPaint extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "BeginPaint";
     public static final FunctionDescriptor BEGIN_PAINT_SIGNATURE = FunctionDescriptor.of(
             HDC,
-            HWND,
-            LPPAINTSTRUCT
+            HWND.withName("hWnd"),
+            LPPAINTSTRUCT.withName("lpPaint")
     );
 
     /**
      * Handle to the window to be repainted.
      */
+    @NativeName("hWnd")
     private final MemorySegment windowHandle;
 
     /**
@@ -33,9 +42,10 @@ public final class BeginPaint extends NativeFunction {
      *
      * @see com.etdon.winj.type.PaintData
      */
+    @NativeName("lpPaint")
     private final MemorySegment paintDataPointer;
 
-    private BeginPaint(@NotNull final Builder builder) {
+    private BeginPaint(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, BEGIN_PAINT_SIGNATURE);
 

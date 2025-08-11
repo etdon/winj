@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  * Releases, decommits, or releases and decommits a region of memory within the virtual address space of a specified
  * process.
  */
+@NativeName(VirtualFreeEx.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualfreeex")
 public final class VirtualFreeEx extends NativeFunction {
 
@@ -35,6 +37,7 @@ public final class VirtualFreeEx extends NativeFunction {
     /**
      * A handle to a process. The function frees memory within the virtual address space of the process.
      */
+    @NativeName("hProcess")
     private final MemorySegment processHandle;
 
     /**
@@ -43,6 +46,7 @@ public final class VirtualFreeEx extends NativeFunction {
      * If the dwFreeType parameter is MEM_RELEASE, lpAddress must be the base address returned by the VirtualAllocEx
      * function when the region is reserved.
      */
+    @NativeName("lpAddress")
     private final MemorySegment addressPointer;
 
     /**
@@ -57,6 +61,7 @@ public final class VirtualFreeEx extends NativeFunction {
      * returned by VirtualAllocEx and dwSize is 0 (zero), the function decommits the entire region that is allocated
      * by VirtualAllocEx. After that, the entire region is in the reserved state.
      */
+    @NativeName("dwSize")
     private long size = 0;
 
     /**
@@ -64,6 +69,7 @@ public final class VirtualFreeEx extends NativeFunction {
      *
      * @see com.etdon.winj.constant.memory.FreeType
      */
+    @NativeName("dwFreeType")
     private final int freeType;
 
     private VirtualFreeEx(final Builder builder) {

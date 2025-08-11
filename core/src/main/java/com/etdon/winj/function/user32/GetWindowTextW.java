@@ -3,6 +3,7 @@ package com.etdon.winj.function.user32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,12 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Copies the text of the specified window's title bar (if it has one) into a buffer. If the specified window is a
+ * control, the text of the control is copied. However, GetWindowText cannot retrieve the text of a control in another
+ * application.
+ */
+@NativeName(GetWindowTextW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getwindowtextw")
 public final class GetWindowTextW extends NativeFunction {
 
@@ -21,29 +28,32 @@ public final class GetWindowTextW extends NativeFunction {
     public static final String NATIVE_NAME = "GetWindowTextW";
     public static final FunctionDescriptor GET_WINDOW_TEXT_W_SIGNATURE = FunctionDescriptor.of(
             INTEGER,
-            HWND,
-            LPWSTR,
-            INTEGER
+            HWND.withName("hWnd"),
+            LPWSTR.withName("lpString"),
+            INTEGER.withName("nMaxCount")
     );
 
     /**
      * A handle to the window or control containing the text.
      */
+    @NativeName("hWnd")
     private final MemorySegment windowHandle;
 
     /**
      * The buffer that will receive the text. If the string is as long or longer than the buffer, the string is
      * truncated and terminated with a null character.
      */
+    @NativeName("lpString")
     private final MemorySegment textBuffer;
 
     /**
      * The maximum number of characters to copy to the buffer, including the null character. If the text exceeds this
      * limit, it is truncated.
      */
+    @NativeName("nMaxCount")
     private final int textLength;
 
-    private GetWindowTextW(@NotNull final Builder builder) {
+    private GetWindowTextW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, GET_WINDOW_TEXT_W_SIGNATURE);
 

@@ -3,6 +3,7 @@ package com.etdon.winj.function.ntdll;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+@NativeName(RtlFreeHeap.NATIVE_NAME)
 public final class RtlFreeHeap extends NativeFunction {
 
     public static final String LIBRARY = Library.NTDLL;
@@ -29,6 +31,7 @@ public final class RtlFreeHeap extends NativeFunction {
      * A handle to the heap whose memory block is to be freed. This handle is returned by either the HeapCreate or
      * GetProcessHeap function.
      */
+    @NativeName("HeapHandle")
     private final MemorySegment heapHandle;
 
     /**
@@ -37,12 +40,14 @@ public final class RtlFreeHeap extends NativeFunction {
      *
      * @see com.etdon.winj.constant.memory.HeapAllocationFlag
      */
+    @NativeName("Flags")
     private int flags = 0;
 
     /**
      * A pointer to the memory block to be freed. This pointer is returned by the HeapAlloc or HeapReAlloc function.
      * This pointer can be NULL.
      */
+    @NativeName("BaseAddress")
     private MemorySegment baseAddress = MemorySegment.NULL;
 
     private RtlFreeHeap(final Builder builder) {

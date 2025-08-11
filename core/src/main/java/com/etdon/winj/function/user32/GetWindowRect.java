@@ -3,6 +3,7 @@ package com.etdon.winj.function.user32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,11 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen
+ * coordinates that are relative to the upper-left corner of the screen.
+ */
+@NativeName(GetWindowRect.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getwindowrect")
 public final class GetWindowRect extends NativeFunction {
 
@@ -28,6 +34,7 @@ public final class GetWindowRect extends NativeFunction {
     /**
      * A handle to the window.
      */
+    @NativeName("hWnd")
     private final MemorySegment windowHandle;
 
     /**
@@ -36,9 +43,10 @@ public final class GetWindowRect extends NativeFunction {
      *
      * @see com.etdon.winj.type.Rectangle
      */
+    @NativeName("lpRect")
     private final MemorySegment rectanglePointer;
 
-    private GetWindowRect(@NotNull final Builder builder) {
+    private GetWindowRect(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, GET_WINDOW_RECT_SIGNATURE);
 

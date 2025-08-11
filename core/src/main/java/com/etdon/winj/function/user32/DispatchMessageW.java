@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,33 +15,40 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Dispatches a message to a window procedure. It is typically used to dispatch a message retrieved by the GetMessage
+ * function.
+ */
+@NativeName(DispatchMessageW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-dispatchmessagew")
 public final class DispatchMessageW extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "DispatchMessageW";
     public static final FunctionDescriptor DISPATCH_MESSAGE_W_SIGNATURE = FunctionDescriptor.of(
             LRESULT,
-            MSG
+            MSG.withName("lpMsg")
     );
 
     /**
      * A pointer to a structure that contains the message.
      */
+    @NativeName("lpMsg")
     private final MemorySegment messagePointer;
-
-    private DispatchMessageW(@NotNull final Builder builder) {
-
-        super(LIBRARY, NATIVE_NAME, DISPATCH_MESSAGE_W_SIGNATURE);
-
-        this.messagePointer = builder.messagePointer;
-
-    }
 
     private DispatchMessageW(@NotNull final MemorySegment messagePointer) {
 
         super(LIBRARY, NATIVE_NAME, DISPATCH_MESSAGE_W_SIGNATURE);
 
         this.messagePointer = messagePointer;
+
+    }
+
+    private DispatchMessageW(final Builder builder) {
+
+        super(LIBRARY, NATIVE_NAME, DISPATCH_MESSAGE_W_SIGNATURE);
+
+        this.messagePointer = builder.messagePointer;
 
     }
 

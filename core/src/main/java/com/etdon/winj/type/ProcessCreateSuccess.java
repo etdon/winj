@@ -3,6 +3,7 @@ package com.etdon.winj.type;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.jbinder.NativeType;
+import com.etdon.jbinder.common.NativeName;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
@@ -30,24 +31,34 @@ public final class ProcessCreateSuccess extends NativeType {
             MemoryLayout.paddingLayout(4)
     );
 
+    @NativeName("OutputFlags")
     private int outputFlags;
 
+    @NativeName("FileHandle")
     private MemorySegment fileHandle;
 
+    @NativeName("SectionHandle")
     private MemorySegment sectionHandle;
 
+    @NativeName("UserProcessParametersNative")
     private long userProcessParametersNative;
 
+    @NativeName("UserProcessParametersWow64")
     private int userProcessParametersWow64;
 
+    @NativeName("CurrentParameterFlags")
     private int currentParametersFlags;
 
+    @NativeName("PebAddressNative")
     private long pebAddressNative;
 
+    @NativeName("PebAddressWow64")
     private int pebAddressWow64;
 
+    @NativeName("ManifestAddress")
     private long manifestAddress;
 
+    @NativeName("ManifestSize")
     private int manifestSize;
 
     public ProcessCreateSuccess(final int outputFlags,

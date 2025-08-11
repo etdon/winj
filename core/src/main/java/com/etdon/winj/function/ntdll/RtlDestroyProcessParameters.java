@@ -2,6 +2,7 @@ package com.etdon.winj.function.ntdll;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import com.etdon.winj.type.UserProcessParameters;
@@ -14,6 +15,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+@NativeName(RtlDestroyProcessParameters.NATIVE_NAME)
 public final class RtlDestroyProcessParameters extends NativeFunction {
 
     public static final String LIBRARY = Library.NTDLL;
@@ -23,6 +25,7 @@ public final class RtlDestroyProcessParameters extends NativeFunction {
             UserProcessParameters.PRTL_USER_PROCESS_PARAMETERS.withName("ProcessParameters")
     );
 
+    @NativeName("ProcessParameters")
     private final MemorySegment processParameters;
 
     private RtlDestroyProcessParameters(final Builder builder) {

@@ -2,6 +2,7 @@ package com.etdon.winj.function.std;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static java.lang.foreign.ValueLayout.ADDRESS;
 
+@NativeName(FreeMemory.NATIVE_NAME)
 public final class FreeMemory extends NativeFunction {
 
     public static final String LIBRARY = Library.STD;

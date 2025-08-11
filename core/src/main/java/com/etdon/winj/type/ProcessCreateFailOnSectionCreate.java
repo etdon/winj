@@ -3,6 +3,7 @@ package com.etdon.winj.type;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.NativeType;
+import com.etdon.jbinder.common.NativeName;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.Arena;
@@ -18,6 +19,7 @@ public final class ProcessCreateFailOnSectionCreate extends NativeType {
             HANDLE.withName("FileHandle")
     );
 
+    @NativeName("FileHandle")
     private final MemorySegment fileHandle;
 
     public ProcessCreateFailOnSectionCreate(@NotNull final MemorySegment fileHandle) {

@@ -3,6 +3,7 @@ package com.etdon.winj.function.ntdll;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+@NativeName(RtlAllocateHeap.NATIVE_NAME)
 public final class RtlAllocateHeap extends NativeFunction {
 
     public static final String LIBRARY = Library.NTDLL;
@@ -29,6 +31,7 @@ public final class RtlAllocateHeap extends NativeFunction {
      * Handle for a private heap from which the memory will be allocated. This parameter is a handle returned from a
      * successful call to RtlCreateHeap .
      */
+    @NativeName("HeapHandle")
     private final MemorySegment heapHandle;
 
     /**
@@ -37,6 +40,7 @@ public final class RtlAllocateHeap extends NativeFunction {
      *
      * @see com.etdon.winj.constant.memory.HeapAllocationFlag
      */
+    @NativeName("Flags")
     private int flags = 0;
 
     /**
@@ -44,6 +48,7 @@ public final class RtlAllocateHeap extends NativeFunction {
      * Size must be less than or equal to the heap's virtual memory threshold. (For more information, see the
      * VirtualMemoryThreshold member of the Parameters parameter to RtlCreateHeap.)
      */
+    @NativeName("Size")
     private final long size;
 
     private RtlAllocateHeap(final Builder builder) {

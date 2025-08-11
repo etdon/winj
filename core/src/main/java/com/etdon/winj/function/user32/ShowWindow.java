@@ -3,6 +3,8 @@ package com.etdon.winj.function.user32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.WindowPresentation;
 import com.etdon.winj.constant.Library;
@@ -16,6 +18,11 @@ import java.lang.foreign.SymbolLookup;
 import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.*;
 
+/**
+ * Sets the specified window's show state.
+ */
+@NativeName(ShowWindow.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow")
 public final class ShowWindow extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
@@ -29,6 +36,7 @@ public final class ShowWindow extends NativeFunction {
     /**
      * A handle to the window.
      */
+    @NativeName("hWnd")
     private final MemorySegment handle;
 
     /**
@@ -39,9 +47,10 @@ public final class ShowWindow extends NativeFunction {
      *
      * @see WindowPresentation
      */
+    @NativeName("nCmdShow")
     private int presentation = WindowPresentation.SW_SHOW;
 
-    private ShowWindow(@NotNull final Builder builder) {
+    private ShowWindow(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, SHOW_WINDOW_SIGNATURE);
 

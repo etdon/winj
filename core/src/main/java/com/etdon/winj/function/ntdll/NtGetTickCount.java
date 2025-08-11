@@ -1,5 +1,6 @@
 package com.etdon.winj.function.ntdll;
 
+import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import java.lang.foreign.SymbolLookup;
 
 import static java.lang.foreign.ValueLayout.JAVA_LONG;
 
+@NativeDocumentation(NtGetTickCount.NATIVE_NAME)
 public final class NtGetTickCount extends NativeFunction {
 
     private static class NtGetTickCountSingleton {

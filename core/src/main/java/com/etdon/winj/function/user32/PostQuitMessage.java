@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -12,20 +14,27 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Indicates to the system that a thread has made a request to terminate (quit). It is typically used in response to a
+ * WM_DESTROY message.
+ */
+@NativeName(PostQuitMessage.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postquitmessage")
 public final class PostQuitMessage extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "PostQuitMessage";
     public static final FunctionDescriptor POST_QUIT_MESSAGE_SIGNATURE = FunctionDescriptor.ofVoid(
-            INTEGER
+            INTEGER.withName("nExitCode")
     );
 
     /**
      * The application exit code. This value is used as the wParam parameter of the WM_QUIT message.
      */
+    @NativeName("nExitCode")
     private final int exitCode;
 
-    private PostQuitMessage(@NotNull final Builder builder) {
+    private PostQuitMessage(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, POST_QUIT_MESSAGE_SIGNATURE);
 

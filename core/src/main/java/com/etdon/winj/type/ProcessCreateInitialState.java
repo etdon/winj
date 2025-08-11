@@ -3,6 +3,7 @@ package com.etdon.winj.type;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.jbinder.NativeType;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.winj.constant.ProcessCreateInitFlag;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,8 +24,10 @@ public final class ProcessCreateInitialState extends NativeType {
     /**
      * {@link ProcessCreateInitFlag}
      */
+    @NativeName("InitFlags")
     private int initFlags = 0;
 
+    @NativeName("AdditionalFileAccess")
     private int additionalFileAccess = 0;
 
     public ProcessCreateInitialState(final int initFlags,

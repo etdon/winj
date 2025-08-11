@@ -3,6 +3,7 @@ package com.etdon.winj.function.kernel32.handle;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,10 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Closes an open object handle.
+ */
+@NativeName(CloseHandle.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle")
 public final class CloseHandle extends NativeFunction {
 
@@ -27,6 +32,7 @@ public final class CloseHandle extends NativeFunction {
     /**
      * A valid handle to an open object.
      */
+    @NativeName("hObject")
     private final MemorySegment handle;
 
     private CloseHandle(final MemorySegment handle) {

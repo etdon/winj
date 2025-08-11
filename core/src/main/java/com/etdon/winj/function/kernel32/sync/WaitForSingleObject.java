@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import com.etdon.winj.constant.WaitTime;
@@ -22,6 +23,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  * To enter an alertable wait state, use the WaitForSingleObjectEx function. To wait for multiple objects, use
  * WaitForMultipleObjects.
  */
+@NativeName(WaitForSingleObject.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject")
 public final class WaitForSingleObject extends NativeFunction {
 
@@ -41,6 +43,7 @@ public final class WaitForSingleObject extends NativeFunction {
      * <p>
      * The handle must have the SYNCHRONIZE access right. For more information, see Standard Access Rights.
      */
+    @NativeName("hHandle")
     private final MemorySegment handle;
 
     /**
@@ -58,6 +61,7 @@ public final class WaitForSingleObject extends NativeFunction {
      *
      * @see com.etdon.winj.constant.WaitTime
      */
+    @NativeName("dwMilliseconds")
     private int timeoutMillis = -1;
 
     private WaitForSingleObject(@NotNull final MemorySegment handle) {

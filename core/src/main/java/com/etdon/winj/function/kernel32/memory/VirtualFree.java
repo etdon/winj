@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +22,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  * <p>
  * To free memory allocated in another process by the VirtualAllocEx function, use the VirtualFreeEx function.
  */
+@NativeName(VirtualFree.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualfree")
 public final class VirtualFree extends NativeFunction {
 
@@ -39,6 +41,7 @@ public final class VirtualFree extends NativeFunction {
      * If the dwFreeType parameter is MEM_RELEASE, this parameter must be the base address returned by the VirtualAlloc
      * function when the region of pages is reserved.
      */
+    @NativeName("lpAddress")
     private final MemorySegment addressPointer;
 
     /**
@@ -53,6 +56,7 @@ public final class VirtualFree extends NativeFunction {
      * address returned by VirtualAlloc and dwSize is 0 (zero), the function decommits the entire region that is
      * allocated by VirtualAlloc. After that, the entire region is in the reserved state.
      */
+    @NativeName("dwSize")
     private long size = 0;
 
     /**
@@ -60,6 +64,7 @@ public final class VirtualFree extends NativeFunction {
      *
      * @see com.etdon.winj.constant.memory.FreeType
      */
+    @NativeName("dwFreeType")
     private final int freeType;
 
     private VirtualFree(final Builder builder) {

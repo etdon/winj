@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Tokenizer {
+public final class Tokenizer {
 
     private static final Set<String> KEYWORDS = Set.of("typedef", "struct", "const");
 

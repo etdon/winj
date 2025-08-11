@@ -3,6 +3,8 @@ package com.etdon.winj.function.user32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.ExtendedWindowStyle;
 import com.etdon.winj.constant.WindowStyle;
@@ -17,6 +19,13 @@ import java.lang.foreign.SymbolLookup;
 import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
+/**
+ * Creates an overlapped, pop-up, or child window with an extended window style; otherwise, this function is identical
+ * to the CreateWindow function. For more information about creating a window and for full descriptions of the other
+ * parameters of CreateWindowEx, see CreateWindow.
+ */
+@NativeName(CreateWindowExW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw")
 public final class CreateWindowExW extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
@@ -42,6 +51,7 @@ public final class CreateWindowExW extends NativeFunction {
      *
      * @see ExtendedWindowStyle
      */
+    @NativeName("dwExStyle")
     private final int extendedStyle;
 
     /**
@@ -51,6 +61,7 @@ public final class CreateWindowExW extends NativeFunction {
      * RegisterClass or RegisterClassEx, provided that the module that registers the class is also the module that
      * creates the window. The class name can also be any of the predefined system class names.
      */
+    @NativeName("lpClassName")
     private MemorySegment className = MemorySegment.NULL;
 
     /**
@@ -60,6 +71,7 @@ public final class CreateWindowExW extends NativeFunction {
      * SS_ICON style, use lpWindowName to specify the icon name or identifier. To specify an identifier, use the
      * syntax "#num".
      */
+    @NativeName("lpWindowName")
     private MemorySegment windowName = MemorySegment.NULL;
 
     /**
@@ -68,6 +80,7 @@ public final class CreateWindowExW extends NativeFunction {
      *
      * @see WindowStyle
      */
+    @NativeName("dwStyle")
     private final int style;
 
     /**
@@ -78,6 +91,7 @@ public final class CreateWindowExW extends NativeFunction {
      * corner and ignores the y parameter. CW_USEDEFAULT is valid only for overlapped windows; if it is specified for
      * a pop-up or child window, the x and y parameters are set to zero.
      */
+    @NativeName("X")
     private final int x;
 
     /**
@@ -92,6 +106,7 @@ public final class CreateWindowExW extends NativeFunction {
      * manager calls ShowWindow with the SW_SHOW flag after the window has been created. If the y parameter is some
      * other value, then the window manager calls ShowWindow with that value as the nCmdShow parameter.
      */
+    @NativeName("Y")
     private final int y;
 
     /**
@@ -102,18 +117,21 @@ public final class CreateWindowExW extends NativeFunction {
      * overlapped windows; if CW_USEDEFAULT is specified for a pop-up or child window, the nWidth and nHeight parameter
      * are set to zero.
      */
+    @NativeName("nWidth")
     private final int width;
 
     /**
      * The height, in device units, of the window. For overlapped windows, nHeight is the window's height, in screen
      * coordinates. If the nWidth parameter is set to CW_USEDEFAULT, the system ignores nHeight.
      */
+    @NativeName("nHeight")
     private final int height;
 
     /**
      * A handle to the parent or owner window of the window being created. To create a child window or an owned window,
      * supply a valid window handle. This parameter is optional for pop-up windows.
      */
+    @NativeName("hWndParent")
     private MemorySegment parentHandle = MemorySegment.NULL;
 
     /**
@@ -123,11 +141,13 @@ public final class CreateWindowExW extends NativeFunction {
      * control to notify its parent about events. The application determines the child-window identifier; it must be
      * unique for all child windows with the same parent window.
      */
+    @NativeName("hMenu")
     private MemorySegment menuHandle = MemorySegment.NULL;
 
     /**
      * A handle to the instance of the module to be associated with the window.
      */
+    @NativeName("hInstance")
     private MemorySegment moduleHandle = MemorySegment.NULL;
 
     /**
@@ -139,6 +159,7 @@ public final class CreateWindowExW extends NativeFunction {
      * structure. If an MDI client window calls CreateWindow to create an MDI child window, lpParam should point to a
      * MDICREATESTRUCT structure. lpParam may be NULL if no additional data is needed.
      */
+    @NativeName("lpParam")
     private MemorySegment parameter = MemorySegment.NULL;
 
     private CreateWindowExW(final Builder builder) {

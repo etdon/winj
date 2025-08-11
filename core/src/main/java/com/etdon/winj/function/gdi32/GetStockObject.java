@@ -2,6 +2,8 @@ package com.etdon.winj.function.gdi32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,13 +15,18 @@ import java.lang.foreign.SymbolLookup;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
+/**
+ * The GetStockObject function retrieves a handle to one of the stock pens, brushes, fonts, or palettes.
+ */
+@NativeName(GetStockObject.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getstockobject")
 public final class GetStockObject extends NativeFunction {
 
     public static final String LIBRARY = Library.GDI_32;
     public static final String NATIVE_NAME = "GetStockObject";
     public static final FunctionDescriptor GET_STOCK_SIGNATURE = FunctionDescriptor.of(
             ADDRESS,
-            JAVA_INT
+            JAVA_INT.withName("i")
     );
 
     /**
@@ -27,6 +34,7 @@ public final class GetStockObject extends NativeFunction {
      *
      * @see com.etdon.winj.constant.StockObject
      */
+    @NativeName("i")
     private final int id;
 
     private GetStockObject(final Builder builder) {

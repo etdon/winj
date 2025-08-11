@@ -5,6 +5,7 @@ import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.NativeType;
 import com.etdon.jbinder.common.MemorySegmentable;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.winj.constant.ProcessCreateState;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,11 +33,13 @@ public final class ProcessCreateInfo extends NativeType {
     );
     public static final ValueLayout PPS_CREATE_INFO = ADDRESS.withName("PPS_CREATE_INFO");
 
+    @NativeName("Size")
     private final long size;
 
     /**
      * {@link com.etdon.winj.constant.ProcessCreateState}
      */
+    @NativeName("State")
     private final int state;
 
     private MemorySegmentable info = MemorySegmentable.NULL;

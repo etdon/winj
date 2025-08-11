@@ -3,6 +3,7 @@ package com.etdon.winj.function.user32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,12 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * The ReleaseDC function releases a device context (DC), freeing it for use by other applications. The effect of the
+ * ReleaseDC function depends on the type of DC. It frees only common and window DCs. It has no effect on class or
+ * private DCs.
+ */
+@NativeName(ReleaseDC.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-releasedc")
 public final class ReleaseDC extends NativeFunction {
 
@@ -22,20 +29,22 @@ public final class ReleaseDC extends NativeFunction {
     public static final FunctionDescriptor RELEASE_DC_SIGNATURE = FunctionDescriptor.of(
             INTEGER,
             HWND.withName("hWnd"),
-            HDC.withName("hDc")
+            HDC.withName("hDC")
     );
 
     /**
      * A handle to the window whose DC is to be released.
      */
+    @NativeName("hWnd")
     private final MemorySegment windowHandle;
 
     /**
      * A handle to the DC to be released.
      */
+    @NativeName("hDC")
     private final MemorySegment deviceContextHandle;
 
-    private ReleaseDC(@NotNull final Builder builder) {
+    private ReleaseDC(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, RELEASE_DC_SIGNATURE);
 

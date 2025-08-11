@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +14,14 @@ import java.nio.charset.StandardCharsets;
 import static com.etdon.winj.type.constant.NativeDataType.*;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
+/**
+ * The DrawText function draws formatted text in the specified rectangle. It formats the text according to the
+ * specified method (expanding tabs, justifying characters, breaking lines, and so forth).
+ * <p>
+ * To specify additional formatting options, use the DrawTextEx function.
+ */
+@NativeName(DrawTextW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-drawtextw")
 public final class DrawTextW extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
@@ -28,32 +38,37 @@ public final class DrawTextW extends NativeFunction {
     /**
      * A handle to the device context.
      */
+    @NativeName("hdc")
     private final MemorySegment deviceContextHandle;
 
     /**
      * A pointer to the string that specifies the text to be drawn. If the nCount parameter is -1, the string must be
      * null-terminated.
      */
+    @NativeName("lpchText")
     private final MemorySegment textPointer;
 
     /**
      * The length, in characters, of the string. If nCount is -1, then the lpchText parameter is assumed to be a
      * pointer to a null-terminated string and DrawText computes the character count automatically.
      */
+    @NativeName("cchText")
     private final int textLength;
 
     /**
      * A pointer to a RECT structure that contains the rectangle (in logical coordinates) in which the text is to be
      * formatted.
      */
+    @NativeName("lprc")
     private final MemorySegment rectanglePointer;
 
     /**
      * The method of formatting the text.
      */
+    @NativeName("format")
     private final int format;
 
-    private DrawTextW(@NotNull final Builder builder) {
+    private DrawTextW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, DRAW_TEXT_W_SIGNATURE);
 

@@ -3,11 +3,12 @@ package com.etdon.winj.function.advapi32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.ShutdownFlag;
 import com.etdon.winj.constant.ShutdownReason;
 import com.etdon.winj.constant.Library;
-import com.etdon.winj.type.constant.NativeDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.FunctionDescriptor;
@@ -15,30 +16,35 @@ import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
+import static com.etdon.winj.type.constant.NativeDataType.DWORD;
 import static java.lang.foreign.ValueLayout.*;
 
-public final class InitiateShutdown extends NativeFunction {
+@NativeName(InitiateShutdownW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-initiateshutdownw")
+public final class InitiateShutdownW extends NativeFunction {
 
     public static final String LIBRARY = Library.ADVAPI_32;
     public static final String NATIVE_NAME = "InitiateShutdownW";
     public static final FunctionDescriptor INITIATE_SHUTDOWN_W_SIGNATURE = FunctionDescriptor.of(
-            NativeDataType.DWORD,
+            DWORD,
             ADDRESS.withName("lpMachineName"),
             ADDRESS.withName("lpMessage"),
-            NativeDataType.DWORD.withName("dwGracePeriod"),
-            NativeDataType.DWORD.withName("dwShutdownFlags"),
-            NativeDataType.DWORD.withName("dwReason")
+            DWORD.withName("dwGracePeriod"),
+            DWORD.withName("dwShutdownFlags"),
+            DWORD.withName("dwReason")
     );
 
     /**
      * The name of the computer to be shut down. If the value of this parameter is NULL, the local computer is shut
      * down.
      */
+    @NativeName("lpMachineName")
     private MemorySegment machineName = MemorySegment.NULL;
 
     /**
      * The message to be displayed in the interactive shutdown dialog box.
      */
+    @NativeName("lpMessage")
     private MemorySegment message = MemorySegment.NULL;
 
     /**
@@ -48,6 +54,7 @@ public final class InitiateShutdown extends NativeFunction {
      * If the value of this parameter is greater than zero, and the dwShutdownFlags parameter specifies the flag
      * SHUTDOWN_GRACE_OVERRIDE, the function fails and returns the error code ERROR_BAD_ARGUMENTS.
      */
+    @NativeName("dwGracePeriod")
     private final int gracePeriod;
 
     /**
@@ -55,6 +62,7 @@ public final class InitiateShutdown extends NativeFunction {
      *
      * @see ShutdownFlag
      */
+    @NativeName("dwShutdownFlags")
     private final int shutdownFlags;
 
     /**
@@ -66,9 +74,10 @@ public final class InitiateShutdown extends NativeFunction {
      *
      * @see ShutdownReason
      */
+    @NativeName("dwReason")
     private final int reason;
 
-    private InitiateShutdown(final Builder builder) {
+    private InitiateShutdownW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, INITIATE_SHUTDOWN_W_SIGNATURE);
 
@@ -99,7 +108,7 @@ public final class InitiateShutdown extends NativeFunction {
 
     }
 
-    public static final class Builder implements FluentBuilder<InitiateShutdown> {
+    public static final class Builder implements FluentBuilder<InitiateShutdownW> {
 
         private MemorySegment machineName;
         private MemorySegment message;
@@ -148,13 +157,13 @@ public final class InitiateShutdown extends NativeFunction {
 
         @NotNull
         @Override
-        public InitiateShutdown build() {
+        public InitiateShutdownW build() {
 
             Preconditions.checkNotNull(this.gracePeriod);
             Preconditions.checkNotNull(this.shutdownFlags);
             Preconditions.checkNotNull(this.reason);
 
-            return new InitiateShutdown(this);
+            return new InitiateShutdownW(this);
 
         }
 

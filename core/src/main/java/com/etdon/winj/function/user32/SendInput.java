@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import com.etdon.winj.type.input.Input;
@@ -14,34 +16,42 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Synthesizes keystrokes, mouse motions, and button clicks.
+ */
+@NativeName(SendInput.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput")
 public final class SendInput extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "SendInput";
     public static final FunctionDescriptor SEND_INPUT_SIGNATURE = FunctionDescriptor.of(
             UINT,
-            UINT,
-            LPINPUT,
-            INTEGER
+            UINT.withName("cInputs"),
+            LPINPUT.withName("pInputs"),
+            INTEGER.withName("cbSize")
     );
 
     /**
      * The number of structures in the pInputs array.
      */
+    @NativeName("cInputs")
     private final int inputCount;
 
     /**
      * An array of INPUT structures. Each structure represents an event to be inserted into the keyboard or mouse input
      * stream.
      */
+    @NativeName("pInputs")
     private final MemorySegment inputArray;
 
     /**
      * The size, in bytes, of an INPUT structure. If cbSize is not the size of an INPUT structure, the function fails.
      */
+    @NativeName("cbSize")
     private final int inputByteSize;
 
-    private SendInput(@NotNull final Builder builder) {
+    private SendInput(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, SEND_INPUT_SIGNATURE);
 

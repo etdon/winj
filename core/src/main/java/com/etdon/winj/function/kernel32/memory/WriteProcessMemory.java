@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,7 @@ import static java.lang.foreign.ValueLayout.ADDRESS;
  * Writes data to an area of memory in a specified process. The entire area to be written to must be accessible or the
  * operation fails.
  */
+@NativeName(WriteProcessMemory.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-writeprocessmemory")
 public final class WriteProcessMemory extends NativeFunction {
 
@@ -38,6 +40,7 @@ public final class WriteProcessMemory extends NativeFunction {
      * A handle to the process memory to be modified. The handle must have PROCESS_VM_WRITE and PROCESS_VM_OPERATION
      * access to the process.
      */
+    @NativeName("hProcess")
     private final MemorySegment processHandle;
 
     /**
@@ -45,22 +48,26 @@ public final class WriteProcessMemory extends NativeFunction {
      * the system verifies that all data in the base address and memory of the specified size is accessible for write
      * access, and if it is not accessible, the function fails.
      */
+    @NativeName("lpBaseAddress")
     private final MemorySegment baseAddressPointer;
 
     /**
      * A pointer to the buffer that contains data to be written in the address space of the specified process.
      */
+    @NativeName("lpBuffer")
     private final MemorySegment bufferPointer;
 
     /**
      * The number of bytes to be written to the specified process.
      */
+    @NativeName("nSize")
     private final long size;
 
     /**
      * A pointer to a variable that receives the number of bytes transferred into the specified process. This parameter
      * is optional. If lpNumberOfBytesWritten is NULL, the parameter is ignored.
      */
+    @NativeName("lpNumberOfBytesWritten")
     private MemorySegment bytesWrittenOutputPointer = MemorySegment.NULL;
 
     private WriteProcessMemory(final Builder builder) {

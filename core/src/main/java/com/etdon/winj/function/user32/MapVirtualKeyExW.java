@@ -3,6 +3,8 @@ package com.etdon.winj.function.user32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.VirtualKeyMapType;
 import com.etdon.winj.constant.Library;
@@ -15,21 +17,28 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Translates (maps) a virtual-key code into a scan code or character value, or translates a scan code into a
+ * virtual-key code. The function translates the codes using the input language and an input locale identifier.
+ */
+@NativeName(MapVirtualKeyExW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-mapvirtualkeyexw")
 public final class MapVirtualKeyExW extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "MapVirtualKeyExW";
     public static final FunctionDescriptor MAP_VIRTUAL_KEY_EX_W_SIGNATURE = FunctionDescriptor.of(
             UINT,
-            UINT,
-            UINT,
-            HKL
+            UINT.withName("uCode"),
+            UINT.withName("uMapType"),
+            HKL.withName("dwhkl")
     );
 
     /**
      * The virtual key code or scan code for a key. How this value is interpreted depends on the value of the uMapType
      * parameter.
      */
+    @NativeName("uCode")
     private final int code;
 
     /**
@@ -37,15 +46,17 @@ public final class MapVirtualKeyExW extends NativeFunction {
      *
      * @see VirtualKeyMapType
      */
+    @NativeName("uMapType")
     private final int mapType;
 
     /**
      * Input locale identifier to use for translating the specified code. This parameter can be any input locale
      * identifier previously returned by the LoadKeyboardLayout function.
      */
+    @NativeName("dwhkl")
     private MemorySegment localeIdentifierHandle = MemorySegment.NULL;
 
-    private MapVirtualKeyExW(@NotNull final Builder builder) {
+    private MapVirtualKeyExW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, MAP_VIRTUAL_KEY_EX_W_SIGNATURE);
 

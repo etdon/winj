@@ -2,6 +2,8 @@ package com.etdon.winj.function.psapi;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,34 +15,42 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Retrieves the path available for the specified device driver.
+ */
+@NativeName(GetDeviceDriverFileNameW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getdevicedriverfilenamew")
 public final class GetDeviceDriverFileNameW extends NativeFunction {
 
     public static final String LIBRARY = Library.PSAPI;
     public static final String NATIVE_NAME = "GetDeviceDriverFileNameW";
     public static final FunctionDescriptor GET_DEVICE_DRIVER_FILE_NAME_W_SIGNATURE = FunctionDescriptor.of(
             DWORD,
-            LPVOID,
-            LPWSTR,
-            DWORD
+            LPVOID.withName("ImageBase"),
+            LPWSTR.withName("lpFilename"),
+            DWORD.withName("nSize")
     );
 
     /**
      * The load address of the device driver.
      */
+    @NativeName("ImageBase")
     private final MemorySegment driverAddress;
 
     /**
      * A pointer to the buffer that receives the path to the device driver.
      */
+    @NativeName("lpFilename")
     private final MemorySegment fileNameBufferPointer;
 
     /**
      * The size of the lpFilename buffer, in characters. If the buffer is not large enough to store the path plus the
      * terminating null character, the string is truncated.
      */
+    @NativeName("nSize")
     private final int fileNameBufferSize;
 
-    private GetDeviceDriverFileNameW(@NotNull final Builder builder) {
+    private GetDeviceDriverFileNameW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, GET_DEVICE_DRIVER_FILE_NAME_W_SIGNATURE);
 

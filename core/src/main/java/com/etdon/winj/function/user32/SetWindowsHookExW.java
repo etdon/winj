@@ -3,6 +3,8 @@ package com.etdon.winj.function.user32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +17,13 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Installs an application-defined hook procedure into a hook chain. You would install a hook procedure to monitor the
+ * system for certain types of events. These events are associated either with a specific thread or with all threads in
+ * the same desktop as the calling thread.
+ */
+@NativeName(SetWindowsHookExW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowshookexw")
 public final class SetWindowsHookExW extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
@@ -32,6 +41,7 @@ public final class SetWindowsHookExW extends NativeFunction {
      *
      * @see com.etdon.winj.constant.HookType
      */
+    @NativeName("idHook")
     private final int type;
 
     /**
@@ -39,6 +49,7 @@ public final class SetWindowsHookExW extends NativeFunction {
      * created by a different process, the lpfn parameter must point to a hook procedure in a DLL. Otherwise, lpfn can
      * point to a hook procedure in the code associated with the current process.
      */
+    @NativeName("lpfn")
     private final MemorySegment procedurePointer;
 
     /**
@@ -46,6 +57,7 @@ public final class SetWindowsHookExW extends NativeFunction {
      * set to NULL if the dwThreadId parameter specifies a thread created by the current process and if the hook
      * procedure is within the code associated with the current process.
      */
+    @NativeName("hmod")
     private MemorySegment ownerHandle = MemorySegment.NULL;
 
     /**
@@ -53,9 +65,10 @@ public final class SetWindowsHookExW extends NativeFunction {
      * parameter is zero, the hook procedure is associated with all existing threads running in the same desktop as the
      * calling thread. For Windows Store apps, see the Remarks section.
      */
+    @NativeName("dwThreadId")
     private int threadId = 0;
 
-    private SetWindowsHookExW(@NotNull final Builder builder) {
+    private SetWindowsHookExW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, SET_WINDOWS_HOOK_EX_W_SIGNATURE);
 

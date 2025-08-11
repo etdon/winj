@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,14 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+
+/**
+ * Creates a thread that runs in the virtual address space of another process.
+ * <p>
+ * Use the CreateRemoteThreadEx function to create a thread that runs in the virtual address space of another process
+ * and optionally specify extended attributes.
+ */
+@NativeName(CreateRemoteThread.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createremotethread")
 public final class CreateRemoteThread extends NativeFunction {
 
@@ -36,6 +45,7 @@ public final class CreateRemoteThread extends NativeFunction {
      * PROCESS_QUERY_INFORMATION, PROCESS_VM_OPERATION, PROCESS_VM_WRITE, and PROCESS_VM_READ access rights, and may
      * fail without these rights on certain platforms. For more information, see Process Security and Access Rights.
      */
+    @NativeName("hProcess")
     private final MemorySegment processHandle;
 
     /**
@@ -46,12 +56,14 @@ public final class CreateRemoteThread extends NativeFunction {
      *
      * @see com.etdon.winj.type.SecurityAttributes
      */
+    @NativeName("lpThreadAttributes")
     private MemorySegment securityAttributesPointer = MemorySegment.NULL;
 
     /**
      * The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is
      * 0 (zero), the new thread uses the default size for the executable. For more information, see Thread Stack Size.
      */
+    @NativeName("dwStackSize")
     private long stackSize = 0;
 
     /**
@@ -59,11 +71,13 @@ public final class CreateRemoteThread extends NativeFunction {
      * represents the starting address of the thread in the remote process. The function must exist in the remote
      * process. For more information, see ThreadProc.
      */
+    @NativeName("lpStartAddress")
     private final MemorySegment threadStartRoutinePointer;
 
     /**
      * A pointer to a variable to be passed to the thread function.
      */
+    @NativeName("lpParameter")
     private final MemorySegment parameterPointer;
 
     /**
@@ -71,11 +85,13 @@ public final class CreateRemoteThread extends NativeFunction {
      *
      * @see com.etdon.winj.constant.ThreadCreationFlag
      */
+    @NativeName("dwCreationFlags")
     private int creationFlags = 0;
 
     /**
      * A pointer to a variable that receives the thread identifier.
      */
+    @NativeName("lpThreadId")
     private MemorySegment threadIdentifierOutputPointer = MemorySegment.NULL;
 
     private CreateRemoteThread(final Builder builder) {

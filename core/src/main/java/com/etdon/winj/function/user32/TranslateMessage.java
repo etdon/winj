@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,22 +15,29 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Translates virtual-key messages into character messages. The character messages are posted to the calling thread's
+ * message queue, to be read the next time the thread calls the GetMessage or PeekMessage function.
+ */
+@NativeName(TranslateMessage.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-translatemessage")
 public final class TranslateMessage extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "TranslateMessage";
     public static final FunctionDescriptor TRANSLATE_MESSAGE_SIGNATURE = FunctionDescriptor.of(
             BOOL,
-            MSG
+            MSG.withName("lpMsg")
     );
 
     /**
      * A pointer to an MSG structure that contains message information retrieved from the calling thread's message
      * queue by using the GetMessage or PeekMessage function.
      */
+    @NativeName("lpMsg")
     private final MemorySegment messagePointer;
 
-    private TranslateMessage(@NotNull final Builder builder) {
+    private TranslateMessage(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, TRANSLATE_MESSAGE_SIGNATURE);
 

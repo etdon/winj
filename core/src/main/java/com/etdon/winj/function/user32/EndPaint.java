@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,27 +15,31 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+@NativeName(EndPaint.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-endpaint")
 public final class EndPaint extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "EndPaint";
     public static final FunctionDescriptor END_PAINT_SIGNATURE = FunctionDescriptor.of(
             BOOL,
-            HWND,
-            PAINTSTRUCT
+            HWND.withName("hWnd"),
+            PAINTSTRUCT.withName("lpPaint")
     );
 
     /**
      * Handle to the window that has been repainted.
      */
+    @NativeName("hWnd")
     private final MemorySegment windowHandle;
 
     /**
      * Pointer to a PAINTSTRUCT structure that contains the painting information retrieved by BeginPaint.
      */
+    @NativeName("lpPaint")
     private final MemorySegment paintDataPointer;
 
-    private EndPaint(@NotNull final Builder builder) {
+    private EndPaint(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, END_PAINT_SIGNATURE);
 

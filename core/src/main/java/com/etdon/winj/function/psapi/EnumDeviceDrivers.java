@@ -2,6 +2,8 @@ package com.etdon.winj.function.psapi;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,34 +15,42 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Retrieves the load address for each device driver in the system.
+ */
+@NativeName(EnumDeviceDrivers.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-enumdevicedrivers")
 public final class EnumDeviceDrivers extends NativeFunction {
 
     public static final String LIBRARY = Library.PSAPI;
     public static final String NATIVE_NAME = "EnumDeviceDrivers";
     public static final FunctionDescriptor ENUM_DEVICE_DRIVERS_SIGNATURE = FunctionDescriptor.of(
             BOOL,
-            LPVOID,
-            DWORD,
-            LPDWORD
+            LPVOID.withName("lpImageBase"),
+            DWORD.withName("cb"),
+            LPDWORD.withName("lpcbNeeded")
     );
 
     /**
      * An array that receives the list of load addresses for the device drivers.
      */
+    @NativeName("lpImageBase")
     private final MemorySegment driverArrayPointer;
 
     /**
      * The size of the lpImageBase array, in bytes. If the array is not large enough to store the load addresses, the
      * lpcbNeeded parameter receives the required size of the array.
      */
+    @NativeName("cb")
     private final int arraySize;
 
     /**
      * The number of bytes returned in the lpImageBase array.
      */
+    @NativeName("lpcbNeeded")
     private final MemorySegment bytesNeededPointer;
 
-    private EnumDeviceDrivers(@NotNull final Builder builder) {
+    private EnumDeviceDrivers(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, ENUM_DEVICE_DRIVERS_SIGNATURE);
 

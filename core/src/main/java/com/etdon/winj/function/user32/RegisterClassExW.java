@@ -2,6 +2,8 @@ package com.etdon.winj.function.user32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +16,11 @@ import java.lang.foreign.SymbolLookup;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 
+/**
+ * Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.
+ */
+@NativeName(RegisterClassExW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerclassexw")
 public final class RegisterClassExW extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
@@ -27,6 +34,7 @@ public final class RegisterClassExW extends NativeFunction {
      * A pointer to a WNDCLASSEX structure. You must fill the structure with the appropriate class attributes before
      * passing it to the function.
      */
+    @NativeName("unnamedParam1")
     private final MemorySegment windowClassPointer;
 
     private RegisterClassExW(final Builder builder) {

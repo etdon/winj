@@ -2,6 +2,8 @@ package com.etdon.winj.function.gdi32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,19 +15,26 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * The SetBkMode function sets the background mix mode of the specified device context. The background mix mode is used
+ * with text, hatched brushes, and pen styles that are not solid lines.
+ */
+@NativeName(SetBkMode.NATIVE_NAME)
+@NativeDocumentation(SetBkMode.NATIVE_NAME)
 public final class SetBkMode extends NativeFunction {
 
     public static final String LIBRARY = Library.GDI_32;
     public static final String NATIVE_NAME = "SetBkMode";
     public static final FunctionDescriptor SET_BK_MODE_SIGNATURE = FunctionDescriptor.of(
             INTEGER,
-            HDC,
-            INTEGER
+            HDC.withName("hdc"),
+            INTEGER.withName("mode")
     );
 
     /**
      * A handle to the device context.
      */
+    @NativeName("hdc")
     private final MemorySegment deviceContextHandle;
 
     /**
@@ -33,6 +42,7 @@ public final class SetBkMode extends NativeFunction {
      *
      * @see com.etdon.winj.constant.BackgroundMode
      */
+    @NativeName("mode")
     private final int mode;
 
     private SetBkMode(@NotNull final Builder builder) {

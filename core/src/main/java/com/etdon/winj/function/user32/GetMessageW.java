@@ -4,6 +4,7 @@ import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +17,13 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Retrieves a message from the calling thread's message queue. The function dispatches incoming sent messages until a
+ * posted message is available for retrieval.
+ * <p>
+ * Unlike GetMessage, the PeekMessage function does not wait for a message to be posted before returning.
+ */
+@NativeName(GetMessageW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getmessagew")
 public final class GetMessageW extends NativeFunction {
 
@@ -32,6 +40,7 @@ public final class GetMessageW extends NativeFunction {
     /**
      * A pointer to an MSG structure that receives message information from the thread's message queue.
      */
+    @NativeName("lpMsg")
     private final MemorySegment messagePointer;
 
     /**
@@ -44,6 +53,7 @@ public final class GetMessageW extends NativeFunction {
      * If hWnd is -1, GetMessage retrieves only messages on the current thread's message queue whose hwnd value is NULL,
      * that is, thread messages as posted by PostMessage (when the hWnd parameter is NULL) or PostThreadMessage.
      */
+    @NativeName("hWnd")
     private MemorySegment windowHandle = MemorySegment.NULL;
 
     /**
@@ -55,6 +65,7 @@ public final class GetMessageW extends NativeFunction {
      * If wMsgFilterMin and wMsgFilterMax are both zero, GetMessage returns all available messages (that is, no range
      * filtering is performed).
      */
+    @NativeName("wMsgFilterMin")
     private int lowestMessageId;
 
     /**
@@ -66,9 +77,10 @@ public final class GetMessageW extends NativeFunction {
      * If wMsgFilterMin and wMsgFilterMax are both zero, GetMessage returns all available messages (that is, no range
      * filtering is performed).
      */
+    @NativeName("wMsgFilterMax")
     private int highestMessageId;
 
-    private GetMessageW(@NotNull final Builder builder) {
+    private GetMessageW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, GET_MESSAGE_W_SIGNATURE);
 

@@ -3,6 +3,8 @@ package com.etdon.winj.function.user32;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.WindowHandle;
 import com.etdon.winj.constant.Library;
@@ -15,16 +17,24 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * Places (posts) a message in the message queue associated with the thread that created the specified window and
+ * returns without waiting for the thread to process the message.
+ * <p>
+ * To post a message in the message queue associated with a thread, use the PostThreadMessage function.
+ */
+@NativeName(PostMessageW.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postmessagew")
 public final class PostMessageW extends NativeFunction {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "PostMessageW";
     public static final FunctionDescriptor POST_MESSAGE_W_SIGNATURE = FunctionDescriptor.of(
             BOOL,
-            HWND,
-            UINT,
-            WPARAM,
-            LPARAM
+            HWND.withName("hWnd"),
+            UINT.withName("Msg"),
+            WPARAM.withName("wParam"),
+            LPARAM.withName("lParam")
     );
 
     /**
@@ -46,24 +56,28 @@ public final class PostMessageW extends NativeFunction {
      *
      * @see WindowHandle
      */
+    @NativeName("hWnd")
     private MemorySegment windowHandle = MemorySegment.NULL;
 
     /**
      * The message to be posted.
      */
+    @NativeName("Msg")
     private final int message;
 
     /**
      * Additional message-specific information.
      */
+    @NativeName("wParam")
     private final long firstParameter;
 
     /**
      * Additional message-specific information.
      */
+    @NativeName("lParam")
     private final long secondParameter;
 
-    private PostMessageW(@NotNull final Builder builder) {
+    private PostMessageW(final Builder builder) {
 
         super(LIBRARY, NATIVE_NAME, POST_MESSAGE_W_SIGNATURE);
 

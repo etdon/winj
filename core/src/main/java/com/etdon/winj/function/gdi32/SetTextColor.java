@@ -2,6 +2,8 @@ package com.etdon.winj.function.gdi32;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
@@ -13,24 +15,31 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
+/**
+ * The SetTextColor function sets the text color for the specified device context to the specified color.
+ */
+@NativeName(SetTextColor.NATIVE_NAME)
+@NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-settextcolor")
 public final class SetTextColor extends NativeFunction {
 
     public static final String LIBRARY = Library.GDI_32;
     public static final String NATIVE_NAME = "SetTextColor";
     public static final FunctionDescriptor SET_TEXT_COLOR_SIGNATURE = FunctionDescriptor.of(
             COLORREF,
-            HDC,
-            COLORREF
+            HDC.withName("hdc"),
+            COLORREF.withName("color")
     );
 
     /**
      * A handle to the device context.
      */
+    @NativeName("hdc")
     private final MemorySegment deviceContextHandle;
 
     /**
      * The color of the text.
      */
+    @NativeName("color")
     private final int color;
 
     private SetTextColor(@NotNull final Builder builder) {
