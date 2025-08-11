@@ -1,7 +1,7 @@
-package com.etdon.winj.facade.op.marshal.tstring;
+package com.etdon.winj.marshal.tstring;
 
-import com.etdon.winj.facade.op.marshal.Marshal;
-import com.etdon.winj.facade.op.marshal.MarshalContext;
+import com.etdon.winj.marshal.Marshal;
+import com.etdon.winj.marshal.MarshalContext;
 import org.jetbrains.annotations.NotNull;
 
 public final class StringMarshal extends Marshal<String, StringMarshalContext> {

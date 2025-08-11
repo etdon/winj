@@ -1,8 +1,8 @@
-package com.etdon.winj.facade.op.marshal.tstring;
+package com.etdon.winj.marshal.tstring;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.winj.facade.op.marshal.MarshalStrategy;
+import com.etdon.winj.marshal.MarshalStrategy;
 import org.jetbrains.annotations.NotNull;
 
 public final class XorStringMarshalStrategy extends MarshalStrategy<String, StringMarshalContext> {

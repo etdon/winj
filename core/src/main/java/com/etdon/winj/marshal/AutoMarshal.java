@@ -1,11 +1,11 @@
-package com.etdon.winj.facade.op.marshal;
+package com.etdon.winj.marshal;
 
 import com.etdon.commons.tuple.Pair;
 import com.etdon.commons.util.Exceptional;
 import com.etdon.commons.util.MapUtils;
-import com.etdon.winj.facade.op.marshal.primitive.*;
-import com.etdon.winj.facade.op.marshal.tchar.CharacterMarshal;
-import com.etdon.winj.facade.op.marshal.tstring.StringMarshal;
+import com.etdon.winj.marshal.primitive.*;
+import com.etdon.winj.marshal.tchar.CharacterMarshal;
+import com.etdon.winj.marshal.tstring.StringMarshal;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;

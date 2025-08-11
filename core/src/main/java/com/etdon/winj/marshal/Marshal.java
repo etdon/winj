@@ -1,4 +1,4 @@
-package com.etdon.winj.facade.op.marshal;
+package com.etdon.winj.marshal;
 
 import org.jetbrains.annotations.NotNull;
 

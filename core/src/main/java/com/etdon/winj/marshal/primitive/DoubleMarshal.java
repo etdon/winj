@@ -1,7 +1,7 @@
-package com.etdon.winj.facade.op.marshal.primitive;
+package com.etdon.winj.marshal.primitive;
 
-import com.etdon.winj.facade.op.marshal.Marshal;
-import com.etdon.winj.facade.op.marshal.MarshalContext;
+import com.etdon.winj.marshal.Marshal;
+import com.etdon.winj.marshal.MarshalContext;
 import org.jetbrains.annotations.NotNull;
 
 public final class DoubleMarshal extends Marshal<Double, PrimitiveMarshalContext<Double>> {

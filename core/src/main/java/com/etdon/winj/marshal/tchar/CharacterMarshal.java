@@ -1,7 +1,7 @@
-package com.etdon.winj.facade.op.marshal.tchar;
+package com.etdon.winj.marshal.tchar;
 
-import com.etdon.winj.facade.op.marshal.Marshal;
-import com.etdon.winj.facade.op.marshal.MarshalContext;
+import com.etdon.winj.marshal.Marshal;
+import com.etdon.winj.marshal.MarshalContext;
 import org.jetbrains.annotations.NotNull;
 
 public final class CharacterMarshal extends Marshal<Character, CharacterMarshalContext> {

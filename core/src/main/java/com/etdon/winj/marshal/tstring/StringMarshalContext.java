@@ -1,24 +1,24 @@
-package com.etdon.winj.facade.op.marshal.tchar;
+package com.etdon.winj.marshal.tstring;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
-import com.etdon.winj.facade.op.marshal.MarshalContext;
-import com.etdon.winj.facade.op.marshal.MarshalStrategy;
+import com.etdon.winj.marshal.MarshalContext;
+import com.etdon.winj.marshal.MarshalStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;
 
-public final class CharacterMarshalContext extends MarshalContext<Character, CharacterMarshalContext> {
+public final class StringMarshalContext extends MarshalContext<String, StringMarshalContext> {
 
     private Charset charset;
 
-    private CharacterMarshalContext() {
+    private StringMarshalContext() {
 
         super(null);
 
     }
 
-    private CharacterMarshalContext(final Builder builder) {
+    private StringMarshalContext(final Builder builder) {
 
         super(builder.strategy);
 
@@ -32,9 +32,9 @@ public final class CharacterMarshalContext extends MarshalContext<Character, Cha
 
     }
 
-    public static CharacterMarshalContext empty() {
+    public static StringMarshalContext empty() {
 
-        return new CharacterMarshalContext();
+        return new StringMarshalContext();
 
     }
 
@@ -44,16 +44,16 @@ public final class CharacterMarshalContext extends MarshalContext<Character, Cha
 
     }
 
-    public static class Builder implements FluentBuilder<CharacterMarshalContext> {
+    public static class Builder implements FluentBuilder<StringMarshalContext> {
 
-        private MarshalStrategy<Character, CharacterMarshalContext> strategy;
+        private MarshalStrategy<String, StringMarshalContext> strategy;
         private Charset charset = Charset.defaultCharset();
 
         private Builder() {
 
         }
 
-        public Builder strategy(@NotNull final MarshalStrategy<Character, CharacterMarshalContext> strategy) {
+        public Builder strategy(@NotNull final MarshalStrategy<String, StringMarshalContext> strategy) {
 
             this.strategy = strategy;
             return this;
@@ -69,9 +69,9 @@ public final class CharacterMarshalContext extends MarshalContext<Character, Cha
 
         @NotNull
         @Override
-        public CharacterMarshalContext build() {
+        public StringMarshalContext build() {
 
-            return new CharacterMarshalContext(this);
+            return new StringMarshalContext(this);
 
         }
 

@@ -1,8 +1,8 @@
-package com.etdon.winj.facade.op.marshal.primitive;
+package com.etdon.winj.marshal.primitive;
 
 import com.etdon.commons.builder.FluentBuilder;
-import com.etdon.winj.facade.op.marshal.MarshalContext;
-import com.etdon.winj.facade.op.marshal.MarshalStrategy;
+import com.etdon.winj.marshal.MarshalContext;
+import com.etdon.winj.marshal.MarshalStrategy;
 import org.jetbrains.annotations.NotNull;
 
 public final class PrimitiveMarshalContext<T> extends MarshalContext<T, PrimitiveMarshalContext<T>> {
