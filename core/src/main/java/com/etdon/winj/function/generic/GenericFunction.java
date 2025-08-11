@@ -121,7 +121,7 @@ public final class GenericFunction extends NativeFunction {
                 if (PRIMITIVE_VALUE_LAYOUTS.containsKey(input)) {
                     return PRIMITIVE_VALUE_LAYOUTS.get(input);
                 } else {
-                    throw new RuntimeException("");
+                    throw new RuntimeException("Failed to resolve class '" + ((Class<?>) input).getName() + "' to value.");
                 }
             }
 
@@ -155,6 +155,8 @@ public final class GenericFunction extends NativeFunction {
                     } else {
                         this.parameters.set(i, null);
                     }
+                } else if (parameter instanceof MemoryLayout) {
+                    this.parameters.set(i, null);
                 }
             }
 
