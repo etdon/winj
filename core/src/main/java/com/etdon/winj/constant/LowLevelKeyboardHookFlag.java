@@ -5,7 +5,7 @@ public final class LowLevelKeyboardHookFlag {
     /**
      * Test the extended-key flag.
      */
-    public static final int LLKHF_EXTENDED = (KeystrokeFlag.KF_EXTENDED >> 8);
+    public static final int LLKHF_EXTENDED = (KeystrokeFlag.KF_EXTENDED >>> 8);
     /**
      * Test the event-injected (from a process running at lower integrity level) flag.
      */
@@ -17,11 +17,11 @@ public final class LowLevelKeyboardHookFlag {
     /**
      * Test the context code.
      */
-    public static final int LLKHF_ALTDOWN = (KeystrokeFlag.KF_ALTDOWN >> 8);
+    public static final int LLKHF_ALTDOWN = (KeystrokeFlag.KF_ALTDOWN >>> 8);
     /**
      * Test the transition-state flag.
      */
-    public static final int LLKHF_UP = (KeystrokeFlag.KF_UP >> 8);
+    public static final int LLKHF_UP = (KeystrokeFlag.KF_UP >>> 8);
 
     private LowLevelKeyboardHookFlag() {
 

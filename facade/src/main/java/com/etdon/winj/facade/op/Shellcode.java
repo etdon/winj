@@ -80,7 +80,7 @@ public final class Shellcode {
         public Builder shortValue(final short value) {
 
             for (int i = 0; i < Short.BYTES; i++)
-                this.buffer.add((byte) ((value >> (i * 8)) & 0xFF));
+                this.buffer.add((byte) ((value >>> (i * 8)) & 0xFF));
             return this;
 
         }
@@ -88,7 +88,7 @@ public final class Shellcode {
         public Builder intValue(final int value) {
 
             for (int i = 0; i < Integer.BYTES; i++)
-                this.buffer.add((byte) ((value >> (i * 8)) & 0xFF));
+                this.buffer.add((byte) ((value >>> (i * 8)) & 0xFF));
             return this;
 
         }
@@ -97,7 +97,7 @@ public final class Shellcode {
         public Builder longValue(final long value) {
 
             for (int i = 0; i < Long.BYTES; i++)
-                this.buffer.add((byte) ((value >> (i * 8)) & 0xFF));
+                this.buffer.add((byte) ((value >>> (i * 8)) & 0xFF));
             return this;
 
         }
@@ -461,7 +461,7 @@ public final class Shellcode {
         public Builder address(final long address) {
 
             for (int i = 0; i < Long.BYTES; i++)
-                this.buffer.add((byte) ((address >> (i * 8)) & 0xFF));
+                this.buffer.add((byte) ((address >>> (i * 8)) & 0xFF));
             return this;
 
         }

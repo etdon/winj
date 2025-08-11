@@ -1,4 +1,4 @@
-package com.etdon.winj.facade.op.marshal.string;
+package com.etdon.winj.facade.op.marshal.tchar;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
@@ -8,11 +8,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;
 
-public final class StringMarshalContext extends MarshalContext<String, StringMarshalContext> {
+public final class CharacterMarshalContext extends MarshalContext<Character, CharacterMarshalContext> {
 
     private Charset charset;
 
-    private StringMarshalContext(final Builder builder) {
+    private CharacterMarshalContext() {
+
+        super(null);
+
+    }
+
+    private CharacterMarshalContext(final Builder builder) {
 
         super(builder.strategy);
 
@@ -26,22 +32,28 @@ public final class StringMarshalContext extends MarshalContext<String, StringMar
 
     }
 
+    public static CharacterMarshalContext empty() {
+
+        return new CharacterMarshalContext();
+
+    }
+
     public static Builder builder() {
 
         return new Builder();
 
     }
 
-    public static class Builder implements FluentBuilder<StringMarshalContext> {
+    public static class Builder implements FluentBuilder<CharacterMarshalContext> {
 
-        private MarshalStrategy<String, StringMarshalContext> strategy;
+        private MarshalStrategy<Character, CharacterMarshalContext> strategy;
         private Charset charset = Charset.defaultCharset();
 
         private Builder() {
 
         }
 
-        public Builder strategy(@NotNull final MarshalStrategy<String, StringMarshalContext> strategy) {
+        public Builder strategy(@NotNull final MarshalStrategy<Character, CharacterMarshalContext> strategy) {
 
             this.strategy = strategy;
             return this;
@@ -57,9 +69,9 @@ public final class StringMarshalContext extends MarshalContext<String, StringMar
 
         @NotNull
         @Override
-        public StringMarshalContext build() {
+        public CharacterMarshalContext build() {
 
-            return new StringMarshalContext(this);
+            return new CharacterMarshalContext(this);
 
         }
 

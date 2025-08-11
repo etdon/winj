@@ -1,7 +1,11 @@
 package com.etdon.winj.facade.op.marshal;
 
+import com.etdon.commons.tuple.Pair;
 import com.etdon.commons.util.Exceptional;
-import com.etdon.winj.facade.op.marshal.string.StringMarshal;
+import com.etdon.commons.util.MapUtils;
+import com.etdon.winj.facade.op.marshal.primitive.*;
+import com.etdon.winj.facade.op.marshal.tchar.CharacterMarshal;
+import com.etdon.winj.facade.op.marshal.tstring.StringMarshal;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -9,8 +13,15 @@ import java.util.Map;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public final class AutoMarshal {
 
-    public static final Map<Class<?>, Marshal> REGISTRY = Map.of(
-            String.class, StringMarshal.getInstance()
+    public static final Map<Class<?>, Marshal> REGISTRY = MapUtils.newMap(
+            Pair.of(Byte.class, ByteMarshal.getInstance()),
+            Pair.of(Character.class, CharacterMarshal.getInstance()),
+            Pair.of(Short.class, ShortMarshal.getInstance()),
+            Pair.of(Integer.class, IntegerMarshal.getInstance()),
+            Pair.of(Float.class, FloatMarshal.getInstance()),
+            Pair.of(Long.class, LongMarshal.getInstance()),
+            Pair.of(Double.class, DoubleMarshal.getInstance()),
+            Pair.of(String.class, StringMarshal.getInstance())
     );
 
     public static byte[] marshal(@NotNull final Object input, @NotNull final MarshalContext context) {

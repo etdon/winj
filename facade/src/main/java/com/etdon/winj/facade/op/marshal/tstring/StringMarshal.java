@@ -1,4 +1,4 @@
-package com.etdon.winj.facade.op.marshal.string;
+package com.etdon.winj.facade.op.marshal.tstring;
 
 import com.etdon.winj.facade.op.marshal.Marshal;
 import com.etdon.winj.facade.op.marshal.MarshalContext;
@@ -34,6 +34,7 @@ public final class StringMarshal extends Marshal<String, StringMarshalContext> {
 
     }
 
+    @Override
     public boolean isValid(@NotNull final MarshalContext<?, ?> context) {
 
         return context instanceof StringMarshalContext;

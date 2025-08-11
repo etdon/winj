@@ -1,4 +1,4 @@
-package com.etdon.winj.facade.op.marshal.string;
+package com.etdon.winj.facade.op.marshal.tstring;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
