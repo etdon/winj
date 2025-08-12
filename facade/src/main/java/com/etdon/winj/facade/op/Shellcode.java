@@ -2,6 +2,7 @@ package com.etdon.winj.facade.op;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.winj.facade.op.instruction.*;
 import com.etdon.winj.facade.op.register.Register;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,6 +41,21 @@ public final class Shellcode {
         private final List<Byte> buffer = new ArrayList<>();
 
         private Builder() {
+
+        }
+
+        public Builder raw(final byte value) {
+
+            this.buffer.add(value);
+            return this;
+
+        }
+
+        public Builder raw(final byte[] values) {
+
+            for (final byte b : values)
+                this.buffer.add(b);
+            return this;
 
         }
 
@@ -104,356 +120,154 @@ public final class Shellcode {
 
         public Builder mov(@NotNull final Register destination, @NotNull final Register source) {
 
-            Preconditions.checkNotNull(destination);
-            Preconditions.checkNotNull(source);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, source.isExtended(), true),
-                    Opcode.Primary.MOV.RM64_R64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(source.getValue())
-                            .rm(destination.getValue())
-                            .build()
-            );
+            this.raw(Instruction_RM64_R64.of(destination, source).build());
             return this;
 
         }
 
         public Builder mov(@NotNull final Register destination, final long value) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.MOV.R64_IMM64 | destination.getValue()
-            );
-            this.longValue(value);
+            this.raw(Instruction_MOV_R64_IMM64.of(destination, value).build());
             return this;
 
         }
 
         public Builder push(@NotNull final Register destination) {
 
-            Preconditions.checkNotNull(destination);
-            if (destination.isExtended()) {
-                this.instructions(
-                        Opcode.Prefix.of(true, false, false, false),
-                        Opcode.Primary.PUSH_R64 | destination.getValue()
-                );
-            } else {
-                this.instruction(Opcode.Primary.PUSH_R64 | destination.getValue());
-            }
+            this.raw(Instruction_PUSH_R64.of(destination).build());
             return this;
 
         }
 
         public Builder pop(@NotNull final Register source) {
 
-            Preconditions.checkNotNull(source);
-            if (source.isExtended()) {
-                this.instructions(
-                        Opcode.Prefix.of(true, false, false, false),
-                        Opcode.Primary.POP_R64 | source.getValue()
-                );
-            } else {
-                this.instruction(Opcode.Primary.POP_R64 | source.getValue());
-            }
+            this.raw(Instruction_POP_R64.of(source).build());
             return this;
 
         }
 
         public Builder call(@NotNull final Register destination) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.CALL_RM64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(2)
-                            .rm(destination.getValue())
-                            .build()
-            );
+            this.raw(Instruction_CALL_RM64.of(destination).build());
             return this;
 
         }
 
         public Builder xor(@NotNull final Register destination, @NotNull final Register source) {
 
-            Preconditions.checkNotNull(destination);
-            Preconditions.checkNotNull(source);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, source.isExtended(), true),
-                    Opcode.Primary.XOR.RM64_R64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(source.getValue())
-                            .rm(destination.getValue())
-                            .build()
-            );
+            this.raw(Instruction_XOR_RM64_R64.of(destination, source).build());
             return this;
 
         }
 
         public Builder inc(@NotNull final Register destination) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.INC_RM64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(0)
-                            .rm(destination.getValue())
-                            .build()
-            );
+            this.raw(Instruction_INC_RM64.of(destination).build());
             return this;
 
         }
 
         public Builder dec(@NotNull final Register destination) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.DEC_RM64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(1)
-                            .rm(destination.getValue())
-                            .build()
-            );
+            this.raw(Instruction_DEC_RM64.of(destination).build());
             return this;
 
         }
 
         public Builder not(@NotNull final Register destination) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.NOT_RM64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(2)
-                            .rm(destination.getValue())
-                            .build()
-            );
+            this.raw(Instruction_NOT_RM64.of(destination).build());
             return this;
 
         }
 
         public Builder neg(@NotNull final Register destination) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.NEG_RM64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(3)
-                            .rm(destination.getValue())
-                            .build()
-            );
+            this.raw(Instruction_NEG_RM64.of(destination).build());
             return this;
 
         }
 
         public Builder mul(@NotNull final Register source) {
 
-            Preconditions.checkNotNull(source);
-            this.instructions(
-                    Opcode.Prefix.of(source.isExtended(), false, false, true),
-                    Opcode.Primary.MUL_RM64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(4)
-                            .rm(source.getValue())
-                            .build()
-            );
+            this.raw(Instruction_MUL_RM64.of(source).build());
             return this;
 
         }
 
         public Builder imul(@NotNull final Register source) {
 
-            Preconditions.checkNotNull(source);
-            this.instructions(
-                    Opcode.Prefix.of(source.isExtended(), false, false, true),
-                    Opcode.Primary.IMUL_RM64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(5)
-                            .rm(source.getValue())
-                            .build()
-            );
+            this.raw(Instruction_IMUL_RM64.of(source).build());
             return this;
 
         }
 
         public Builder div(@NotNull final Register source) {
 
-            Preconditions.checkNotNull(source);
-            this.instructions(
-                    Opcode.Prefix.of(source.isExtended(), false, false, true),
-                    Opcode.Primary.DIV_RM64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(6)
-                            .rm(source.getValue())
-                            .build()
-            );
+            this.raw(Instruction_DIV_RM64.of(source).build());
             return this;
 
         }
 
         public Builder idiv(@NotNull final Register source) {
 
-            Preconditions.checkNotNull(source);
-            this.instructions(
-                    Opcode.Prefix.of(source.isExtended(), false, false, true),
-                    Opcode.Primary.IDIV_RM64,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(7)
-                            .rm(source.getValue())
-                            .build()
-            );
+            this.raw(Instruction_IDIV_RM64.of(source).build());
             return this;
 
         }
 
         public Builder add(@NotNull final Register destination, final byte value) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.ADD_RM64_IMM8,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(0)
-                            .rm(destination.getValue())
-                            .build(),
-                    value
-            );
+            this.raw(Instruction_ADD_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
         public Builder or(@NotNull final Register destination, final byte value) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.OR_RM64_IMM8,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(1)
-                            .rm(destination.getValue())
-                            .build(),
-                    value
-            );
+            this.raw(Instruction_OR_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
         public Builder adc(@NotNull final Register destination, final byte value) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.ADC_RM64_IMM8,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(2)
-                            .rm(destination.getValue())
-                            .build(),
-                    value
-            );
+            this.raw(Instruction_ADC_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
         public Builder sbb(@NotNull final Register destination, final byte value) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.SBB_RM64_IMM8,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(3)
-                            .rm(destination.getValue())
-                            .build(),
-                    value
-            );
+            this.raw(Instruction_SBB_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
         public Builder and(@NotNull final Register destination, final byte value) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.AND_RM64_IMM8,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(4)
-                            .rm(destination.getValue())
-                            .build(),
-                    value
-            );
+            this.raw(Instruction_AND_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
         public Builder sub(@NotNull final Register destination, final byte value) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.SUB_RM64_IMM8,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(5)
-                            .rm(destination.getValue())
-                            .build(),
-                    value
-            );
+            this.raw(Instruction_SUB_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
         public Builder xor(@NotNull final Register destination, final byte value) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.XOR_RM64_IMM8,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(6)
-                            .rm(destination.getValue())
-                            .build(),
-                    value
-            );
+            this.raw(Instruction_XOR_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
         public Builder cmp(@NotNull final Register destination, final byte value) {
 
-            Preconditions.checkNotNull(destination);
-            this.instructions(
-                    Opcode.Prefix.of(destination.isExtended(), false, false, true),
-                    Opcode.Primary.CMP_RM64_IMM8,
-                    Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
-                            .reg(7)
-                            .rm(destination.getValue())
-                            .build(),
-                    value
-            );
+            this.raw(Instruction_CMP_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
