@@ -9,10 +9,10 @@ public final class Register8 extends Register {
     public static final Register8 BL = Register8.of((byte) 0b011, false);
 
     // With REX prefix
-    public static final Register8 SPL = Register8.of((byte) 0b100, false);
-    public static final Register8 BPL = Register8.of((byte) 0b101, false);
-    public static final Register8 SIL = Register8.of((byte) 0b110, false);
-    public static final Register8 DIL = Register8.of((byte) 0b111, false);
+    public static final Register8 SPL = Register8.of((byte) 0b100, true);
+    public static final Register8 BPL = Register8.of((byte) 0b101, true);
+    public static final Register8 SIL = Register8.of((byte) 0b110, true);
+    public static final Register8 DIL = Register8.of((byte) 0b111, true);
 
     // Without REX prefix
     public static final Register8 AH = Register8.of((byte) 0b100, false);

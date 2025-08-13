@@ -175,6 +175,20 @@ public final class Shellcode {
 
         }
 
+        public Builder test(@NotNull final Register64 destination, final int value) {
+
+            this.raw(Instruction_TEST_RM64_IMM32.of(destination, value).build());
+            return this;
+
+        }
+
+        public Builder test(@NotNull final Register8 destination, final byte value) {
+
+            this.raw(Instruction_TEST_RM8_IMM8.of(destination, value).build());
+            return this;
+
+        }
+
         public Builder not(@NotNull final Register64 destination) {
 
             this.raw(Instruction_NOT_RM64.of(destination).build());
@@ -182,9 +196,23 @@ public final class Shellcode {
 
         }
 
+        public Builder not(@NotNull final Register8 destination) {
+
+            this.raw(Instruction_NOT_RM8.of(destination).build());
+            return this;
+
+        }
+
         public Builder neg(@NotNull final Register64 destination) {
 
             this.raw(Instruction_NEG_RM64.of(destination).build());
+            return this;
+
+        }
+
+        public Builder neg(@NotNull final Register8 destination) {
+
+            this.raw(Instruction_NEG_RM8.of(destination).build());
             return this;
 
         }
@@ -224,9 +252,23 @@ public final class Shellcode {
 
         }
 
+        public Builder div(@NotNull final Register8 source) {
+
+            this.raw(Instruction_DIV_RM8.of(source).build());
+            return this;
+
+        }
+
         public Builder idiv(@NotNull final Register64 source) {
 
             this.raw(Instruction_IDIV_RM64.of(source).build());
+            return this;
+
+        }
+
+        public Builder idiv(@NotNull final Register8 source) {
+
+            this.raw(Instruction_IDIV_RM8.of(source).build());
             return this;
 
         }

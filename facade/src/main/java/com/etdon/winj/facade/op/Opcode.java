@@ -89,31 +89,104 @@ public final class Opcode {
         public static final byte INC_RM64 = (byte) 0xFF;
         public static final byte DEC_RM64 = (byte) 0xFF;
 
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_TEST_RM8_IMM8
+         */
+        public static final byte TEST_RM8_IMM8 = (byte) 0xF6;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_NOT_RM8
+         */
+        public static final byte NOT_RM8 = (byte) 0xF6;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_NEG_RM8
+         */
+        public static final byte NEG_RM8 = (byte) 0xF6;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_MUL_RM8
+         */
         public static final byte MUL_RM8 = (byte) 0xF6;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_IMUL_RM8
+         */
         public static final byte IMUL_RM8 = (byte) 0xF6;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_DIV_RM8
+         */
         public static final byte DIV_RM8 = (byte) 0xF6;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_IDIV_RM8
+         */
         public static final byte IDIV_RM8 = (byte) 0xF6;
 
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_TEST_RM64_IMM32
+         */
+        public static final byte TEST_RM64_IMM32 = (byte) 0xF7;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_NOT_RM64
+         */
         public static final byte NOT_RM64 = (byte) 0xF7;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_NEG_RM64
+         */
         public static final byte NEG_RM64 = (byte) 0xF7;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_MUL_RM64
+         */
         public static final byte MUL_RM64 = (byte) 0xF7;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_IMUL_RM64
+         */
         public static final byte IMUL_RM64 = (byte) 0xF7;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_DIV_RM64
+         */
         public static final byte DIV_RM64 = (byte) 0xF7;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_IDIV_RM64
+         */
         public static final byte IDIV_RM64 = (byte) 0xF7;
 
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_ADD_RM64_IMM8
+         */
         public static final byte ADD_RM64_IMM8 = (byte) 0x83;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_OR_RM64_IMM8
+         */
         public static final byte OR_RM64_IMM8 = (byte) 0x83;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_ADC_RM64_IMM8
+         */
         public static final byte ADC_RM64_IMM8 = (byte) 0x83;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_SBB_RM64_IMM8
+         */
         public static final byte SBB_RM64_IMM8 = (byte) 0x83;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_AND_RM64_IMM8
+         */
         public static final byte AND_RM64_IMM8 = (byte) 0x83;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_SUB_RM64_IMM8
+         */
         public static final byte SUB_RM64_IMM8 = (byte) 0x83;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_XOR_RM64_IMM8
+         */
         public static final byte XOR_RM64_IMM8 = (byte) 0x83;
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_CMP_RM64_IMM8
+         */
         public static final byte CMP_RM64_IMM8 = (byte) 0x83;
 
     }
 
     public static final class TwoByte {
 
+        /**
+         * @see com.etdon.winj.facade.op.instruction.Instruction_SYSCALL
+         */
         public static final byte[] SYSCALL = {0x0F, 0x05};
 
     }
