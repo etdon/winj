@@ -3,7 +3,8 @@ package com.etdon.winj.facade.op;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.winj.facade.op.instruction.*;
-import com.etdon.winj.facade.op.register.Register;
+import com.etdon.winj.facade.op.register.Register64;
+import com.etdon.winj.facade.op.register.Register8;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;
@@ -118,156 +119,191 @@ public final class Shellcode {
 
         }
 
-        public Builder mov(@NotNull final Register destination, @NotNull final Register source) {
+        public Builder mov(@NotNull final Register64 destination, @NotNull final Register64 source) {
 
             this.raw(Instruction_RM64_R64.of(destination, source).build());
             return this;
 
         }
 
-        public Builder mov(@NotNull final Register destination, final long value) {
+        public Builder mov(@NotNull final Register64 destination, final long value) {
 
             this.raw(Instruction_MOV_R64_IMM64.of(destination, value).build());
             return this;
 
         }
 
-        public Builder push(@NotNull final Register destination) {
+        public Builder push(@NotNull final Register64 destination) {
 
             this.raw(Instruction_PUSH_R64.of(destination).build());
             return this;
 
         }
 
-        public Builder pop(@NotNull final Register source) {
+        public Builder pop(@NotNull final Register64 source) {
 
             this.raw(Instruction_POP_R64.of(source).build());
             return this;
 
         }
 
-        public Builder call(@NotNull final Register destination) {
+        public Builder call(@NotNull final Register64 destination) {
 
             this.raw(Instruction_CALL_RM64.of(destination).build());
             return this;
 
         }
 
-        public Builder xor(@NotNull final Register destination, @NotNull final Register source) {
+        public Builder xor(@NotNull final Register64 destination, @NotNull final Register64 source) {
 
             this.raw(Instruction_XOR_RM64_R64.of(destination, source).build());
             return this;
 
         }
 
-        public Builder inc(@NotNull final Register destination) {
+        public Builder inc(@NotNull final Register64 destination) {
 
             this.raw(Instruction_INC_RM64.of(destination).build());
             return this;
 
         }
 
-        public Builder dec(@NotNull final Register destination) {
+        public Builder dec(@NotNull final Register64 destination) {
 
             this.raw(Instruction_DEC_RM64.of(destination).build());
             return this;
 
         }
 
-        public Builder not(@NotNull final Register destination) {
+        public Builder not(@NotNull final Register64 destination) {
 
             this.raw(Instruction_NOT_RM64.of(destination).build());
             return this;
 
         }
 
-        public Builder neg(@NotNull final Register destination) {
+        public Builder neg(@NotNull final Register64 destination) {
 
             this.raw(Instruction_NEG_RM64.of(destination).build());
             return this;
 
         }
 
-        public Builder mul(@NotNull final Register source) {
+        public Builder mul(@NotNull final Register64 source) {
 
             this.raw(Instruction_MUL_RM64.of(source).build());
             return this;
 
         }
 
-        public Builder imul(@NotNull final Register source) {
+        public Builder mul(@NotNull final Register8 source) {
+
+            this.raw(Instruction_MUL_RM8.of(source).build());
+            return this;
+
+        }
+
+        public Builder imul(@NotNull final Register64 source) {
 
             this.raw(Instruction_IMUL_RM64.of(source).build());
             return this;
 
         }
 
-        public Builder div(@NotNull final Register source) {
+        public Builder imul(@NotNull final Register8 source) {
+
+            this.raw(Instruction_IMUL_RM8.of(source).build());
+            return this;
+
+        }
+
+        public Builder div(@NotNull final Register64 source) {
 
             this.raw(Instruction_DIV_RM64.of(source).build());
             return this;
 
         }
 
-        public Builder idiv(@NotNull final Register source) {
+        public Builder idiv(@NotNull final Register64 source) {
 
             this.raw(Instruction_IDIV_RM64.of(source).build());
             return this;
 
         }
 
-        public Builder add(@NotNull final Register destination, final byte value) {
+        public Builder add(@NotNull final Register64 destination, final byte value) {
 
             this.raw(Instruction_ADD_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder or(@NotNull final Register destination, final byte value) {
+        public Builder or(@NotNull final Register64 destination, final byte value) {
 
             this.raw(Instruction_OR_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder adc(@NotNull final Register destination, final byte value) {
+        public Builder adc(@NotNull final Register64 destination, final byte value) {
 
             this.raw(Instruction_ADC_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder sbb(@NotNull final Register destination, final byte value) {
+        public Builder sbb(@NotNull final Register64 destination, final byte value) {
 
             this.raw(Instruction_SBB_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder and(@NotNull final Register destination, final byte value) {
+        public Builder and(@NotNull final Register64 destination, final byte value) {
 
             this.raw(Instruction_AND_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder sub(@NotNull final Register destination, final byte value) {
+        public Builder sub(@NotNull final Register64 destination, final byte value) {
 
             this.raw(Instruction_SUB_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder xor(@NotNull final Register destination, final byte value) {
+        public Builder xor(@NotNull final Register64 destination, final byte value) {
 
             this.raw(Instruction_XOR_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder cmp(@NotNull final Register destination, final byte value) {
+        public Builder cmp(@NotNull final Register64 destination, final byte value) {
 
             this.raw(Instruction_CMP_RM64_IMM8.of(destination, value).build());
+            return this;
+
+        }
+
+        public Builder retn(final short value) {
+
+            this.raw(Instruction_RETN_IMM16.of(value).build());
+            return this;
+
+        }
+
+        public Builder retn() {
+
+            this.raw(Instruction_RETN.of().build());
+            return this;
+
+        }
+
+        public Builder syscall() {
+
+            this.raw(Instruction_SYSCALL.of().build());
             return this;
 
         }

@@ -2,17 +2,17 @@ package com.etdon.winj.facade.op.instruction;
 
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.winj.facade.op.Opcode;
-import com.etdon.winj.facade.op.register.Register;
+import com.etdon.winj.facade.op.register.Register64;
 import com.etdon.winj.marshal.primitive.LongMarshal;
 import com.etdon.winj.marshal.primitive.PrimitiveMarshalContext;
 import org.jetbrains.annotations.NotNull;
 
 public final class Instruction_MOV_R64_IMM64 extends Instruction {
 
-    private final Register destination;
+    private final Register64 destination;
     private final long value;
 
-    private Instruction_MOV_R64_IMM64(final Register destination,
+    private Instruction_MOV_R64_IMM64(final Register64 destination,
                                       final long value) {
 
         this.destination = destination;
@@ -31,7 +31,7 @@ public final class Instruction_MOV_R64_IMM64 extends Instruction {
 
     }
 
-    public static Instruction_MOV_R64_IMM64 of(@NotNull final Register destination,
+    public static Instruction_MOV_R64_IMM64 of(@NotNull final Register64 destination,
                                                final long value) {
 
         Preconditions.checkNotNull(destination);

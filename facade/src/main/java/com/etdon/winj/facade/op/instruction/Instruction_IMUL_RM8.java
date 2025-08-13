@@ -1,0 +1,51 @@
+package com.etdon.winj.facade.op.instruction;
+
+import com.etdon.commons.conditional.Preconditions;
+import com.etdon.winj.facade.op.Opcode;
+import com.etdon.winj.facade.op.register.Register8;
+import org.jetbrains.annotations.NotNull;
+
+public final class Instruction_IMUL_RM8 extends Instruction {
+
+    private final Register8 source;
+
+    private Instruction_IMUL_RM8(final Register8 source) {
+
+        this.source = source;
+
+    }
+
+    @Override
+    public byte[] build() {
+
+        if (this.source.isExtended()) {
+            return new byte[]{
+                    Opcode.Prefix.of(true, false, false, false),
+                    Opcode.Primary.IMUL_RM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(5)
+                            .rm(this.source.getValue())
+                            .build()
+            };
+        } else {
+            return new byte[]{
+                    Opcode.Primary.IMUL_RM8,
+                    Opcode.ModRM.builder()
+                            .mod(Opcode.ModRM.Mod.RD)
+                            .reg(5)
+                            .rm(this.source.getValue())
+                            .build()
+            };
+        }
+
+    }
+
+    public static Instruction_IMUL_RM8 of(@NotNull final Register8 source) {
+
+        Preconditions.checkNotNull(source);
+        return new Instruction_IMUL_RM8(source);
+
+    }
+
+}

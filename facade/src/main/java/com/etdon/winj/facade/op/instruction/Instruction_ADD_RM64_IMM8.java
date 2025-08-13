@@ -2,15 +2,15 @@ package com.etdon.winj.facade.op.instruction;
 
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.winj.facade.op.Opcode;
-import com.etdon.winj.facade.op.register.Register;
+import com.etdon.winj.facade.op.register.Register64;
 import org.jetbrains.annotations.NotNull;
 
 public final class Instruction_ADD_RM64_IMM8 extends Instruction {
 
-    private final Register destination;
+    private final Register64 destination;
     private final byte value;
 
-    private Instruction_ADD_RM64_IMM8(final Register destination,
+    private Instruction_ADD_RM64_IMM8(final Register64 destination,
                                       final byte value) {
 
         this.destination = destination;
@@ -34,7 +34,7 @@ public final class Instruction_ADD_RM64_IMM8 extends Instruction {
 
     }
 
-    public static Instruction_ADD_RM64_IMM8 of(@NotNull final Register destination, final byte value) {
+    public static Instruction_ADD_RM64_IMM8 of(@NotNull final Register64 destination, final byte value) {
 
         Preconditions.checkNotNull(destination);
         return new Instruction_ADD_RM64_IMM8(destination, value);
