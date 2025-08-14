@@ -5,13 +5,13 @@ import com.etdon.winj.facade.op.Opcode;
 import com.etdon.winj.facade.op.register.Register64;
 import org.jetbrains.annotations.NotNull;
 
-public final class Instruction_RM64_R64 extends Instruction {
+public final class Instruction_MOV_RM64_R64 extends Instruction {
 
     private final Register64 destination;
     private final Register64 source;
 
-    private Instruction_RM64_R64(final Register64 destination,
-                                 final Register64 source) {
+    private Instruction_MOV_RM64_R64(final Register64 destination,
+                                     final Register64 source) {
 
         this.destination = destination;
         this.source = source;
@@ -33,11 +33,11 @@ public final class Instruction_RM64_R64 extends Instruction {
 
     }
 
-    public static Instruction_RM64_R64 of(@NotNull final Register64 destination, @NotNull final Register64 source) {
+    public static Instruction_MOV_RM64_R64 of(@NotNull final Register64 destination, @NotNull final Register64 source) {
 
         Preconditions.checkNotNull(destination);
         Preconditions.checkNotNull(source);
-        return new Instruction_RM64_R64(destination, source);
+        return new Instruction_MOV_RM64_R64(destination, source);
 
     }
 

@@ -23,7 +23,7 @@ public final class Instruction_AND_RM64_IMM8 extends Instruction {
 
         return new byte[]{
                 Opcode.Prefix.of(this.destination.isExtended(), false, false, true),
-                Opcode.Primary.AND_RM64_IMM8,
+                Opcode.Primary.AND.RM64_IMM8,
                 Opcode.ModRM.builder()
                         .mod(Opcode.ModRM.Mod.RD)
                         .reg(4)

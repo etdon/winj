@@ -23,7 +23,7 @@ public final class Instruction_SBB_RM64_IMM8 extends Instruction {
 
         return new byte[]{
                 Opcode.Prefix.of(this.destination.isExtended(), false, false, true),
-                Opcode.Primary.SBB_RM64_IMM8,
+                Opcode.Primary.SBB.RM64_IMM8,
                 Opcode.ModRM.builder()
                         .mod(Opcode.ModRM.Mod.RD)
                         .reg(3)

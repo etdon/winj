@@ -121,7 +121,7 @@ public final class Shellcode {
 
         public Builder mov(@NotNull final Register64 destination, @NotNull final Register64 source) {
 
-            this.raw(Instruction_RM64_R64.of(destination, source).build());
+            this.raw(Instruction_MOV_RM64_R64.of(destination, source).build());
             return this;
 
         }
