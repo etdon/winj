@@ -2,15 +2,15 @@ package com.etdon.winj.facade.op.instruction;
 
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.winj.facade.op.Opcode;
-import com.etdon.winj.facade.op.register.Register8;
+import com.etdon.winj.facade.op.address.RegisterAddressor;
 import org.jetbrains.annotations.NotNull;
 
 public final class Instruction_TEST_RM8_IMM8 extends Instruction {
 
-    private final Register8 destination;
+    private final RegisterAddressor destination;
     private final byte value;
 
-    private Instruction_TEST_RM8_IMM8(final Register8 destination,
+    private Instruction_TEST_RM8_IMM8(final RegisterAddressor destination,
                                       final byte value) {
 
         this.destination = destination;
@@ -21,14 +21,14 @@ public final class Instruction_TEST_RM8_IMM8 extends Instruction {
     @Override
     public byte[] build() {
 
-        if (this.destination.isExtended()) {
+        if (this.destination.getRegister().isExtended()) {
             return new byte[]{
                     Opcode.Prefix.of(true, false, false, false),
                     Opcode.Primary.TEST_RM8_IMM8,
                     Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
+                            .mod(this.destination.getMod())
                             .reg(0)
-                            .rm(this.destination.getValue())
+                            .rm(this.destination.getRegister().getValue())
                             .build(),
                     this.value
             };
@@ -36,9 +36,9 @@ public final class Instruction_TEST_RM8_IMM8 extends Instruction {
             return new byte[]{
                     Opcode.Primary.TEST_RM8_IMM8,
                     Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
+                            .mod(this.destination.getMod())
                             .reg(0)
-                            .rm(this.destination.getValue())
+                            .rm(this.destination.getRegister().getValue())
                             .build(),
                     this.value
             };
@@ -46,7 +46,7 @@ public final class Instruction_TEST_RM8_IMM8 extends Instruction {
 
     }
 
-    public static Instruction_TEST_RM8_IMM8 of(@NotNull final Register8 destination,
+    public static Instruction_TEST_RM8_IMM8 of(@NotNull final RegisterAddressor destination,
                                                final byte value) {
 
         Preconditions.checkNotNull(destination);

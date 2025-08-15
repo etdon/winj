@@ -2,14 +2,14 @@ package com.etdon.winj.facade.op.instruction;
 
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.winj.facade.op.Opcode;
-import com.etdon.winj.facade.op.register.Register8;
+import com.etdon.winj.facade.op.address.RegisterAddressor;
 import org.jetbrains.annotations.NotNull;
 
 public final class Instruction_NEG_RM8 extends Instruction {
 
-    private final Register8 destination;
+    private final RegisterAddressor destination;
 
-    private Instruction_NEG_RM8(final Register8 destination) {
+    private Instruction_NEG_RM8(final RegisterAddressor destination) {
 
         this.destination = destination;
 
@@ -18,30 +18,30 @@ public final class Instruction_NEG_RM8 extends Instruction {
     @Override
     public byte[] build() {
 
-        if (this.destination.isExtended()) {
+        if (this.destination.getRegister().isExtended()) {
             return new byte[]{
                     Opcode.Prefix.of(true, false, false, false),
                     Opcode.Primary.NEG_RM8,
                     Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
+                            .mod(this.destination.getMod())
                             .reg(3)
-                            .rm(this.destination.getValue())
+                            .rm(this.destination.getRegister().getValue())
                             .build()
             };
         } else {
             return new byte[]{
                     Opcode.Primary.NEG_RM8,
                     Opcode.ModRM.builder()
-                            .mod(Opcode.ModRM.Mod.RD)
+                            .mod(this.destination.getMod())
                             .reg(3)
-                            .rm(this.destination.getValue())
+                            .rm(this.destination.getRegister().getValue())
                             .build()
             };
         }
 
     }
 
-    public static Instruction_NEG_RM8 of(@NotNull final Register8 destination) {
+    public static Instruction_NEG_RM8 of(@NotNull final RegisterAddressor destination) {
 
         Preconditions.checkNotNull(destination);
         return new Instruction_NEG_RM8(destination);

@@ -21,10 +21,10 @@ public final class Instruction_POP_R64 extends Instruction {
         if (this.source.isExtended()) {
             return new byte[]{
                     Opcode.Prefix.of(true, false, false, false),
-                    (byte) (Opcode.Primary.POP_R64 | this.source.getValue())
+                    (byte) (Opcode.Primary.POP.R64 | this.source.getValue())
             };
         } else {
-            return new byte[]{(byte) (Opcode.Primary.POP_R64 | this.source.getValue())};
+            return new byte[]{(byte) (Opcode.Primary.POP.R64 | this.source.getValue())};
         }
 
     }

@@ -2,15 +2,14 @@ package com.etdon.winj.facade.op.instruction;
 
 import com.etdon.commons.conditional.Preconditions;
 import com.etdon.winj.facade.op.Opcode;
-import com.etdon.winj.facade.op.register.Register;
-import com.etdon.winj.facade.op.register.Register64;
+import com.etdon.winj.facade.op.address.RegisterAddressor;
 import org.jetbrains.annotations.NotNull;
 
 public final class Instruction_CALL_RM64 extends Instruction {
 
-    private final Register64 destination;
+    private final RegisterAddressor destination;
 
-    private Instruction_CALL_RM64(final Register64 destination) {
+    private Instruction_CALL_RM64(final RegisterAddressor destination) {
 
         this.destination = destination;
 
@@ -20,18 +19,18 @@ public final class Instruction_CALL_RM64 extends Instruction {
     public byte[] build() {
 
         return new byte[]{
-                Opcode.Prefix.of(this.destination.isExtended(), false, false, true),
+                Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, false, true),
                 Opcode.Primary.CALL_RM64,
                 Opcode.ModRM.builder()
-                        .mod(Opcode.ModRM.Mod.RD)
+                        .mod(this.destination.getMod())
                         .reg(2)
-                        .rm(this.destination.getValue())
+                        .rm(this.destination.getRegister().getValue())
                         .build()
         };
 
     }
 
-    public static Instruction_CALL_RM64 of(@NotNull final Register64 destination) {
+    public static Instruction_CALL_RM64 of(@NotNull final RegisterAddressor destination) {
 
         Preconditions.checkNotNull(destination);
         return new Instruction_CALL_RM64(destination);

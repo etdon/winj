@@ -1,6 +1,8 @@
 package com.etdon.winj.facade.op.register;
 
-public abstract class Register {
+import com.etdon.winj.facade.op.address.Addressable;
+
+public abstract class Register implements Addressable {
 
     private final byte value;
     private final boolean extended;

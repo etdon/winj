@@ -2,7 +2,11 @@ package com.etdon.winj.facade.op;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.commons.util.Exceptional;
+import com.etdon.winj.facade.op.address.RegisterAddressor;
 import com.etdon.winj.facade.op.instruction.*;
+import com.etdon.winj.facade.op.register.Register16;
+import com.etdon.winj.facade.op.register.Register32;
 import com.etdon.winj.facade.op.register.Register64;
 import com.etdon.winj.facade.op.register.Register8;
 import org.jetbrains.annotations.NotNull;
@@ -119,7 +123,7 @@ public final class Shellcode {
 
         }
 
-        public Builder mov(@NotNull final Register64 destination, @NotNull final Register64 source) {
+        public Builder mov(@NotNull final RegisterAddressor destination, @NotNull final Register64 source) {
 
             this.raw(Instruction_MOV_RM64_R64.of(destination, source).build());
             return this;
@@ -147,182 +151,236 @@ public final class Shellcode {
 
         }
 
-        public Builder call(@NotNull final Register64 destination) {
+        public Builder call(@NotNull final RegisterAddressor destination) {
 
             this.raw(Instruction_CALL_RM64.of(destination).build());
             return this;
 
         }
 
-        public Builder xor(@NotNull final Register64 destination, @NotNull final Register64 source) {
+        public Builder xor(@NotNull final RegisterAddressor destination, @NotNull final Register64 source) {
 
             this.raw(Instruction_XOR_RM64_R64.of(destination, source).build());
             return this;
 
         }
 
-        public Builder inc(@NotNull final Register64 destination) {
+        public Builder inc(@NotNull final RegisterAddressor destination) {
 
             this.raw(Instruction_INC_RM64.of(destination).build());
             return this;
 
         }
 
-        public Builder dec(@NotNull final Register64 destination) {
+        public Builder dec(@NotNull final RegisterAddressor destination) {
 
             this.raw(Instruction_DEC_RM64.of(destination).build());
             return this;
 
         }
 
-        public Builder test(@NotNull final Register64 destination, final int value) {
+        public Builder test(@NotNull final RegisterAddressor destination, final int value) {
 
             this.raw(Instruction_TEST_RM64_IMM32.of(destination, value).build());
             return this;
 
         }
 
-        public Builder test(@NotNull final Register8 destination, final byte value) {
+        public Builder test(@NotNull final RegisterAddressor destination, final byte value) {
 
             this.raw(Instruction_TEST_RM8_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder not(@NotNull final Register64 destination) {
+        public Builder not(@NotNull final RegisterAddressor destination) {
 
-            this.raw(Instruction_NOT_RM64.of(destination).build());
+            switch (destination.getRegister()) {
+                case Register8 _ -> {
+                    this.raw(Instruction_NOT_RM8.of(destination).build());
+                }
+                case Register16 _ -> {
+                    throw new UnsupportedOperationException("Instruction_NOT_RM16 not implemented.");
+                }
+                case Register32 _ -> {
+                    throw new UnsupportedOperationException("Instruction_NOT_RM32 not implemented.");
+                }
+                case Register64 _ -> {
+                    this.raw(Instruction_NOT_RM64.of(destination).build());
+                }
+                case null, default -> {
+                    throw Exceptional.of(IllegalArgumentException.class, "The provided RegisterAddressor '{}' is invalid.", destination);
+                }
+            }
             return this;
 
         }
 
-        public Builder not(@NotNull final Register8 destination) {
+        public Builder neg(@NotNull final RegisterAddressor destination) {
 
-            this.raw(Instruction_NOT_RM8.of(destination).build());
+            switch (destination.getRegister()) {
+                case Register8 _ -> {
+                    this.raw(Instruction_NEG_RM8.of(destination).build());
+                }
+                case Register16 _ -> {
+                    throw new UnsupportedOperationException("Instruction_NEG_RM16 not implemented.");
+                }
+                case Register32 _ -> {
+                    throw new UnsupportedOperationException("Instruction_NEG_RM32 not implemented.");
+                }
+                case Register64 _ -> {
+                    this.raw(Instruction_NEG_RM64.of(destination).build());
+                }
+                case null, default -> {
+                    throw Exceptional.of(IllegalArgumentException.class, "The provided RegisterAddressor '{}' is invalid.", destination);
+                }
+            }
             return this;
 
         }
 
-        public Builder neg(@NotNull final Register64 destination) {
+        public Builder mul(@NotNull final RegisterAddressor source) {
 
-            this.raw(Instruction_NEG_RM64.of(destination).build());
+            switch (source.getRegister()) {
+                case Register8 _ -> {
+                    this.raw(Instruction_MUL_RM8.of(source).build());
+                }
+                case Register16 _ -> {
+                    throw new UnsupportedOperationException("Instruction_MUL_RM16 not implemented.");
+                }
+                case Register32 _ -> {
+                    throw new UnsupportedOperationException("Instruction_MUL_RM32 not implemented.");
+                }
+                case Register64 _ -> {
+                    this.raw(Instruction_MUL_RM64.of(source).build());
+                }
+                case null, default -> {
+                    throw Exceptional.of(IllegalArgumentException.class, "The provided RegisterAddressor '{}' is invalid.", source);
+                }
+            }
             return this;
 
         }
 
-        public Builder neg(@NotNull final Register8 destination) {
+        public Builder imul(@NotNull final RegisterAddressor source) {
 
-            this.raw(Instruction_NEG_RM8.of(destination).build());
+            switch (source.getRegister()) {
+                case Register8 _ -> {
+                    this.raw(Instruction_IMUL_RM8.of(source).build());
+                }
+                case Register16 _ -> {
+                    throw new UnsupportedOperationException("Instruction_IMUL_RM16 not implemented.");
+                }
+                case Register32 _ -> {
+                    throw new UnsupportedOperationException("Instruction_IMUL_RM32 not implemented.");
+                }
+                case Register64 _ -> {
+                    this.raw(Instruction_IMUL_RM64.of(source).build());
+                }
+                case null, default -> {
+                    throw Exceptional.of(IllegalArgumentException.class, "The provided RegisterAddressor '{}' is invalid.", source);
+                }
+            }
             return this;
 
         }
 
-        public Builder mul(@NotNull final Register64 source) {
+        public Builder div(@NotNull final RegisterAddressor source) {
 
-            this.raw(Instruction_MUL_RM64.of(source).build());
+            switch (source.getRegister()) {
+                case Register8 _ -> {
+                    this.raw(Instruction_DIV_RM8.of(source).build());
+                }
+                case Register16 _ -> {
+                    throw new UnsupportedOperationException("Instruction_DIV_RM16 not implemented.");
+                }
+                case Register32 _ -> {
+                    throw new UnsupportedOperationException("Instruction_DIV_RM32 not implemented.");
+                }
+                case Register64 _ -> {
+                    this.raw(Instruction_DIV_RM64.of(source).build());
+                }
+                case null, default -> {
+                    throw Exceptional.of(IllegalArgumentException.class, "The provided RegisterAddressor '{}' is invalid.", source);
+                }
+            }
             return this;
 
         }
 
-        public Builder mul(@NotNull final Register8 source) {
+        public Builder idiv(@NotNull final RegisterAddressor source) {
 
-            this.raw(Instruction_MUL_RM8.of(source).build());
+            switch (source.getRegister()) {
+                case Register8 _ -> {
+                    this.raw(Instruction_IDIV_RM8.of(source).build());
+                }
+                case Register16 _ -> {
+                    throw new UnsupportedOperationException("Instruction_IDIV_RM16 not implemented.");
+                }
+                case Register32 _ -> {
+                    throw new UnsupportedOperationException("Instruction_IDIV_RM32 not implemented.");
+                }
+                case Register64 _ -> {
+                    this.raw(Instruction_IDIV_RM64.of(source).build());
+                }
+                case null, default -> {
+                    throw Exceptional.of(IllegalArgumentException.class, "The provided RegisterAddressor '{}' is invalid.", source);
+                }
+            }
             return this;
 
         }
 
-        public Builder imul(@NotNull final Register64 source) {
-
-            this.raw(Instruction_IMUL_RM64.of(source).build());
-            return this;
-
-        }
-
-        public Builder imul(@NotNull final Register8 source) {
-
-            this.raw(Instruction_IMUL_RM8.of(source).build());
-            return this;
-
-        }
-
-        public Builder div(@NotNull final Register64 source) {
-
-            this.raw(Instruction_DIV_RM64.of(source).build());
-            return this;
-
-        }
-
-        public Builder div(@NotNull final Register8 source) {
-
-            this.raw(Instruction_DIV_RM8.of(source).build());
-            return this;
-
-        }
-
-        public Builder idiv(@NotNull final Register64 source) {
-
-            this.raw(Instruction_IDIV_RM64.of(source).build());
-            return this;
-
-        }
-
-        public Builder idiv(@NotNull final Register8 source) {
-
-            this.raw(Instruction_IDIV_RM8.of(source).build());
-            return this;
-
-        }
-
-        public Builder add(@NotNull final Register64 destination, final byte value) {
+        public Builder add(@NotNull final RegisterAddressor destination, final byte value) {
 
             this.raw(Instruction_ADD_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder or(@NotNull final Register64 destination, final byte value) {
+        public Builder or(@NotNull final RegisterAddressor destination, final byte value) {
 
             this.raw(Instruction_OR_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder adc(@NotNull final Register64 destination, final byte value) {
+        public Builder adc(@NotNull final RegisterAddressor destination, final byte value) {
 
             this.raw(Instruction_ADC_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder sbb(@NotNull final Register64 destination, final byte value) {
+        public Builder sbb(@NotNull final RegisterAddressor destination, final byte value) {
 
             this.raw(Instruction_SBB_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder and(@NotNull final Register64 destination, final byte value) {
+        public Builder and(@NotNull final RegisterAddressor destination, final byte value) {
 
             this.raw(Instruction_AND_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder sub(@NotNull final Register64 destination, final byte value) {
+        public Builder sub(@NotNull final RegisterAddressor destination, final byte value) {
 
             this.raw(Instruction_SUB_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder xor(@NotNull final Register64 destination, final byte value) {
+        public Builder xor(@NotNull final RegisterAddressor destination, final byte value) {
 
             this.raw(Instruction_XOR_RM64_IMM8.of(destination, value).build());
             return this;
 
         }
 
-        public Builder cmp(@NotNull final Register64 destination, final byte value) {
+        public Builder cmp(@NotNull final RegisterAddressor destination, final byte value) {
 
             this.raw(Instruction_CMP_RM64_IMM8.of(destination, value).build());
             return this;
