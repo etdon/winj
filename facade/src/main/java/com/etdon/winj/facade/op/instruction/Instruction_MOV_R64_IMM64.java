@@ -1,6 +1,7 @@
 package com.etdon.winj.facade.op.instruction;
 
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.winj.facade.op.ByteBuffer;
 import com.etdon.winj.facade.op.Opcode;
 import com.etdon.winj.facade.op.register.Register64;
 import com.etdon.winj.marshal.primitive.LongMarshal;
@@ -23,11 +24,12 @@ public final class Instruction_MOV_R64_IMM64 extends Instruction {
     @Override
     public byte[] build() {
 
-        final byte[] buffer = new byte[10];
-        buffer[0] = Opcode.Prefix.of(this.destination.isExtended(), false, false, true);
-        buffer[1] = (byte) (Opcode.Primary.MOV.R64_IMM64 | this.destination.getValue());
-        System.arraycopy(LongMarshal.getInstance().marshal(this.value, PrimitiveMarshalContext.empty()), 0, buffer, 2, 8);
-        return buffer;
+        final ByteBuffer byteBuffer = ByteBuffer.size(10);
+        byteBuffer.put(Opcode.Prefix.of(this.destination.isExtended(), false, false, true));
+        byteBuffer.put((byte) (Opcode.Primary.MOV.R64_IMM64 | this.destination.getValue()));
+        byteBuffer.put(LongMarshal.getInstance().marshal(this.value, PrimitiveMarshalContext.empty()));
+
+        return byteBuffer.get();
 
     }
 

@@ -1,6 +1,7 @@
 package com.etdon.winj.facade.op.instruction;
 
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.winj.facade.op.ByteBuffer;
 import com.etdon.winj.facade.op.Opcode;
 import com.etdon.winj.facade.op.address.RegisterAddressor;
 import com.etdon.winj.marshal.primitive.IntegerMarshal;
@@ -23,16 +24,21 @@ public final class Instruction_TEST_RM64_IMM32 extends Instruction {
     @Override
     public byte[] build() {
 
-        final byte[] buffer = new byte[7];
-        buffer[0] = Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, false, true);
-        buffer[1] = Opcode.Primary.TEST_RM64_IMM32;
-        buffer[2] = Opcode.ModRM.builder()
-                .mod(this.destination.getMod())
-                .reg(0)
-                .rm(this.destination.getRegister().getValue())
-                .build();
-        System.arraycopy(IntegerMarshal.getInstance().marshal(this.value, PrimitiveMarshalContext.empty()), 0, buffer, 3, 4);
-        return buffer;
+        final ByteBuffer byteBuffer = ByteBuffer.size(7);
+        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, false, true));
+        byteBuffer.put(Opcode.Primary.TEST_RM64_IMM32);
+        byteBuffer.put(
+                Opcode.ModRM.builder()
+                        .mod(this.destination.getMod())
+                        .reg(0)
+                        .rm(this.destination.getRegister().getValue())
+                        .build()
+        );
+        if (this.destination.requiresSIB())
+            byteBuffer.put(this.destination.getSIB());
+        byteBuffer.put(IntegerMarshal.getInstance().marshal(this.value, PrimitiveMarshalContext.empty()));
+
+        return byteBuffer.get();
 
     }
 

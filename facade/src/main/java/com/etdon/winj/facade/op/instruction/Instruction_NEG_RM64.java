@@ -1,6 +1,7 @@
 package com.etdon.winj.facade.op.instruction;
 
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.winj.facade.op.ByteBuffer;
 import com.etdon.winj.facade.op.Opcode;
 import com.etdon.winj.facade.op.address.RegisterAddressor;
 import org.jetbrains.annotations.NotNull;
@@ -18,15 +19,20 @@ public final class Instruction_NEG_RM64 extends Instruction {
     @Override
     public byte[] build() {
 
-        return new byte[]{
-                Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, false, true),
-                Opcode.Primary.NEG_RM64,
+        final ByteBuffer byteBuffer = ByteBuffer.size(4);
+        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, false, true));
+        byteBuffer.put(Opcode.Primary.NEG_RM64);
+        byteBuffer.put(
                 Opcode.ModRM.builder()
                         .mod(this.destination.getMod())
                         .reg(3)
                         .rm(this.destination.getRegister().getValue())
                         .build()
-        };
+        );
+        if (this.destination.requiresSIB())
+            byteBuffer.put(this.destination.getSIB());
+
+        return byteBuffer.get();
 
     }
 

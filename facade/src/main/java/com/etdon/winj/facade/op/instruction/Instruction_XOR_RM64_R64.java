@@ -1,6 +1,7 @@
 package com.etdon.winj.facade.op.instruction;
 
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.winj.facade.op.ByteBuffer;
 import com.etdon.winj.facade.op.Opcode;
 import com.etdon.winj.facade.op.address.RegisterAddressor;
 import com.etdon.winj.facade.op.register.Register64;
@@ -22,15 +23,20 @@ public final class Instruction_XOR_RM64_R64 extends Instruction {
     @Override
     public byte[] build() {
 
-        return new byte[]{
-                Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, this.source.isExtended(), true),
-                Opcode.Primary.XOR.RM64_R64,
+        final ByteBuffer byteBuffer = ByteBuffer.size(4);
+        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, this.source.isExtended(), true));
+        byteBuffer.put(Opcode.Primary.XOR.RM64_R64);
+        byteBuffer.put(
                 Opcode.ModRM.builder()
                         .mod(this.destination.getMod())
                         .reg(this.source.getValue())
                         .rm(this.destination.getRegister().getValue())
                         .build()
-        };
+        );
+        if (this.destination.requiresSIB())
+            byteBuffer.put(this.destination.getSIB());
+
+        return byteBuffer.get();
 
     }
 

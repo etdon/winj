@@ -471,6 +471,61 @@ public final class Opcode {
 
     }
 
+    public static final class SIB {
+
+        private SIB() {
+
+        }
+
+        public static Builder builder() {
+
+            return new Builder();
+
+        }
+
+        public static final class Builder implements FluentBuilder<Byte> {
+
+            private byte scale;
+            private byte index;
+            private byte base;
+
+            private Builder() {
+
+            }
+
+            public Builder scale(final byte scale) {
+
+                this.scale = (byte) ((scale << 6) & 0b1100_0000);
+                return this;
+
+            }
+
+            public Builder index(final byte index) {
+
+                this.index = (byte) ((index << 3) & 0b0011_1000);
+                return this;
+
+            }
+
+            public Builder base(final byte base) {
+
+                this.base = (byte) (base & 0b0000_0111);
+                return this;
+
+            }
+
+            @NotNull
+            @Override
+            public Byte build() {
+
+                return (byte) (this.scale | this.index | this.base);
+
+            }
+
+        }
+
+    }
+
     public static final class Group {
 
         public static final byte G_83 = (byte) 0x83;

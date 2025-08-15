@@ -1,5 +1,6 @@
 package com.etdon.winj.facade.op.instruction;
 
+import com.etdon.winj.facade.op.ByteBuffer;
 import com.etdon.winj.facade.op.Opcode;
 import com.etdon.winj.marshal.primitive.PrimitiveMarshalContext;
 import com.etdon.winj.marshal.primitive.ShortMarshal;
@@ -17,10 +18,11 @@ public final class Instruction_RETN_IMM16 extends Instruction {
     @Override
     public byte[] build() {
 
-        final byte[] buffer = new byte[3];
-        buffer[0] = Opcode.Primary.RETN_IMM16;
-        System.arraycopy(ShortMarshal.getInstance().marshal(this.value, PrimitiveMarshalContext.empty()), 0, buffer, 1, 2);
-        return buffer;
+        final ByteBuffer byteBuffer = ByteBuffer.size(3);
+        byteBuffer.put(Opcode.Primary.RETN_IMM16);
+        byteBuffer.put(ShortMarshal.getInstance().marshal(this.value, PrimitiveMarshalContext.empty()));
+
+        return byteBuffer.get();
 
     }
 
