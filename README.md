@@ -38,6 +38,7 @@ Snapshot versions might change at any time.
   
 ## Examples
 
+Check out the [documentation] for various examples paired with explanations.
 ```java
 // Re-usable
 final WindowsAPI windowsAPI = WindowsAPI.of(arena);
@@ -68,16 +69,6 @@ this.nativeCaller.call(
         .presentation(WindowPresentation.SW_SHOW)
         .build()
 );
-```
-```java
-Shellcode.builder()
-    .mov(Register.R12, shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "WinExec"))
-    .sub(Register.RSP, (byte) 0x20)
-    .call(Register.R12)
-    .xor(Register.RCX, Register.RCX)
-    .mov(Register.R13, shellcodeHelper.getFunctionAddress(Library.KERNEL_32, "ExitProcess"))
-    .call(Register.R13)
-    .build();
 ```
 
 ## Getting Started
