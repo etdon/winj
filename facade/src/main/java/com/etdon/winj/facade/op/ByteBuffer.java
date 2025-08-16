@@ -51,7 +51,7 @@ public final class ByteBuffer {
     private void ensureSize(final int count) {
 
         if (this.buffer.length >= (this.size + count)) return;
-        final byte[] resizedBuffer = new byte[this.buffer.length * 2];
+        final byte[] resizedBuffer = new byte[this.buffer.length + ((this.size + count) - this.buffer.length)];
         System.arraycopy(this.buffer, 0, resizedBuffer, 0, this.buffer.length);
         this.buffer = resizedBuffer;
 
