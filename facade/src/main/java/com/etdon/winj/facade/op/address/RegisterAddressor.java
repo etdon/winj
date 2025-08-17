@@ -54,7 +54,7 @@ public final class RegisterAddressor extends Addressor {
     public static RegisterAddressor of(@NotNull final Register register,
                                        final byte mod) {
 
-        return of(register, mod, (byte) -1);
+        return of(register, mod, (byte) 0);
 
     }
 
