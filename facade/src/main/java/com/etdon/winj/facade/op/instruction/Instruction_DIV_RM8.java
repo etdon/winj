@@ -19,7 +19,7 @@ public final class Instruction_DIV_RM8 extends Instruction {
     @Override
     public byte[] build() {
 
-        final ByteBuffer byteBuffer = ByteBuffer.size(3);
+        final ByteBuffer byteBuffer = ByteBuffer.size(4);
         if (this.source.getRegister().isExtended())
             byteBuffer.put(Opcode.Prefix.of(true, false, false, false));
         byteBuffer.put(Opcode.Primary.DIV_RM8);
@@ -30,6 +30,8 @@ public final class Instruction_DIV_RM8 extends Instruction {
                         .rm(this.source.getRegister().getValue())
                         .build()
         );
+        if (this.source.requiresSIB())
+            byteBuffer.put(this.source.getSIB());
 
         return byteBuffer.get();
 

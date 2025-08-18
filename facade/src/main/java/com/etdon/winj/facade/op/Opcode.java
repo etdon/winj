@@ -248,6 +248,9 @@ public final class Opcode {
 
         public static final class MOV {
 
+            /**
+             * @see com.etdon.winj.facade.op.instruction.Instruction_MOV_RM8_R8
+             */
             public static final byte RM8_R8 = (byte) 0x88;
             /**
              * @see com.etdon.winj.facade.op.instruction.Instruction_MOV_RM64_R64
@@ -391,6 +394,12 @@ public final class Opcode {
          * @see com.etdon.winj.facade.op.instruction.Instruction_IDIV_RM64
          */
         public static final byte IDIV_RM64 = (byte) 0xF7;
+        public static final byte CLC = (byte) 0xF8;
+        public static final byte STC = (byte) 0xF9;
+        public static final byte CLI = (byte) 0xFA;
+        public static final byte STI = (byte) 0xFB;
+        public static final byte CLD = (byte) 0xFC;
+        public static final byte STD = (byte) 0xFD;
 
     }
 
@@ -521,6 +530,15 @@ public final class Opcode {
                 return (byte) (this.scale | this.index | this.base);
 
             }
+
+        }
+
+        public static class ScaleFactor {
+
+            public static final byte SF_0 = 0b00;
+            public static final byte SF_2 = 0b01;
+            public static final byte SF_4 = 0b10;
+            public static final byte SF_8 = 0b11;
 
         }
 

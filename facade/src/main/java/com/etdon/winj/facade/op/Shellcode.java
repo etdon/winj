@@ -123,6 +123,13 @@ public final class Shellcode {
 
         }
 
+        public Builder mov(@NotNull final RegisterAddressor destination, @NotNull final Register8 source) {
+
+            this.raw(Instruction_MOV_RM8_R8.of(destination, source).build());
+            return this;
+
+        }
+
         public Builder mov(@NotNull final RegisterAddressor destination, @NotNull final Register64 source) {
 
             this.raw(Instruction_MOV_RM64_R64.of(destination, source).build());

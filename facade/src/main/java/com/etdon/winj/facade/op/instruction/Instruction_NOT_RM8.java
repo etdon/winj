@@ -19,7 +19,7 @@ public final class Instruction_NOT_RM8 extends Instruction {
     @Override
     public byte[] build() {
 
-        final ByteBuffer byteBuffer = ByteBuffer.size(3);
+        final ByteBuffer byteBuffer = ByteBuffer.size(4);
         if (this.destination.getRegister().isExtended())
             byteBuffer.put(Opcode.Prefix.of(true, false, false, false));
         byteBuffer.put(Opcode.Primary.NOT_RM8);
@@ -30,6 +30,8 @@ public final class Instruction_NOT_RM8 extends Instruction {
                         .rm(this.destination.getRegister().getValue())
                         .build()
         );
+        if (this.destination.requiresSIB())
+            byteBuffer.put(this.destination.getSIB());
 
         return byteBuffer.get();
 
