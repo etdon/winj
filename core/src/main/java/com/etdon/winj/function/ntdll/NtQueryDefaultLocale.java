@@ -17,7 +17,7 @@ import java.lang.foreign.SymbolLookup;
 import static java.lang.foreign.ValueLayout.JAVA_BOOLEAN;
 
 @NativeName(NtQueryDefaultLocale.NATIVE_NAME)
-public final class NtQueryDefaultLocale extends NativeFunction {
+public final class NtQueryDefaultLocale extends NativeFunction<Void> {
 
     public static final String LIBRARY = Library.NTDLL;
     public static final String NATIVE_NAME = "NtQueryDefaultLocale";
@@ -46,9 +46,9 @@ public final class NtQueryDefaultLocale extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Void call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.userProfile, this.defaultLocaleIdPointer);
+        return (Void) super.obtainHandle(linker, symbolLookup).invoke(this.userProfile, this.defaultLocaleIdPointer);
 
     }
 

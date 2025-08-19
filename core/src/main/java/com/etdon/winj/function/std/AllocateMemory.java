@@ -8,13 +8,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
 import static java.lang.foreign.ValueLayout.ADDRESS;
 import static java.lang.foreign.ValueLayout.JAVA_LONG;
 
 @NativeName(AllocateMemory.NATIVE_NAME)
-public final class AllocateMemory extends NativeFunction {
+public final class AllocateMemory extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.STD;
     public static final String NATIVE_NAME = "malloc";
@@ -37,9 +38,9 @@ public final class AllocateMemory extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.size);
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(this.size);
 
     }
 

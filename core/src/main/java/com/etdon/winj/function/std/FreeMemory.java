@@ -15,7 +15,7 @@ import java.lang.foreign.SymbolLookup;
 import static java.lang.foreign.ValueLayout.ADDRESS;
 
 @NativeName(FreeMemory.NATIVE_NAME)
-public final class FreeMemory extends NativeFunction {
+public final class FreeMemory extends NativeFunction<Void> {
 
     public static final String LIBRARY = Library.STD;
     public static final String NATIVE_NAME = "free";
@@ -37,9 +37,9 @@ public final class FreeMemory extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Void call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.memoryBlock);
+        return (Void) super.obtainHandle(linker, symbolLookup).invoke(this.memoryBlock);
 
     }
 

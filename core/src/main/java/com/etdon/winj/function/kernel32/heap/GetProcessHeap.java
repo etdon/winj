@@ -6,9 +6,7 @@ import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.Linker;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.*;
 
 import static com.etdon.winj.type.constant.NativeDataType.HANDLE;
 
@@ -18,7 +16,7 @@ import static com.etdon.winj.type.constant.NativeDataType.HANDLE;
  */
 @NativeName(GetProcessHeap.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-getprocessheap")
-public final class GetProcessHeap extends NativeFunction {
+public final class GetProcessHeap extends NativeFunction<MemorySegment> {
 
     private static class GetProcessHeapSingleton {
 
@@ -39,9 +37,9 @@ public final class GetProcessHeap extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke();
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke();
 
     }
 

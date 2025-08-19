@@ -25,7 +25,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(PostMessageW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postmessagew")
-public final class PostMessageW extends NativeFunction {
+public final class PostMessageW extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "PostMessageW";
@@ -89,9 +89,9 @@ public final class PostMessageW extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(
                 this.windowHandle,
                 this.message,
                 this.firstParameter,

@@ -21,7 +21,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(SendInput.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput")
-public final class SendInput extends NativeFunction {
+public final class SendInput extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "SendInput";
@@ -62,9 +62,9 @@ public final class SendInput extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(
                 this.inputCount,
                 this.inputArray,
                 this.inputByteSize

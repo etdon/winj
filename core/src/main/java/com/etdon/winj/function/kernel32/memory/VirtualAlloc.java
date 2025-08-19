@@ -25,7 +25,7 @@ import static com.etdon.winj.type.constant.NativeDataType.DWORD;
  */
 @NativeName(VirtualAlloc.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc")
-public final class VirtualAlloc extends NativeFunction {
+public final class VirtualAlloc extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.KERNEL_32;
     public static final String NATIVE_NAME = "VirtualAlloc";
@@ -104,9 +104,9 @@ public final class VirtualAlloc extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(
                 this.addressPointer,
                 this.size,
                 this.allocationType,

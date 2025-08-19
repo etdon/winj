@@ -8,16 +8,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
-import static java.lang.foreign.ValueLayout.*;
+import static com.etdon.winj.type.constant.NativeDataType.HANDLE;
 
 /**
  * Retrieves a pseudo handle for the current process.
  */
 @NativeName(GetCurrentProcess.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentprocess")
-public final class GetCurrentProcess extends NativeFunction {
+public final class GetCurrentProcess extends NativeFunction<MemorySegment> {
 
     private static class GetCurrentProcessSingleton {
 
@@ -28,7 +29,7 @@ public final class GetCurrentProcess extends NativeFunction {
     public static final String LIBRARY = Library.KERNEL_32;
     public static final String NATIVE_NAME = "GetCurrentProcess";
     public static final FunctionDescriptor GET_CURRENT_PROCESS_SIGNATURE = FunctionDescriptor.of(
-            ADDRESS
+            HANDLE
     );
 
     private GetCurrentProcess() {
@@ -38,9 +39,9 @@ public final class GetCurrentProcess extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke();
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke();
 
     }
 

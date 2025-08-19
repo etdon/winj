@@ -25,7 +25,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(WaitForSingleObject.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject")
-public final class WaitForSingleObject extends NativeFunction {
+public final class WaitForSingleObject extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.KERNEL_32;
     public static final String NATIVE_NAME = "WaitForSingleObject";
@@ -88,9 +88,9 @@ public final class WaitForSingleObject extends NativeFunction {
      * @see com.etdon.winj.constant.WaitResult
      */
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.handle, this.timeoutMillis);
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(this.handle, this.timeoutMillis);
 
     }
 

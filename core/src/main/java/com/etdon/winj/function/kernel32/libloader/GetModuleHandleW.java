@@ -20,7 +20,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(GetModuleHandleW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlew")
-public final class GetModuleHandleW extends NativeFunction {
+public final class GetModuleHandleW extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.KERNEL_32;
     public static final String NATIVE_NAME = "GetModuleHandleW";
@@ -54,9 +54,9 @@ public final class GetModuleHandleW extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.moduleName);
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(this.moduleName);
 
     }
 

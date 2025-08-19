@@ -23,7 +23,7 @@ import static java.lang.foreign.ValueLayout.ADDRESS;
  */
 @NativeName(WriteProcessMemory.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-writeprocessmemory")
-public final class WriteProcessMemory extends NativeFunction {
+public final class WriteProcessMemory extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.KERNEL_32;
     public static final String NATIVE_NAME = "WriteProcessMemory";
@@ -83,9 +83,9 @@ public final class WriteProcessMemory extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(
                 this.processHandle,
                 this.baseAddressPointer,
                 this.bufferPointer,

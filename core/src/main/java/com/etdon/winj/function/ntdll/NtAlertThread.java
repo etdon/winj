@@ -2,7 +2,6 @@ package com.etdon.winj.function.ntdll;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.NativeDocumentation;
 import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
@@ -20,7 +19,7 @@ import static java.lang.foreign.ValueLayout.*;
  * STATUS_ALERTED.
  */
 @NativeName(NtAlertThread.NATIVE_NAME)
-public final class NtAlertThread extends NativeFunction {
+public final class NtAlertThread extends NativeFunction<Void> {
 
     public static final String LIBRARY = Library.NTDLL;
     public static final String NATIVE_NAME = "NtAlertThread";
@@ -43,9 +42,9 @@ public final class NtAlertThread extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Void call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.threadHandle);
+        return (Void) super.obtainHandle(linker, symbolLookup).invoke(this.threadHandle);
 
     }
 

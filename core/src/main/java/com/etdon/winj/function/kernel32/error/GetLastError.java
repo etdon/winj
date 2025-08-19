@@ -18,7 +18,7 @@ import static com.etdon.winj.type.constant.NativeDataType.DWORD;
  */
 @NativeName(GetLastError.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror")
-public final class GetLastError extends NativeFunction {
+public final class GetLastError extends NativeFunction<Integer> {
 
     private static class GetLastErrorSingleton {
 
@@ -39,9 +39,9 @@ public final class GetLastError extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke();
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke();
 
     }
 

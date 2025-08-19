@@ -22,7 +22,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(FindWindowExW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-findwindowexw")
-public final class FindWindowExW extends NativeFunction {
+public final class FindWindowExW extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "FindWindowExW";
@@ -87,9 +87,9 @@ public final class FindWindowExW extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(
                 this.parentWindowHandle,
                 this.childAfterWindowHandle,
                 this.className,

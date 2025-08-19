@@ -18,7 +18,7 @@ import static com.etdon.winj.type.constant.NativeDataType.PCWSTR;
 
 @NativeName(RtlInitUnicodeString.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlinitunicodestring")
-public final class RtlInitUnicodeString extends NativeFunction {
+public final class RtlInitUnicodeString extends NativeFunction<Void> {
 
     public static final String LIBRARY = Library.NTDLL;
     public static final String NATIVE_NAME = "RtlInitUnicodeString";
@@ -50,9 +50,9 @@ public final class RtlInitUnicodeString extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Void call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.destinationStringPointer, this.sourceStringPointer);
+        return (Void) super.obtainHandle(linker, symbolLookup).invoke(this.destinationStringPointer, this.sourceStringPointer);
 
     }
 

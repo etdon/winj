@@ -90,11 +90,11 @@ public final class Demo {
 
         try (final Arena arena = Arena.ofConfined()) {
             final MemorySegment windowProcedureStub = new WindowProcedure().upcallStub(this.linker, arena, this, "handleWindowProc");
-            final MemorySegment moduleHandle = (MemorySegment) this.nativeCaller.call(GetModuleHandleW.builder().build());
+            final MemorySegment moduleHandle = this.nativeCaller.call(GetModuleHandleW.builder().build());
             System.out.println("moduleHandle Address: " + moduleHandle.address());
 
             final MemorySegment className = arena.allocateFrom("testClassName", StandardCharsets.UTF_16LE);
-            final MemorySegment backgroundBrushHandle = (MemorySegment) this.nativeCaller.call(GetStockObject.builder().id(StockObject.WHITE_BRUSH).build());
+            final MemorySegment backgroundBrushHandle = this.nativeCaller.call(GetStockObject.builder().id(StockObject.WHITE_BRUSH).build());
             final MemorySegment wndClassEx = WindowClass.builder()
                     .procedurePointer(windowProcedureStub)
                     .procedureOwner(moduleHandle)
@@ -103,7 +103,7 @@ public final class Demo {
                     .build()
                     .createMemorySegment(arena);
 
-            final int classId = (int) this.nativeCaller.call(RegisterClassExW.builder().windowClassPointer(wndClassEx).build());
+            final int classId = this.nativeCaller.call(RegisterClassExW.builder().windowClassPointer(wndClassEx).build());
             if (classId == 0)
                 throw new RuntimeException("Failed to register class " + wndClassEx + ": " + this.nativeCaller.call(GetLastError.getInstance()));
             System.out.println("Registered classId: " + classId);
@@ -118,7 +118,7 @@ public final class Demo {
             this.hookManager.register(managedHook);
 
             final MemorySegment windowName = arena.allocateFrom("Demo Window", StandardCharsets.UTF_16LE);
-            final MemorySegment windowHandle = (MemorySegment) this.nativeCaller.call(
+            final MemorySegment windowHandle = this.nativeCaller.call(
                     CreateWindowExW.builder()
                             .extendedStyle(ExtendedWindowStyle.DEFAULT)
                             .className(className)
@@ -150,10 +150,10 @@ public final class Demo {
 
             int state;
             final MemorySegment message = arena.allocate(Message.MSG.byteSize());
-            while ((state = (int) (this.nativeCaller.call(
+            while ((state = this.nativeCaller.call(
                     GetMessageW.builder()
                             .messagePointer(message)
-                            .build()))
+                            .build())
             ) != 0) {
                 if (state != -1) {
                     this.nativeCaller.call(TranslateMessage.ofMessagePointer(message));
@@ -192,7 +192,7 @@ public final class Demo {
 
         final MemorySegment driverArray = arena.allocate(LPVOID, 1024).fill((byte) 0);
         final MemorySegment driverArrayNeededBytes = arena.allocate(LPDWORD);
-        final boolean result = ((int) this.nativeCaller.call(
+        final boolean result = (this.nativeCaller.call(
                 EnumDeviceDrivers.builder()
                         .sizedDriverArrayPointer(driverArray)
                         .bytesNeededPointer(driverArrayNeededBytes)
@@ -205,7 +205,7 @@ public final class Demo {
                 final MemorySegment driverAddress = driverArray.getAtIndex(ADDRESS.withByteAlignment(8), i);
                 System.out.println("Index " + i + " driver address: " + Long.toUnsignedString(driverAddress.address()));
                 final MemorySegment lpBaseName = arena.allocate(JAVA_CHAR, 200);
-                final int nameCharsCopied = (int) this.nativeCaller.call(
+                final int nameCharsCopied = this.nativeCaller.call(
                         GetDeviceDriverBaseNameW.builder()
                                 .driverAddress(driverAddress)
                                 .sizedBaseNameBufferPointer(lpBaseName)
@@ -217,7 +217,7 @@ public final class Demo {
                     throw new RuntimeException("Failed to copy driver name chars at address: " + Long.toUnsignedString(driverAddress.address()));
                 }
                 final MemorySegment lpFileName = arena.allocate(JAVA_CHAR, 200);
-                final int filenameCharsCopied = (int) this.nativeCaller.call(
+                final int filenameCharsCopied = this.nativeCaller.call(
                         GetDeviceDriverFileNameW.builder()
                                 .driverAddress(driverAddress)
                                 .sizedFileNameBufferPointer(lpFileName)
@@ -255,7 +255,7 @@ public final class Demo {
                         System.out.println("Pressed X");
                     yield NULL;
                 }
-                default -> (MemorySegment) this.nativeCaller.call(
+                default -> this.nativeCaller.call(
                         DefWindowProcW.builder()
                                 .windowHandle(windowHandle)
                                 .message(messageId)
@@ -273,14 +273,14 @@ public final class Demo {
     private void handlePaint(@NotNull final MemorySegment windowHandle, @NotNull final Arena arena) throws Throwable {
 
         final MemorySegment lpPaint = arena.allocate(PaintData.PAINTSTRUCT.byteSize());
-        final MemorySegment deviceContextHandle = (MemorySegment) this.nativeCaller.call(BeginPaint.builder().windowHandle(windowHandle).paintDataPointer(lpPaint).build());
+        final MemorySegment deviceContextHandle = this.nativeCaller.call(BeginPaint.builder().windowHandle(windowHandle).paintDataPointer(lpPaint).build());
         this.nativeCaller.call(SetTextColor.builder().deviceContextHandle(deviceContextHandle).color(ColorUtils.compress(255, 0, 0)).build());
         this.nativeCaller.call(SetBkMode.builder().deviceContextHandle(deviceContextHandle).mode(BackgroundMode.OPAQUE).build());
 
         this.debugRenderQueue.apply(deviceContextHandle);
 
         this.nativeCaller.call(ReleaseDC.builder().windowHandle(windowHandle).deviceContextHandle(deviceContextHandle).build());
-        final int endPaintStatus = (int) this.nativeCaller.call(EndPaint.builder().windowHandle(windowHandle).paintDataPointer(lpPaint).build());
+        final int endPaintStatus = this.nativeCaller.call(EndPaint.builder().windowHandle(windowHandle).paintDataPointer(lpPaint).build());
         Preconditions.checkState(endPaintStatus != 0);
 
     }
@@ -313,7 +313,7 @@ public final class Demo {
                 System.out.println("INJECTED: " + Flag.check(lowLevelKeyboardInput.getFlags(), LowLevelKeyboardHookFlag.LLKHF_INJECTED));
             }
 
-            return (MemorySegment) this.nativeCaller.call(
+            return this.nativeCaller.call(
                     CallNextHookEx.builder()
                             .code(code)
                             .firstParameter(firstParameter)
@@ -330,13 +330,13 @@ public final class Demo {
 
         try {
             if (nCode < 0) {
-                return (long) this.nativeCaller.call(
+                return this.nativeCaller.call(
                         CallNextHookEx.builder()
                                 .code(nCode)
                                 .firstParameter(wParam)
                                 .secondParameter(lParam)
                                 .build()
-                );
+                ).address();
             } else if (nCode == 0) {
                 return 1;
             } else {

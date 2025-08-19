@@ -21,7 +21,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(SetBkMode.NATIVE_NAME)
 @NativeDocumentation(SetBkMode.NATIVE_NAME)
-public final class SetBkMode extends NativeFunction {
+public final class SetBkMode extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.GDI_32;
     public static final String NATIVE_NAME = "SetBkMode";
@@ -55,9 +55,9 @@ public final class SetBkMode extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(
                 this.deviceContextHandle,
                 this.mode
         );

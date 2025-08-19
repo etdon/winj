@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class GenericFunction extends NativeFunction {
+public final class GenericFunction extends NativeFunction<Object> {
 
     private final List<Object> parameters;
 

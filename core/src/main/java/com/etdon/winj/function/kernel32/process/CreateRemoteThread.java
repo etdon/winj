@@ -25,7 +25,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(CreateRemoteThread.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createremotethread")
-public final class CreateRemoteThread extends NativeFunction {
+public final class CreateRemoteThread extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.KERNEL_32;
     public static final String NATIVE_NAME = "CreateRemoteThread";
@@ -109,9 +109,9 @@ public final class CreateRemoteThread extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(
                 this.processHandle,
                 this.securityAttributesPointer,
                 this.stackSize,

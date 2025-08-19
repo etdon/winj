@@ -3,7 +3,7 @@ package com.etdon.winj.function.ntdll;
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Conditional;
 import com.etdon.commons.conditional.Preconditions;
-import com.etdon.jbinder.common.NativeDocumentation;
+import com.etdon.jbinder.common.NativeName;
 import com.etdon.jbinder.function.NativeFunction;
 import com.etdon.winj.constant.Library;
 import com.etdon.winj.type.ObjectAttributes;
@@ -19,8 +19,8 @@ import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
-@NativeDocumentation(NtCreateUserProcess.NATIVE_NAME)
-public final class NtCreateUserProcess extends NativeFunction {
+@NativeName(NtCreateUserProcess.NATIVE_NAME)
+public final class NtCreateUserProcess extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.NTDLL;
     public static final String NATIVE_NAME = "NtCreateUserProcess";
@@ -128,9 +128,9 @@ public final class NtCreateUserProcess extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(
                 this.processHandleOutputPointer,
                 this.threadHandleOutputPointer,
                 this.processDesiredAccess,

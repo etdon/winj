@@ -21,7 +21,7 @@ import static java.lang.foreign.ValueLayout.*;
 
 @NativeName(InitiateShutdownW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-initiateshutdownw")
-public final class InitiateShutdownW extends NativeFunction {
+public final class InitiateShutdownW extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.ADVAPI_32;
     public static final String NATIVE_NAME = "InitiateShutdownW";
@@ -90,9 +90,9 @@ public final class InitiateShutdownW extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(
                 this.machineName,
                 this.message,
                 this.gracePeriod,

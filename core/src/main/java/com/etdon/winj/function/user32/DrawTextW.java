@@ -22,7 +22,7 @@ import static java.lang.foreign.ValueLayout.JAVA_INT;
  */
 @NativeName(DrawTextW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-drawtextw")
-public final class DrawTextW extends NativeFunction {
+public final class DrawTextW extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "DrawTextW";
@@ -81,9 +81,9 @@ public final class DrawTextW extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(
                 this.deviceContextHandle,
                 this.textPointer,
                 this.textLength,

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
@@ -19,7 +20,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(OpenProcess.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-openprocess")
-public final class OpenProcess extends NativeFunction {
+public final class OpenProcess extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.KERNEL_32;
     public static final String NATIVE_NAME = "OpenProcess";
@@ -63,9 +64,9 @@ public final class OpenProcess extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.access, this.inheritHandle, this.processId);
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(this.access, this.inheritHandle, this.processId);
 
     }
 

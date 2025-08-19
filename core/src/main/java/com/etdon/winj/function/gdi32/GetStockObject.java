@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
 import static java.lang.foreign.ValueLayout.ADDRESS;
@@ -20,7 +21,7 @@ import static java.lang.foreign.ValueLayout.JAVA_INT;
  */
 @NativeName(GetStockObject.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getstockobject")
-public final class GetStockObject extends NativeFunction {
+public final class GetStockObject extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.GDI_32;
     public static final String NATIVE_NAME = "GetStockObject";
@@ -46,9 +47,9 @@ public final class GetStockObject extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.id);
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(this.id);
 
     }
 

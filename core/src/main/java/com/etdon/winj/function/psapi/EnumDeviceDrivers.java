@@ -20,7 +20,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(EnumDeviceDrivers.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-enumdevicedrivers")
-public final class EnumDeviceDrivers extends NativeFunction {
+public final class EnumDeviceDrivers extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.PSAPI;
     public static final String NATIVE_NAME = "EnumDeviceDrivers";
@@ -61,9 +61,9 @@ public final class EnumDeviceDrivers extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(
                 this.driverArrayPointer,
                 this.arraySize,
                 this.bytesNeededPointer

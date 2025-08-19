@@ -26,7 +26,7 @@ import static java.lang.foreign.ValueLayout.JAVA_INT;
  */
 @NativeName(CreateWindowExW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw")
-public final class CreateWindowExW extends NativeFunction {
+public final class CreateWindowExW extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "CreateWindowExW";
@@ -182,9 +182,9 @@ public final class CreateWindowExW extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(
                 this.extendedStyle,
                 this.className,
                 this.windowName,

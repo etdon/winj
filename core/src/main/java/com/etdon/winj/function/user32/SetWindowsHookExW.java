@@ -24,7 +24,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(SetWindowsHookExW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowshookexw")
-public final class SetWindowsHookExW extends NativeFunction {
+public final class SetWindowsHookExW extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "SetWindowsHookExW";
@@ -80,9 +80,9 @@ public final class SetWindowsHookExW extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(
                 this.type,
                 this.procedurePointer,
                 this.ownerHandle,

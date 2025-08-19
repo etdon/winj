@@ -20,7 +20,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(SetTextColor.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-settextcolor")
-public final class SetTextColor extends NativeFunction {
+public final class SetTextColor extends NativeFunction<Integer> {
 
     public static final String LIBRARY = Library.GDI_32;
     public static final String NATIVE_NAME = "SetTextColor";
@@ -52,9 +52,9 @@ public final class SetTextColor extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke(
                 this.deviceContextHandle,
                 this.color
         );

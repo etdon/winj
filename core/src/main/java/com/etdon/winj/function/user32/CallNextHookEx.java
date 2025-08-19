@@ -23,7 +23,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(CallNextHookEx.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-callnexthookex")
-public final class CallNextHookEx extends NativeFunction {
+public final class CallNextHookEx extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "CallNextHookEx";
@@ -74,9 +74,9 @@ public final class CallNextHookEx extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(
                 this.hookHandle,
                 this.code,
                 this.firstParameter,

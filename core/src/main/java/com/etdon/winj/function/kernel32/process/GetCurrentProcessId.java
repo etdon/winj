@@ -17,7 +17,7 @@ import static com.etdon.winj.type.constant.NativeDataType.DWORD;
  */
 @NativeName(GetCurrentProcessId.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getcurrentprocessid")
-public final class GetCurrentProcessId extends NativeFunction {
+public final class GetCurrentProcessId extends NativeFunction<Integer> {
 
     private static class GetCurrentProcessIdSingleton {
 
@@ -38,9 +38,9 @@ public final class GetCurrentProcessId extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Integer call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke();
+        return (Integer) super.obtainHandle(linker, symbolLookup).invoke();
 
     }
 

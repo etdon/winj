@@ -16,7 +16,7 @@ import java.lang.foreign.SymbolLookup;
 import static com.etdon.winj.type.constant.NativeDataType.*;
 
 @NativeName(RtlAllocateHeap.NATIVE_NAME)
-public final class RtlAllocateHeap extends NativeFunction {
+public final class RtlAllocateHeap extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.NTDLL;
     public static final String NATIVE_NAME = "RtlAllocateHeap";
@@ -62,9 +62,9 @@ public final class RtlAllocateHeap extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.heapHandle, this.flags, this.size);
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(this.heapHandle, this.flags, this.size);
 
     }
 

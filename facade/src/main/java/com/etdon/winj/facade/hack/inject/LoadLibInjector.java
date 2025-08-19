@@ -48,7 +48,7 @@ public class LoadLibInjector extends Injector {
 
         final Arena arena = super.nativeContext.getArena();
         final NativeCaller caller = super.nativeContext.getCaller();
-        final MemorySegment processHandle = (MemorySegment) caller.call(
+        final MemorySegment processHandle = caller.call(
                 OpenProcess.builder()
                         .access(ProcessAccessRight.PROCESS_ALL_ACCESS)
                         .inheritHandle(false)
@@ -63,7 +63,7 @@ public class LoadLibInjector extends Injector {
             return InjectionState.FAIL;
         }
 
-        final MemorySegment kernelModuleHandle = (MemorySegment) caller.call(
+        final MemorySegment kernelModuleHandle = caller.call(
                 GetModuleHandleW.builder()
                         .moduleName(arena.allocateFrom("kernel32.dll", StandardCharsets.UTF_16LE))
                         .build()
@@ -76,7 +76,7 @@ public class LoadLibInjector extends Injector {
             return InjectionState.FAIL;
         }
 
-        final MemorySegment loadLibraryPointer = (MemorySegment) caller.call(
+        final MemorySegment loadLibraryPointer = caller.call(
                 GetProcAddress.builder()
                         .moduleHandle(kernelModuleHandle)
                         .localeNamePointer(arena.allocateFrom("LoadLibraryA"))
@@ -91,7 +91,7 @@ public class LoadLibInjector extends Injector {
         }
 
         final MemorySegment dllPath = arena.allocateFrom(path);
-        final MemorySegment allocatedBaseAddress = (MemorySegment) caller.call(
+        final MemorySegment allocatedBaseAddress = caller.call(
                 VirtualAllocEx.builder()
                         .processHandle(processHandle)
                         .size(dllPath.byteSize())
@@ -108,7 +108,7 @@ public class LoadLibInjector extends Injector {
         }
 
         final MemorySegment bytesWritten = arena.allocate(SIZE_T.byteSize());
-        boolean success = (int) caller.call(
+        boolean success = caller.call(
                 WriteProcessMemory.builder()
                         .processHandle(processHandle)
                         .baseAddressPointer(allocatedBaseAddress)

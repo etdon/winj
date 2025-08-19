@@ -20,7 +20,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(PostQuitMessage.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postquitmessage")
-public final class PostQuitMessage extends NativeFunction {
+public final class PostQuitMessage extends NativeFunction<Void> {
 
     public static final String LIBRARY = Library.USER_32;
     public static final String NATIVE_NAME = "PostQuitMessage";
@@ -51,11 +51,9 @@ public final class PostQuitMessage extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Void call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
-                this.exitCode
-        );
+        return (Void) super.obtainHandle(linker, symbolLookup).invoke(this.exitCode);
 
     }
 

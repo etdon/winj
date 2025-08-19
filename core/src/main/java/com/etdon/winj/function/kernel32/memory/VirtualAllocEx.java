@@ -24,7 +24,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(VirtualAllocEx.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualallocex")
-public final class VirtualAllocEx extends NativeFunction {
+public final class VirtualAllocEx extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.KERNEL_32;
     public static final String NATIVE_NAME = "VirtualAllocEx";
@@ -121,9 +121,9 @@ public final class VirtualAllocEx extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(
                 this.processHandle,
                 this.addressPointer,
                 this.size,

@@ -27,7 +27,7 @@ import static com.etdon.winj.type.constant.NativeDataType.*;
  */
 @NativeName(CreateFileW.NATIVE_NAME)
 @NativeDocumentation("https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew")
-public final class CreateFileW extends NativeFunction {
+public final class CreateFileW extends NativeFunction<MemorySegment> {
 
     public static final String LIBRARY = Library.KERNEL_32;
     public static final String NATIVE_NAME = "CreateFileW";
@@ -178,9 +178,9 @@ public final class CreateFileW extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public MemorySegment call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(
+        return (MemorySegment) super.obtainHandle(linker, symbolLookup).invoke(
                 this.fileNamePointer,
                 this.desiredAccess,
                 this.shareMode,

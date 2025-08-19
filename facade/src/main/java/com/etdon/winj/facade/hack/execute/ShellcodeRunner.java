@@ -37,13 +37,13 @@ public class ShellcodeRunner {
     public MemorySegment allocateRunner() throws Throwable {
 
         final NativeCaller caller = this.nativeContext.getCaller();
-        final MemorySegment runnerMemory = ((MemorySegment) caller.call(
+        final MemorySegment runnerMemory = caller.call(
                 VirtualAlloc.builder()
                         .size(RUNNER_INSTRUCTIONS.length)
                         .allocationType(AllocationType.MEM_COMMIT)
                         .memoryProtection(MemoryProtection.PAGE_EXECUTE_READWRITE)
                         .build()
-        )).reinterpret(RUNNER_INSTRUCTIONS.length);
+        ).reinterpret(RUNNER_INSTRUCTIONS.length);
         MemorySegment.copy(RUNNER_INSTRUCTIONS, 0, runnerMemory, ValueLayout.JAVA_BYTE, 0, RUNNER_INSTRUCTIONS.length);
 
         return runnerMemory;
@@ -53,16 +53,16 @@ public class ShellcodeRunner {
     public void execute(@NotNull final MemorySegment runnerPointer, final byte[] shellcode) throws Throwable {
 
         final NativeCaller caller = this.nativeContext.getCaller();
-        final MemorySegment shellcodeMemory = ((MemorySegment) caller.call(
+        final MemorySegment shellcodeMemory = caller.call(
                 VirtualAlloc.builder()
                         .size(shellcode.length)
                         .allocationType(AllocationType.MEM_COMMIT)
                         .memoryProtection(MemoryProtection.PAGE_EXECUTE_READWRITE)
                         .build()
-        )).reinterpret(shellcode.length);
+        ).reinterpret(shellcode.length);
         MemorySegment.copy(shellcode, 0, shellcodeMemory, ValueLayout.JAVA_BYTE, 0, shellcode.length);
 
-        final MemorySegment threadHandle = (MemorySegment) caller.call(
+        final MemorySegment threadHandle = caller.call(
                 CreateThread.builder()
                         .threadStartRoutinePointer(runnerPointer)
                         .parameterPointer(shellcodeMemory)

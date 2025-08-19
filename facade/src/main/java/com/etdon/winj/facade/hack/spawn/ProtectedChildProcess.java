@@ -100,7 +100,7 @@ public class ProtectedChildProcess extends Spawner {
         );
 
         final MemorySegment processParametersPointer = arena.allocate(AddressLayout.ADDRESS);
-        int ntStatus = (int) caller.call(
+        int ntStatus = caller.call(
                 RtlCreateProcessParametersEx.builder()
                         .processParametersPointerOutput(processParametersPointer)
                         .imagePathNamePointer(ntImagePath)
@@ -127,7 +127,7 @@ public class ProtectedChildProcess extends Spawner {
                 .uniqueProcess(this.parentPid)
                 .build()
                 .createMemorySegment(arena);
-        ntStatus = (int) caller.call(
+        ntStatus = caller.call(
                 NtOpenProcess.builder()
                         .processHandleOutputPointer(parentHandlePointer)
                         .desiredAccess(ThreadAccessRight.THREAD_ALL_ACCESS)
@@ -142,8 +142,8 @@ public class ProtectedChildProcess extends Spawner {
 
         final int attributeCount = 3;
         final long totalLength = SIZE_T.byteSize() + (attributeCount * ProcessAttribute.PS_ATTRIBUTE.byteSize());
-        final MemorySegment heapHandle = (MemorySegment) caller.call(GetProcessHeap.getInstance());
-        final MemorySegment attributeListPointer = (MemorySegment) caller.call(
+        final MemorySegment heapHandle = caller.call(GetProcessHeap.getInstance());
+        final MemorySegment attributeListPointer = caller.call(
                 RtlAllocateHeap.builder()
                         .heapHandle(heapHandle)
                         .flags(HeapAllocationFlag.HEAP_ZERO_MEMORY)
@@ -190,7 +190,7 @@ public class ProtectedChildProcess extends Spawner {
 
         final MemorySegment processHandle = arena.allocate(HANDLE.byteSize());
         final MemorySegment threadHandle = arena.allocate(HANDLE.byteSize());
-        ntStatus = (int) caller.call(
+        ntStatus = caller.call(
                 NtCreateUserProcess.builder()
                         .processHandleOutputPointer(processHandle)
                         .threadHandleOutputPointer(threadHandle)
@@ -205,7 +205,7 @@ public class ProtectedChildProcess extends Spawner {
             System.out.printf("NtCreateUserProcess: NTSTATUS=0x%08X%n", ntStatus);
         }
 
-        boolean success = (int) caller.call(CloseHandle.ofHandle(parentHandle)) > 0;
+        boolean success = caller.call(CloseHandle.ofHandle(parentHandle)) > 0;
         if (!success) {
             System.out.println("CloseHandle Error: " + caller.call(GetLastError.getInstance()));
         }

@@ -19,7 +19,7 @@ import static com.etdon.winj.type.constant.NativeDataType.DWORD;
  * action.
  */
 @NativeName(NtShutdownSystem.NATIVE_NAME)
-public final class NtShutdownSystem extends NativeFunction {
+public final class NtShutdownSystem extends NativeFunction<Void> {
 
     public static final String LIBRARY = Library.NTDLL;
     public static final String NATIVE_NAME = "NtShutdownSystem";
@@ -44,9 +44,9 @@ public final class NtShutdownSystem extends NativeFunction {
     }
 
     @Override
-    public Object call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
+    public Void call(@NotNull final Linker linker, @NotNull final SymbolLookup symbolLookup) throws Throwable {
 
-        return super.obtainHandle(linker, symbolLookup).invoke(this.action);
+        return (Void) super.obtainHandle(linker, symbolLookup).invoke(this.action);
 
     }
 
