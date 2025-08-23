@@ -20,7 +20,8 @@ public final class Instruction_DIV_RM64 extends Instruction {
     public byte[] build() {
 
         final ByteBuffer byteBuffer = ByteBuffer.size(4);
-        byteBuffer.put(Opcode.Prefix.of(this.source.getRegister().isExtended(), false, false, true));
+        final boolean sibExtension = this.source.requiresSIB() && this.source.getSIB().getIndex().isExtended();
+        byteBuffer.put(Opcode.Prefix.of(this.source.getRegister().isExtended(), sibExtension, false, true));
         byteBuffer.put(Opcode.Primary.DIV_RM64);
         byteBuffer.put(
                 Opcode.ModRM.builder()
@@ -30,7 +31,7 @@ public final class Instruction_DIV_RM64 extends Instruction {
                         .build()
         );
         if (this.source.requiresSIB())
-            byteBuffer.put(this.source.getSIB());
+            byteBuffer.put(this.source.getSIB().toByte());
 
         return byteBuffer.get();
 

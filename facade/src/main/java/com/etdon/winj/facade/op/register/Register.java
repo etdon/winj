@@ -1,5 +1,6 @@
 package com.etdon.winj.facade.op.register;
 
+import com.etdon.winj.facade.op.Opcode;
 import com.etdon.winj.facade.op.address.Addressable;
 import com.etdon.winj.facade.op.address.RegisterAddressor;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +45,7 @@ public abstract class Register implements Addressable {
     }
 
     @NotNull
-    public RegisterAddressor addressor(final byte mod, final byte sib) {
+    public RegisterAddressor addressor(final byte mod, final Opcode.SIB sib) {
 
         return RegisterAddressor.of(this, mod, sib);
 

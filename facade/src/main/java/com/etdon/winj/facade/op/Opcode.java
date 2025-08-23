@@ -1,6 +1,8 @@
 package com.etdon.winj.facade.op;
 
 import com.etdon.commons.builder.FluentBuilder;
+import com.etdon.commons.conditional.Preconditions;
+import com.etdon.winj.facade.op.register.Register;
 import org.jetbrains.annotations.NotNull;
 
 // x86-64
@@ -482,7 +484,43 @@ public final class Opcode {
 
     public static final class SIB {
 
-        private SIB() {
+        private final byte scale;
+        private final Register index;
+        private final Register base;
+
+        private SIB(final Builder builder) {
+
+            this.scale = builder.scale;
+            this.index = builder.index;
+            this.base = builder.base;
+
+        }
+
+        public byte getScale() {
+
+            return this.scale;
+
+        }
+
+        @NotNull
+        public Register getIndex() {
+
+            return this.index;
+
+        }
+
+        @NotNull
+        public Register getBase() {
+
+            return this.base;
+
+        }
+
+        public byte toByte() {
+
+            return (byte) (this.scale |
+                    (byte) ((this.index.getValue() << 3) & 0b0011_1000) |
+                    (byte) (this.base.getValue() & 0b0000_0111));
 
         }
 
@@ -492,16 +530,19 @@ public final class Opcode {
 
         }
 
-        public static final class Builder implements FluentBuilder<Byte> {
+        public static final class Builder implements FluentBuilder<SIB> {
 
             private byte scale;
-            private byte index;
-            private byte base;
+            private Register index;
+            private Register base;
 
             private Builder() {
 
             }
 
+            /**
+             * @see ScaleFactor
+             */
             public Builder scale(final byte scale) {
 
                 this.scale = (byte) ((scale << 6) & 0b1100_0000);
@@ -509,25 +550,27 @@ public final class Opcode {
 
             }
 
-            public Builder index(final byte index) {
+            public Builder index(@NotNull final Register index) {
 
-                this.index = (byte) ((index << 3) & 0b0011_1000);
+                this.index = index;
                 return this;
 
             }
 
-            public Builder base(final byte base) {
+            public Builder base(@NotNull final Register base) {
 
-                this.base = (byte) (base & 0b0000_0111);
+                this.base = base;
                 return this;
 
             }
 
             @NotNull
             @Override
-            public Byte build() {
+            public SIB build() {
 
-                return (byte) (this.scale | this.index | this.base);
+                Preconditions.checkNotNull(this.index);
+                Preconditions.checkNotNull(this.base);
+                return new SIB(this);
 
             }
 

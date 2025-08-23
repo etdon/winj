@@ -23,7 +23,8 @@ public final class Instruction_OR_RM64_IMM8 extends Instruction {
     public byte[] build() {
 
         final ByteBuffer byteBuffer = ByteBuffer.size(5);
-        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, false, true));
+        final boolean sibExtension = this.destination.requiresSIB() && this.destination.getSIB().getIndex().isExtended();
+        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), sibExtension, false, true));
         byteBuffer.put(Opcode.Primary.OR.RM64_IMM8);
         byteBuffer.put(
                 Opcode.ModRM.builder()
@@ -33,7 +34,7 @@ public final class Instruction_OR_RM64_IMM8 extends Instruction {
                         .build()
         );
         if (this.destination.requiresSIB())
-            byteBuffer.put(this.destination.getSIB());
+            byteBuffer.put(this.destination.getSIB().toByte());
         byteBuffer.put(this.value);
 
         return byteBuffer.get();

@@ -20,7 +20,8 @@ public final class Instruction_NEG_RM64 extends Instruction {
     public byte[] build() {
 
         final ByteBuffer byteBuffer = ByteBuffer.size(4);
-        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, false, true));
+        final boolean sibExtension = this.destination.requiresSIB() && this.destination.getSIB().getIndex().isExtended();
+        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), sibExtension, false, true));
         byteBuffer.put(Opcode.Primary.NEG_RM64);
         byteBuffer.put(
                 Opcode.ModRM.builder()
@@ -30,7 +31,7 @@ public final class Instruction_NEG_RM64 extends Instruction {
                         .build()
         );
         if (this.destination.requiresSIB())
-            byteBuffer.put(this.destination.getSIB());
+            byteBuffer.put(this.destination.getSIB().toByte());
 
         return byteBuffer.get();
 

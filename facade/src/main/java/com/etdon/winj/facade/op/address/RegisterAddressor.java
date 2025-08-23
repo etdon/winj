@@ -9,11 +9,11 @@ public final class RegisterAddressor extends Addressor {
 
     private final Register register;
     private final byte mod;
-    private final byte sib;
+    private final Opcode.SIB sib;
 
     private RegisterAddressor(final Register register,
                               final byte mod,
-                              final byte sib) {
+                              final Opcode.SIB sib) {
 
         this.register = register;
         this.mod = mod;
@@ -33,7 +33,7 @@ public final class RegisterAddressor extends Addressor {
 
     }
 
-    public byte getSIB() {
+    public Opcode.SIB getSIB() {
 
         return this.sib;
 
@@ -54,13 +54,13 @@ public final class RegisterAddressor extends Addressor {
     public static RegisterAddressor of(@NotNull final Register register,
                                        final byte mod) {
 
-        return of(register, mod, (byte) 0);
+        return of(register, mod, null);
 
     }
 
     public static RegisterAddressor of(@NotNull final Register register,
                                        final byte mod,
-                                       final byte sib) {
+                                       final Opcode.SIB sib) {
 
         Preconditions.checkNotNull(register);
         return new RegisterAddressor(register, mod, sib);

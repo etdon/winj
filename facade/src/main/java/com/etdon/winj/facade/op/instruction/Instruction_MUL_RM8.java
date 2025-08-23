@@ -20,8 +20,9 @@ public final class Instruction_MUL_RM8 extends Instruction {
     public byte[] build() {
 
         final ByteBuffer byteBuffer = ByteBuffer.size(4);
-        if (this.source.getRegister().isExtended())
-            byteBuffer.put(Opcode.Prefix.of(true, false, false, false));
+        final boolean sibExtension = this.source.requiresSIB() && this.source.getSIB().getIndex().isExtended();
+        if (this.source.getRegister().isExtended() || sibExtension)
+            byteBuffer.put(Opcode.Prefix.of(this.source.getRegister().isExtended(), sibExtension, false, false));
         byteBuffer.put(Opcode.Primary.MUL_RM8);
         byteBuffer.put(
                 Opcode.ModRM.builder()
@@ -31,7 +32,7 @@ public final class Instruction_MUL_RM8 extends Instruction {
                         .build()
         );
         if (this.source.requiresSIB())
-            byteBuffer.put(this.source.getSIB());
+            byteBuffer.put(this.source.getSIB().toByte());
 
         return byteBuffer.get();
 

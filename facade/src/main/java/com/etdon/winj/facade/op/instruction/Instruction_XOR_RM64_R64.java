@@ -24,7 +24,8 @@ public final class Instruction_XOR_RM64_R64 extends Instruction {
     public byte[] build() {
 
         final ByteBuffer byteBuffer = ByteBuffer.size(4);
-        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, this.source.isExtended(), true));
+        final boolean sibExtension = this.destination.requiresSIB() && this.destination.getSIB().getIndex().isExtended();
+        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), sibExtension, this.source.isExtended(), true));
         byteBuffer.put(Opcode.Primary.XOR.RM64_R64);
         byteBuffer.put(
                 Opcode.ModRM.builder()
@@ -34,7 +35,7 @@ public final class Instruction_XOR_RM64_R64 extends Instruction {
                         .build()
         );
         if (this.destination.requiresSIB())
-            byteBuffer.put(this.destination.getSIB());
+            byteBuffer.put(this.destination.getSIB().toByte());
 
         return byteBuffer.get();
 

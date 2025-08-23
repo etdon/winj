@@ -25,7 +25,8 @@ public final class Instruction_TEST_RM64_IMM32 extends Instruction {
     public byte[] build() {
 
         final ByteBuffer byteBuffer = ByteBuffer.size(7);
-        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), false, false, true));
+        final boolean sibExtension = this.destination.requiresSIB() && this.destination.getSIB().getIndex().isExtended();
+        byteBuffer.put(Opcode.Prefix.of(this.destination.getRegister().isExtended(), sibExtension, false, true));
         byteBuffer.put(Opcode.Primary.TEST_RM64_IMM32);
         byteBuffer.put(
                 Opcode.ModRM.builder()
@@ -35,7 +36,7 @@ public final class Instruction_TEST_RM64_IMM32 extends Instruction {
                         .build()
         );
         if (this.destination.requiresSIB())
-            byteBuffer.put(this.destination.getSIB());
+            byteBuffer.put(this.destination.getSIB().toByte());
         byteBuffer.put(IntegerMarshal.getInstance().marshal(this.value, PrimitiveMarshalContext.empty()));
 
         return byteBuffer.get();
