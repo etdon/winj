@@ -2,6 +2,7 @@ package com.etdon.winj.facade.hack.spawn;
 
 import com.etdon.commons.builder.FluentBuilder;
 import com.etdon.commons.conditional.Preconditions;
+import com.etdon.commons.util.Numbers;
 import com.etdon.jbinder.function.NativeCaller;
 import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.constant.ProcessAttributeValue;
@@ -26,6 +27,7 @@ import java.lang.foreign.ValueLayout;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.etdon.winj.type.constant.NativeDataType.*;
@@ -63,11 +65,11 @@ public class ProtectedChildProcess extends Spawner {
     }
 
     @Override
-    public void spawn() throws Throwable {
+    public int spawn() throws Throwable {
 
         if (!Files.exists(Path.of(path))) {
-            //
-            return;
+            LOGGER.log(Level.SEVERE, "Failed to find file under '{0}'", path);
+            return SpawnerResult.FAIL_FILE_NOT_FOUND;
         }
 
         final String nativePath = "\\??\\".concat(this.path);
@@ -110,7 +112,8 @@ public class ProtectedChildProcess extends Spawner {
                         .build()
         );
         if (ntStatus != 0) {
-            System.out.printf("RtlCreateProcessParametersEx: NTSTATUS=0x%08X%n", ntStatus);
+            LOGGER.log(Level.SEVERE, "Failed to create process parameters, error code: {0}", Numbers.toHexString(ntStatus));
+            return SpawnerResult.FAIL_PROCESS_PARAMETER_CREATION;
         }
         final MemorySegment processParameters = processParametersPointer.get(ValueLayout.ADDRESS, 0);
 
@@ -136,7 +139,8 @@ public class ProtectedChildProcess extends Spawner {
                         .build()
         );
         if (ntStatus != 0) {
-            System.out.printf("NtOpenProcess: NTSTATUS=0x%08X%n", ntStatus);
+            LOGGER.log(Level.SEVERE, "Failed to open parent process, error code: {0}", Numbers.toHexString(ntStatus));
+            return SpawnerResult.FAIL_OPEN_PARENT_PROCESS;
         }
         final MemorySegment parentHandle = parentHandlePointer.get(ValueLayout.ADDRESS, 0);
 
@@ -202,27 +206,34 @@ public class ProtectedChildProcess extends Spawner {
                         .build()
         );
         if (ntStatus != 0) {
-            System.out.printf("NtCreateUserProcess: NTSTATUS=0x%08X%n", ntStatus);
+            LOGGER.log(Level.SEVERE, "Failed to create user process, error code: {0}", Numbers.toHexString(ntStatus));
+            return SpawnerResult.FAIL_CREATE_USER_PROCESS;
         }
 
         boolean success = caller.call(CloseHandle.ofHandle(parentHandle)) > 0;
         if (!success) {
-            System.out.println("CloseHandle Error: " + caller.call(GetLastError.getInstance()));
+            LOGGER.log(Level.SEVERE, "Failed to close parent handle, error code: {0}", Numbers.toHexString(ntStatus));
+            return SpawnerResult.FAIL_CLOSE_PARENT_HANDLE;
         }
 
-        success = (int) caller.call(
+        success = caller.call(
                 RtlFreeHeap.builder()
                         .heapHandle(heapHandle)
                         .baseAddress(attributeList)
                         .build()
         ) > 0;
         if (!success) {
-            System.out.println("RtlFreeHeap Error: " + caller.call(GetLastError.getInstance()));
+            LOGGER.log(Level.SEVERE, "Failed to free attribute list memory, error code: {0}", Numbers.toHexString(caller.call(GetLastError.getInstance())));
+            return SpawnerResult.FAIL_FREE_MEMORY;
         }
-        ntStatus = (int) caller.call(RtlDestroyProcessParameters.ofProcessParameters(processParameters));
+
+        ntStatus = caller.call(RtlDestroyProcessParameters.ofProcessParameters(processParameters));
         if (ntStatus != 0) {
-            System.out.printf("RtlDestroyProcessParameters: NTSTATUS=0x%08X%n", ntStatus);
+            LOGGER.log(Level.SEVERE, "Failed to destroy process parameters, error code: {0}", Numbers.toHexString(ntStatus));
+            return SpawnerResult.FAIL_PROCESS_PARAMETER_DESTRUCTION;
         }
+
+        return SpawnerResult.SUCCESS;
 
     }
 

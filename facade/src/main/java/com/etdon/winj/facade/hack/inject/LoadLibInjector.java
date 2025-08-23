@@ -43,7 +43,7 @@ public class LoadLibInjector extends Injector {
 
         if (!Files.exists(Path.of(path))) {
             LOGGER.log(Level.SEVERE, "Failed to find file under '{0}'", path);
-            return InjectionState.FAIL_FILE_NOT_FOUND;
+            return InjectionResult.FAIL_FILE_NOT_FOUND;
         }
 
         final Arena arena = super.nativeContext.getArena();
@@ -60,7 +60,7 @@ public class LoadLibInjector extends Injector {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to obtain process handle for PID '{2}'", new Object[]{
                     OpenProcess.LIBRARY, OpenProcess.NATIVE_NAME, pid
             });
-            return InjectionState.FAIL;
+            return InjectionResult.FAIL;
         }
 
         final MemorySegment kernelModuleHandle = caller.call(
@@ -73,7 +73,7 @@ public class LoadLibInjector extends Injector {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to obtain kernel module handle", new Object[]{
                     GetModuleHandleW.LIBRARY, GetModuleHandleW.NATIVE_NAME
             });
-            return InjectionState.FAIL;
+            return InjectionResult.FAIL;
         }
 
         final MemorySegment loadLibraryPointer = caller.call(
@@ -87,7 +87,7 @@ public class LoadLibInjector extends Injector {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to obtain LoadLibraryA pointer", new Object[]{
                     GetProcAddress.LIBRARY, GetProcAddress.NATIVE_NAME
             });
-            return InjectionState.FAIL;
+            return InjectionResult.FAIL;
         }
 
         final MemorySegment dllPath = arena.allocateFrom(path);
@@ -104,7 +104,7 @@ public class LoadLibInjector extends Injector {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to allocate memory in process with PID '{2}'", new Object[]{
                     VirtualAllocEx.LIBRARY, VirtualAllocEx.NATIVE_NAME, pid
             });
-            return InjectionState.FAIL;
+            return InjectionResult.FAIL;
         }
 
         final MemorySegment bytesWritten = arena.allocate(SIZE_T.byteSize());
@@ -122,7 +122,7 @@ public class LoadLibInjector extends Injector {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to write memory in process with PID '{2}'", new Object[]{
                     WriteProcessMemory.LIBRARY, WriteProcessMemory.NATIVE_NAME, pid
             });
-            return InjectionState.FAIL;
+            return InjectionResult.FAIL;
         }
 
         final MemorySegment remoteThreadHandle = (MemorySegment) caller.call(
@@ -137,7 +137,7 @@ public class LoadLibInjector extends Injector {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed obtain remote thread handle", new Object[]{
                     CreateRemoteThread.LIBRARY, CreateRemoteThread.NATIVE_NAME
             });
-            return InjectionState.FAIL;
+            return InjectionResult.FAIL;
         }
 
         int result = (int) caller.call(
@@ -159,7 +159,7 @@ public class LoadLibInjector extends Injector {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to free memory in process with PID '{2}'", new Object[]{
                     VirtualFreeEx.LIBRARY, VirtualFreeEx.NATIVE_NAME, pid
             });
-            return InjectionState.FAIL;
+            return InjectionResult.FAIL;
         }
 
         success = (int) caller.call(CloseHandle.ofHandle(remoteThreadHandle)) > 0;
@@ -167,7 +167,7 @@ public class LoadLibInjector extends Injector {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to close remote thread handle", new Object[]{
                     CloseHandle.LIBRARY, CloseHandle.NATIVE_NAME
             });
-            return InjectionState.FAIL;
+            return InjectionResult.FAIL;
         }
 
         success = (int) caller.call(CloseHandle.ofHandle(processHandle)) > 0;
@@ -175,10 +175,10 @@ public class LoadLibInjector extends Injector {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to close remote thread handle", new Object[]{
                     CloseHandle.LIBRARY, CloseHandle.NATIVE_NAME
             });
-            return InjectionState.FAIL;
+            return InjectionResult.FAIL;
         }
 
-        return InjectionState.SUCCESS;
+        return InjectionResult.SUCCESS;
 
     }
 

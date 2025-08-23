@@ -13,6 +13,6 @@ public abstract class Spawner {
 
     }
 
-    public abstract void spawn() throws Throwable;
+    public abstract int spawn() throws Throwable;
 
 }
