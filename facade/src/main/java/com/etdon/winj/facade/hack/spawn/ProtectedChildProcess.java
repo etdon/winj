@@ -17,7 +17,6 @@ import com.etdon.winj.function.kernel32.error.GetLastError;
 import com.etdon.winj.function.kernel32.heap.GetProcessHeap;
 import com.etdon.winj.function.ntdll.*;
 import com.etdon.winj.type.*;
-import com.etdon.winj.util.Flag;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.foreign.AddressLayout;
@@ -36,8 +35,6 @@ import static com.etdon.winj.type.constant.NativeDataType.HANDLE;
 /**
  * Used to spawn a child process with a spoofed parent, spoofed command line, spoofed current directory, blocked
  * loading for non-Microsoft signed DLLs and Arbitrary Code Guard (ACG).
- * <p>
- * TODO: Customization regarding (security) features, logging, state codes.
  */
 public class ProtectedChildProcess extends Spawner {
 
@@ -47,13 +44,13 @@ public class ProtectedChildProcess extends Spawner {
      * The process id of the parent.
      */
     private final int parentPid;
-
     /**
      * The target path.
      * <p>
      * Example: C:\Windows\System32\mmc.exe
      */
     private final String path;
+    private final long mitigationOptions;
 
     private ProtectedChildProcess(final Builder builder) {
 
@@ -61,6 +58,7 @@ public class ProtectedChildProcess extends Spawner {
 
         this.parentPid = builder.parentPid;
         this.path = builder.path;
+        this.mitigationOptions = builder.mitigationOptions;
 
     }
 
@@ -157,12 +155,7 @@ public class ProtectedChildProcess extends Spawner {
         final MemorySegment attributeList = attributeListPointer.reinterpret(totalLength);
 
         final UnicodeString imagePath = new UnicodeString(arena, ntImagePath);
-        final MemorySegment policy = arena.allocateFrom(ValueLayout.JAVA_LONG,
-                Flag.combine(
-                        ProcessCreationMitigationPolicy.PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_ON,
-                        ProcessCreationMitigationPolicy.PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_ALWAYS_ON
-                )
-        );
+        final MemorySegment policy = arena.allocateFrom(ValueLayout.JAVA_LONG, this.mitigationOptions);
         final ProcessAttributeList processAttributeList = ProcessAttributeList.builder()
                 .totalLength(totalLength)
                 .attribute(
@@ -248,6 +241,7 @@ public class ProtectedChildProcess extends Spawner {
         private NativeContext nativeContext;
         private Integer parentPid;
         private String path;
+        private long mitigationOptions;
 
         private Builder() {
 
@@ -270,6 +264,27 @@ public class ProtectedChildProcess extends Spawner {
         public Builder path(@NotNull final String path) {
 
             this.path = path;
+            return this;
+
+        }
+
+        public Builder mitigationOption(final long mitigationOption) {
+
+            this.mitigationOptions |= mitigationOption;
+            return this;
+
+        }
+
+        public Builder blockUnsignedDlls() {
+
+            this.mitigationOptions |= ProcessCreationMitigationPolicy.PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_ON;
+            return this;
+
+        }
+
+        public Builder acg() {
+
+            this.mitigationOptions |= ProcessCreationMitigationPolicy.PROCESS_CREATION_MITIGATION_POLICY_PROHIBIT_DYNAMIC_CODE_ALWAYS_ON;
             return this;
 
         }

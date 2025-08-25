@@ -140,14 +140,14 @@ public class LoadLibInjector extends Injector {
             return InjectionResult.FAIL;
         }
 
-        int result = (int) caller.call(
+        int result = caller.call(
                 WaitForSingleObject.builder()
                         .handle(remoteThreadHandle)
                         .timeoutMillis(WaitTime.INFINITE)
                         .build()
         );
 
-        success = (int) caller.call(
+        success = caller.call(
                 VirtualFreeEx.builder()
                         .processHandle(processHandle)
                         .addressPointer(allocatedBaseAddress)
@@ -162,7 +162,7 @@ public class LoadLibInjector extends Injector {
             return InjectionResult.FAIL;
         }
 
-        success = (int) caller.call(CloseHandle.ofHandle(remoteThreadHandle)) > 0;
+        success = caller.call(CloseHandle.ofHandle(remoteThreadHandle)) > 0;
         if (!success) {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to close remote thread handle", new Object[]{
                     CloseHandle.LIBRARY, CloseHandle.NATIVE_NAME
@@ -170,7 +170,7 @@ public class LoadLibInjector extends Injector {
             return InjectionResult.FAIL;
         }
 
-        success = (int) caller.call(CloseHandle.ofHandle(processHandle)) > 0;
+        success = caller.call(CloseHandle.ofHandle(processHandle)) > 0;
         if (!success) {
             LOGGER.log(Level.SEVERE, "[{0}:{1}] Failed to close remote thread handle", new Object[]{
                     CloseHandle.LIBRARY, CloseHandle.NATIVE_NAME
