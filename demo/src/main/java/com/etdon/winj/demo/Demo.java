@@ -10,11 +10,11 @@ import com.etdon.winj.common.NativeContext;
 import com.etdon.winj.constant.*;
 import com.etdon.winj.facade.Window;
 import com.etdon.winj.facade.WindowsAPI;
-import com.etdon.winj.facade.op.Opcode;
-import com.etdon.winj.facade.op.Shellcode;
+import com.etdon.winj.facade.assembler.Opcodes;
+import com.etdon.winj.facade.assembler.Shellcode;
 import com.etdon.winj.facade.hack.execute.ShellcodeHelper;
 import com.etdon.winj.facade.hack.execute.ShellcodeRunner;
-import com.etdon.winj.facade.op.register.Register64;
+import com.etdon.winj.facade.assembler.register.Register64;
 import com.etdon.winj.marshal.tstring.StringMarshal;
 import com.etdon.winj.marshal.tstring.StringMarshalContext;
 import com.etdon.winj.marshal.tstring.XorStringMarshalStrategy;
@@ -354,9 +354,9 @@ public final class Demo {
             final ShellcodeHelper shellcodeHelper = new ShellcodeHelper(this.serviceProvider.getOrThrow(SymbolLookupCache.class));
             final byte[] exitProcess = Shellcode.builder()
                     .instructions(
-                            Opcode.Prefix.REX_W,
-                            Opcode.Group.G_83,
-                            Opcode.ModRM.builder()
+                            Opcodes.Prefix.REX_W,
+                            Opcodes.Group.G_83,
+                            Opcodes.ModRM.builder()
                                     .mod(11)
                                     .reg(101)
                                     .rm(100)
