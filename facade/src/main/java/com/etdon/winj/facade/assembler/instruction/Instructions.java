@@ -5,7 +5,9 @@ import com.etdon.winj.facade.assembler.operand.encoding.*;
 
 public final class Instructions {
 
-    public static final InstructionDefinition PUSH_R64 = InstructionDefinition.of(Opcode.of(0x50), com.etdon.winj.facade.assembler.operand.encoding.OR.getInstance());
+    public static final Instruction PUSH_R64 = Instruction.of(Opcode.of(0x50), com.etdon.winj.facade.assembler.operand.encoding.OR.getInstance());
+    public static final Instruction POP_R64 = Instruction.of(Opcode.of(0x58), com.etdon.winj.facade.assembler.operand.encoding.OR.getInstance());
+
     public static final byte PUSH_IMM32 = (byte) 0x68;
     public static final byte IMUL_R64_RM64_IMM32 = (byte) 0x69;
     public static final byte PUSH_IMM8 = (byte) 0x6A;
@@ -60,15 +62,15 @@ public final class Instructions {
 
     public static class ADD {
 
-        public static final InstructionDefinition RM8_R8 = InstructionDefinition.of(Opcode.of(0x00), RM_R.getInstance());
-        public static final InstructionDefinition RM64_R64 = InstructionDefinition.of(Opcode.of(0x01), RM_R.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x00), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x01), RM_R.getInstance());
         public static final byte R8_RM8 = (byte) 0x02;
         public static final byte R64_RM64 = (byte) 0x03;
         public static final byte AL_IMM8 = (byte) 0x04;
         public static final byte RAX_IMM32 = (byte) 0x05;
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
-        public static final InstructionDefinition RM64_IMM8 = InstructionDefinition.of(Opcode.of(0x83), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83), RM_IMM.getInstance());
 
     }
 
@@ -82,7 +84,7 @@ public final class Instructions {
         public static final byte RAX_IMM32 = (byte) 0x0D;
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
-        public static final InstructionDefinition RM64_IMM8 = InstructionDefinition.of(Opcode.of(0x83, 1), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 1), RM_IMM.getInstance());
 
     }
 
@@ -96,7 +98,7 @@ public final class Instructions {
         public static final byte RAX_IMM32 = (byte) 0x15;
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
-        public static final InstructionDefinition RM64_IMM8 = InstructionDefinition.of(Opcode.of(0x83, 2), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 2), RM_IMM.getInstance());
 
     }
 
@@ -110,7 +112,7 @@ public final class Instructions {
         public static final byte RAX_IMM32 = (byte) 0x1D;
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
-        public static final InstructionDefinition RM64_IMM8 = InstructionDefinition.of(Opcode.of(0x83, 3), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 3), RM_IMM.getInstance());
 
     }
 
@@ -124,7 +126,7 @@ public final class Instructions {
         public static final byte RAX_IMM32 = (byte) 0x25;
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
-        public static final InstructionDefinition RM64_IMM8 = InstructionDefinition.of(Opcode.of(0x83, 4), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 4), RM_IMM.getInstance());
 
     }
 
@@ -138,21 +140,21 @@ public final class Instructions {
         public static final byte RAX_IMM32 = (byte) 0x2D;
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
-        public static final InstructionDefinition RM64_IMM8 = InstructionDefinition.of(Opcode.of(0x83, 5), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 5), RM_IMM.getInstance());
 
     }
 
     public static class XOR {
 
-        public static final InstructionDefinition RM8_R8 = InstructionDefinition.of(Opcode.of(0x30), RM_R.getInstance());
-        public static final InstructionDefinition RM64_R64 = InstructionDefinition.of(Opcode.of(0x31), RM_R.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x30), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x31), RM_R.getInstance());
         public static final byte R8_RM8 = (byte) 0x32;
         public static final byte R64_RM64 = (byte) 0x33;
         public static final byte AL_IMM8 = (byte) 0x34;
         public static final byte RAX_IMM32 = (byte) 0x35;
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
-        public static final InstructionDefinition RM64_IMM8 = InstructionDefinition.of(Opcode.of(0x83, 6), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 6), RM_IMM.getInstance());
 
     }
 
@@ -166,27 +168,27 @@ public final class Instructions {
         public static final byte RAX_IMM32 = (byte) 0x3D;
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
-        public static final InstructionDefinition RM64_IMM8 = InstructionDefinition.of(Opcode.of(0x83, 7), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 7), RM_IMM.getInstance());
 
     }
 
     public static final byte CALLF_M64 = (byte) 0xFF;
     public static final byte JMP_RM32 = (byte) 0xFF;
     public static final byte JMP_RM64 = (byte) 0xFF;
-    public static final InstructionDefinition TEST_RM8_IMM8 = InstructionDefinition.of(Opcode.of(0xF6), RM_IMM.getInstance());
-    public static final InstructionDefinition NOT_RM8 = InstructionDefinition.of(Opcode.of(0xF6, 2), RM.getInstance());
-    public static final InstructionDefinition NEG_RM8 = InstructionDefinition.of(Opcode.of(0xF6, 3), RM.getInstance());
-    public static final InstructionDefinition MUL_RM8 = InstructionDefinition.of(Opcode.of(0xF6, 4), RM.getInstance());
-    public static final InstructionDefinition IMUL_RM8 = InstructionDefinition.of(Opcode.of(0xF6, 5), RM.getInstance());
-    public static final InstructionDefinition DIV_RM8 = InstructionDefinition.of(Opcode.of(0xF6, 6), RM.getInstance());
-    public static final InstructionDefinition IDIV_RM8 = InstructionDefinition.of(Opcode.of(0xF6, 7), RM.getInstance());
-    public static final InstructionDefinition TEST_RM64_IMM32 = InstructionDefinition.of(Opcode.of(0xF7), RM_IMM.getInstance());
-    public static final InstructionDefinition NOT_RM64 = InstructionDefinition.of(Opcode.of(0xF7, 2), RM.getInstance());
-    public static final InstructionDefinition NEG_RM64 = InstructionDefinition.of(Opcode.of(0xF7, 3), RM.getInstance());
-    public static final InstructionDefinition MUL_RM64 = InstructionDefinition.of(Opcode.of(0xF7, 4), RM.getInstance());
-    public static final InstructionDefinition IMUL_RM64 = InstructionDefinition.of(Opcode.of(0xF7, 5), RM.getInstance());
-    public static final InstructionDefinition DIV_RM64 = InstructionDefinition.of(Opcode.of(0xF7, 6), RM.getInstance());
-    public static final InstructionDefinition IDIV_RM64 = InstructionDefinition.of(Opcode.of(0xF7, 7), RM.getInstance());
+    public static final Instruction TEST_RM8_IMM8 = Instruction.of(Opcode.of(0xF6), RM_IMM.getInstance());
+    public static final Instruction NOT_RM8 = Instruction.of(Opcode.of(0xF6, 2), RM.getInstance());
+    public static final Instruction NEG_RM8 = Instruction.of(Opcode.of(0xF6, 3), RM.getInstance());
+    public static final Instruction MUL_RM8 = Instruction.of(Opcode.of(0xF6, 4), RM.getInstance());
+    public static final Instruction IMUL_RM8 = Instruction.of(Opcode.of(0xF6, 5), RM.getInstance());
+    public static final Instruction DIV_RM8 = Instruction.of(Opcode.of(0xF6, 6), RM.getInstance());
+    public static final Instruction IDIV_RM8 = Instruction.of(Opcode.of(0xF6, 7), RM.getInstance());
+    public static final Instruction TEST_RM64_IMM32 = Instruction.of(Opcode.of(0xF7), RM_IMM.getInstance());
+    public static final Instruction NOT_RM64 = Instruction.of(Opcode.of(0xF7, 2), RM.getInstance());
+    public static final Instruction NEG_RM64 = Instruction.of(Opcode.of(0xF7, 3), RM.getInstance());
+    public static final Instruction MUL_RM64 = Instruction.of(Opcode.of(0xF7, 4), RM.getInstance());
+    public static final Instruction IMUL_RM64 = Instruction.of(Opcode.of(0xF7, 5), RM.getInstance());
+    public static final Instruction DIV_RM64 = Instruction.of(Opcode.of(0xF7, 6), RM.getInstance());
+    public static final Instruction IDIV_RM64 = Instruction.of(Opcode.of(0xF7, 7), RM.getInstance());
     public static final byte CLC = (byte) 0xF8;
     public static final byte STC = (byte) 0xF9;
     public static final byte CLI = (byte) 0xFA;
@@ -194,7 +196,22 @@ public final class Instructions {
     public static final byte CLD = (byte) 0xFC;
     public static final byte STD = (byte) 0xFD;
 
-    public static final InstructionDefinition SYSCALL = InstructionDefinition.of(Opcode.of(new byte[]{0x0F, 0x05}), ZO.getInstance());
+    public static final Instruction INC_RM64 = Instruction.of(Opcode.of(0xFF), RM.getInstance());
+    public static final Instruction DEC_RM64 = Instruction.of(Opcode.of(0xFF, 1), RM.getInstance());
+    public static final Instruction CALL_RM64 = Instruction.of(Opcode.of(0xFF, 2), RM.getInstance());
+
+    public static final Instruction MOV_R64_IMM64 = Instruction.of(Opcode.of(0xB8), OI.getInstance());
+    public static final Instruction MOV_RM8_R8 = Instruction.of(Opcode.of(0x88), RM_R.getInstance());
+    public static final Instruction MOV_RM64_R64 = Instruction.of(Opcode.of(0x89), RM_R.getInstance());
+
+    public static final Instruction RETN_IMM16 = Instruction.of(Opcode.of(0xC2), IMM.getInstance());
+    public static final Instruction RETN = Instruction.of(Opcode.of(0xC3), ZO.getInstance());
+
+    public static final byte INC_RM8 = (byte) 0xFE;
+    public static final byte DEC_RM8 = (byte) 0xFE;
+    public static final byte CALL_RM32 = (byte) 0xFF;
+
+    public static final Instruction SYSCALL = Instruction.of(Opcode.of(new byte[]{0x0F, 0x05}), ZO.getInstance());
 
     private Instructions() {
 

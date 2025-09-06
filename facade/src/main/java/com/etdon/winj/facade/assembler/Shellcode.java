@@ -126,21 +126,21 @@ public final class Shellcode {
 
         public Builder mov(@NotNull final RegisterAddressor destination, @NotNull final Register8 source) {
 
-            this.raw(Instruction_MOV_RM8_R8.of(destination, source).build());
+            this.raw(Instructions.MOV_RM8_R8.create(destination, source));
             return this;
 
         }
 
         public Builder mov(@NotNull final RegisterAddressor destination, @NotNull final Register64 source) {
 
-            this.raw(Instruction_MOV_RM64_R64.of(destination, source).build());
+            this.raw(Instructions.MOV_RM64_R64.create(destination, source));
             return this;
 
         }
 
         public Builder mov(@NotNull final Register64 destination, final long value) {
 
-            this.raw(Instruction_MOV_R64_IMM64.of(destination, value).build());
+            this.raw(Instructions.MOV_R64_IMM64.create(destination, Immediate.of(value)));
             return this;
 
         }
@@ -154,14 +154,14 @@ public final class Shellcode {
 
         public Builder pop(@NotNull final Register64 source) {
 
-            this.raw(Instruction_POP_R64.of(source).build());
+            this.raw(Instructions.POP_R64.create(source));
             return this;
 
         }
 
         public Builder call(@NotNull final RegisterAddressor destination) {
 
-            this.raw(Instruction_CALL_RM64.of(destination).build());
+            this.raw(Instructions.CALL_RM64.create(destination));
             return this;
 
         }
@@ -175,14 +175,14 @@ public final class Shellcode {
 
         public Builder inc(@NotNull final RegisterAddressor destination) {
 
-            this.raw(Instruction_INC_RM64.of(destination).build());
+            this.raw(Instructions.INC_RM64.create(destination));
             return this;
 
         }
 
         public Builder dec(@NotNull final RegisterAddressor destination) {
 
-            this.raw(Instruction_DEC_RM64.of(destination).build());
+            this.raw(Instructions.DEC_RM64.create(destination));
             return this;
 
         }
@@ -397,14 +397,14 @@ public final class Shellcode {
 
         public Builder retn(final short value) {
 
-            this.raw(Instruction_RETN_IMM16.of(value).build());
+            this.raw(Instructions.RETN_IMM16.create(Immediate.of(value)));
             return this;
 
         }
 
         public Builder retn() {
 
-            this.raw(Instruction_RETN.of().build());
+            this.raw(Instructions.RETN.create());
             return this;
 
         }

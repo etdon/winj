@@ -55,14 +55,6 @@ public final class Opcodes {
 
         public static final class MOV {
 
-            /**
-             * @see com.etdon.winj.facade.assembler.instruction.Instruction_MOV_RM8_R8
-             */
-            public static final byte RM8_R8 = (byte) 0x88;
-            /**
-             * @see com.etdon.winj.facade.assembler.instruction.Instruction_MOV_RM64_R64
-             */
-            public static final byte RM64_R64 = (byte) 0x89;
             public static final byte R8_RM8 = (byte) 0x8A;
             public static final byte R64_RM64 = (byte) 0x8B;
             public static final byte M16_SREG = (byte) 0x8C;
@@ -79,19 +71,11 @@ public final class Opcodes {
             public static final byte SD_M32_M32 = (byte) 0xA5;
             public static final byte SQ_M64_M64 = (byte) 0xA5;
             public static final byte R8_IMM8 = (byte) 0xB0;
-            /**
-             * @see com.etdon.winj.facade.assembler.instruction.Instruction_MOV_R64_IMM64
-             */
-            public static final byte R64_IMM64 = (byte) 0xB8;
 
         }
 
         public static final class POP {
 
-            /**
-             * @see com.etdon.winj.facade.assembler.instruction.Instruction_POP_R64
-             */
-            public static final byte R64 = (byte) 0x58;
             public static final byte RM32 = (byte) 0x8F;
             public static final byte RM64 = (byte) 0x8F;
 
@@ -119,29 +103,6 @@ public final class Opcodes {
         public static final byte POPFQ = (byte) 0x9D;
         public static final byte SAHF_AH = (byte) 0x9E;
         public static final byte LAHF_AH = (byte) 0x9F;
-        /**
-         * @see com.etdon.winj.facade.assembler.instruction.Instruction_RETN_IMM16
-         */
-        public static final byte RETN_IMM16 = (byte) 0xC2;
-        /**
-         * @see com.etdon.winj.facade.assembler.instruction.Instruction_RETN
-         */
-        public static final byte RETN = (byte) 0xC3;
-        public static final byte INC_RM8 = (byte) 0xFE;
-        public static final byte DEC_RM8 = (byte) 0xFE;
-        /**
-         * @see com.etdon.winj.facade.assembler.instruction.Instruction_INC_RM64
-         */
-        public static final byte INC_RM64 = (byte) 0xFF;
-        /**
-         * @see com.etdon.winj.facade.assembler.instruction.Instruction_DEC_RM64
-         */
-        public static final byte DEC_RM64 = (byte) 0xFF;
-        public static final byte CALL_RM32 = (byte) 0xFF;
-        /**
-         * @see com.etdon.winj.facade.assembler.instruction.Instruction_CALL_RM64
-         */
-        public static final byte CALL_RM64 = (byte) 0xFF;
 
     }
 
