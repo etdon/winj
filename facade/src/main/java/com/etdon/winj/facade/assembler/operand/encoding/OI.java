@@ -24,8 +24,11 @@ public final class OI extends InstructionEncoding {
     @Override
     public byte[] process(final Opcode opcode, final Operand... operands) {
 
-        final Register register = (Register) operands[0];
-        final Immediate immediate = (Immediate) operands[1];
+        if (!(operands[0] instanceof Register register))
+            throw new IllegalArgumentException("Expected Register operand, got " + operands[0].getClass().getName());
+        if (!(operands[1] instanceof Immediate immediate))
+            throw new IllegalArgumentException("Expected Immediate operand, got " + operands[1].getClass().getName());
+
         final ByteBuffer byteBuffer = ByteBuffer.size(10);
         final boolean wideMode = immediate.getSize() == OperandSize.QWORD;
         final byte prefix = Prefix.builder().w(wideMode).r(false).x(false).b(register.isExtended()).build();

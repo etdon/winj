@@ -22,7 +22,9 @@ public final class OR extends InstructionEncoding {
     @Override
     public byte[] process(final Opcode opcode, final Operand... operands) {
 
-        final Register register = (Register) operands[0];
+        if (!(operands[0] instanceof Register register))
+            throw new IllegalArgumentException("Expected Register operand, got " + operands[0].getClass().getName());
+
         final ByteBuffer byteBuffer = ByteBuffer.size(2);
         final byte prefix = Prefix.builder().w(false).r(false).x(false).b(register.isExtended()).build();
         if (prefix != Opcodes.Prefix.REX)

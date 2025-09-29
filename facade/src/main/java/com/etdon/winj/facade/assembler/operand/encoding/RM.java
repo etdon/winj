@@ -23,7 +23,9 @@ public final class RM extends InstructionEncoding {
     @Override
     public byte[] process(final Opcode opcode, final Operand... operands) {
 
-        final RegisterAddressor rm = (RegisterAddressor) operands[0];
+        if (!(operands[0] instanceof RegisterAddressor rm))
+            throw new IllegalArgumentException("Expected RegisterAddressor operand, got " + operands[0].getClass().getName());
+
         final ByteBuffer byteBuffer = ByteBuffer.size(4);
         final boolean wideMode = rm.getSize() == OperandSize.QWORD;
         final boolean sibExtension = rm.requiresSIB() && rm.getSIB().getIndex().isExtended();

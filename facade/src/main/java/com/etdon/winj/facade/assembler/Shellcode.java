@@ -126,21 +126,21 @@ public final class Shellcode {
 
         public Builder mov(@NotNull final RegisterAddressor destination, @NotNull final Register8 source) {
 
-            this.raw(Instructions.MOV_RM8_R8.create(destination, source));
+            this.raw(Instructions.MOV.RM8_R8.create(destination, source));
             return this;
 
         }
 
         public Builder mov(@NotNull final RegisterAddressor destination, @NotNull final Register64 source) {
 
-            this.raw(Instructions.MOV_RM64_R64.create(destination, source));
+            this.raw(Instructions.MOV.RM64_R64.create(destination, source));
             return this;
 
         }
 
         public Builder mov(@NotNull final Register64 destination, final long value) {
 
-            this.raw(Instructions.MOV_R64_IMM64.create(destination, Immediate.of(value)));
+            this.raw(Instructions.MOV.R64_IMM64.create(destination, Immediate.of(value)));
             return this;
 
         }
