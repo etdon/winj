@@ -6,10 +6,20 @@ import com.etdon.winj.facade.assembler.operand.OperandSize;
 import com.etdon.winj.facade.assembler.operand.encoding.*;
 import com.etdon.winj.facade.assembler.operand.impl.Immediate;
 import com.etdon.winj.facade.assembler.register.Register;
+import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public final class Instructions {
+public final class Instructions implements InstructionHolder {
+
+    private static final Logger LOGGER = Logger.getLogger(Instructions.class.getName());
+    private static final Map<Class<?>, List<Instruction>> INSTRUCTION_CACHE = new ConcurrentHashMap<>();
 
     public static final Instruction PUSH_R64 = Instruction.of(Opcode.of(0x50), Signature.of(Constraint.of(Register.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD)), com.etdon.winj.facade.assembler.operand.encoding.OR.getInstance());
     public static final Instruction POP_R64 = Instruction.of(Opcode.of(0x58), Signature.of(Constraint.of(Register.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD)), com.etdon.winj.facade.assembler.operand.encoding.OR.getInstance());
@@ -31,7 +41,7 @@ public final class Instructions {
     public static final byte OUTS_DX_M32 = (byte) 0x6F;
     public static final byte OUTSD_DX_M32 = (byte) 0x6F;
 
-    public static class JMPC {
+    public static class JMPC implements InstructionHolder {
 
         public static final byte JO_REL8 = (byte) 0x70;
         public static final byte JNO_REL8 = (byte) 0x71;
@@ -66,7 +76,7 @@ public final class Instructions {
 
     }
 
-    public static class ADD {
+    public static class ADD implements InstructionHolder {
 
         public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x00), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
         public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x01), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
@@ -77,11 +87,10 @@ public final class Instructions {
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
-        public static final List<Instruction> ENTRIES = List.of(RM64_IMM8);
 
     }
 
-    public static final class OR {
+    public static final class OR implements InstructionHolder {
 
         public static final byte RM8_R8 = (byte) 0x08;
         public static final byte RM64_R64 = (byte) 0x09;
@@ -92,11 +101,10 @@ public final class Instructions {
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 1), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
-        public static final List<Instruction> ENTRIES = List.of(RM64_IMM8);
 
     }
 
-    public static final class ADC {
+    public static final class ADC implements InstructionHolder {
 
         public static final byte RM8_R8 = (byte) 0x10;
         public static final byte RM64_R64 = (byte) 0x11;
@@ -107,11 +115,10 @@ public final class Instructions {
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 2), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
-        public static final List<Instruction> ENTRIES = List.of(RM64_IMM8);
 
     }
 
-    public static final class SBB {
+    public static final class SBB implements InstructionHolder {
 
         public static final byte RM8_R8 = (byte) 0x18;
         public static final byte RM64_R64 = (byte) 0x19;
@@ -122,11 +129,10 @@ public final class Instructions {
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 3), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
-        public static final List<Instruction> ENTRIES = List.of(RM64_IMM8);
 
     }
 
-    public static final class AND {
+    public static final class AND implements InstructionHolder {
 
         public static final byte RM8_R8 = (byte) 0x20;
         public static final byte RM64_R64 = (byte) 0x21;
@@ -137,11 +143,10 @@ public final class Instructions {
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 4), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
-        public static final List<Instruction> ENTRIES = List.of(RM64_IMM8);
 
     }
 
-    public static final class SUB {
+    public static final class SUB implements InstructionHolder {
 
         public static final byte RM8_R8 = (byte) 0x28;
         public static final byte RM64_R64 = (byte) 0x29;
@@ -152,11 +157,10 @@ public final class Instructions {
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 5), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
-        public static final List<Instruction> ENTRIES = List.of(RM64_IMM8);
 
     }
 
-    public static class XOR {
+    public static class XOR implements InstructionHolder {
 
         public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x30), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
         public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x31), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
@@ -167,11 +171,10 @@ public final class Instructions {
         public static final byte RM8_IMM8 = (byte) 0x80;
         public static final byte RM64_IMM32 = (byte) 0x81;
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 6), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
-        public static final List<Instruction> ENTRIES = List.of(RM8_R8, RM64_R64, RM64_IMM8);
 
     }
 
-    public static final class CMP {
+    public static final class CMP implements InstructionHolder {
 
         public static final Instruction AL_IMM8 = Instruction.of(Opcode.of(0x3C), Signature.of(Constraint.of(Immediate.class, OperandSize.BYTE)), IMM.getInstance());
         public static final Instruction AX_IMM16 = Instruction.of(Opcode.of(0x3D), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
@@ -186,7 +189,6 @@ public final class Instructions {
         public static final byte R8_RM8 = (byte) 0x3A;
         public static final byte R64_RM64 = (byte) 0x3B;
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 7), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
-        public static final List<Instruction> ENTRIES = List.of(RM64_IMM8);
 
     }
 
@@ -218,11 +220,10 @@ public final class Instructions {
     public static final Instruction DEC_RM64 = Instruction.of(Opcode.of(0xFF, 1), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), RM.getInstance());
     public static final Instruction CALL_RM64 = Instruction.of(Opcode.of(0xFF, 2), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), RM.getInstance());
 
-    public static class MOV {
+    public static class MOV implements InstructionHolder {
         public static final Instruction R64_IMM64 = Instruction.of(Opcode.of(0xB8), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.QWORD)), OI.getInstance());
         public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x88), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
         public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x89), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
-        public static final List<Instruction> ENTRIES = List.of(R64_IMM64, RM8_R8, RM64_R64);
     }
 
     public static final Instruction RETN_IMM16 = Instruction.of(Opcode.of(0xC2), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
@@ -233,6 +234,36 @@ public final class Instructions {
     public static final byte CALL_RM32 = (byte) 0xFF;
 
     public static final Instruction SYSCALL = Instruction.of(Opcode.of(new byte[]{0x0F, 0x05}), Signature.EMPTY, ZO.getInstance());
+
+    /**
+     * Resolves and caches the {@link Instruction} values declared within the provided {@link InstructionHolder} class
+     * before returning them. If the class has been processed in the past the cached values will be returned.
+     *
+     * @param clazz The holder class.
+     * @return The computed or cached values.
+     */
+    public static List<Instruction> resolve(@NotNull final Class<? extends InstructionHolder> clazz) {
+
+        return INSTRUCTION_CACHE.computeIfAbsent(clazz, (input) -> {
+            try {
+                final List<Instruction> instructions = new ArrayList<>();
+                final Field[] fields = input.getDeclaredFields();
+                for (final Field field : fields) {
+                    final Object value = field.get(null);
+                    if (!Instruction.class.isAssignableFrom(value.getClass()))
+                        continue;
+                    instructions.add((Instruction) value);
+                }
+                return instructions;
+            } catch (final ReflectiveOperationException ex) {
+                LOGGER.log(Level.SEVERE, "Failed to resolve instruction fields of instruction holder class '{0}': {1}", new Object[]{
+                        clazz.getName(), ex.getMessage()
+                });
+                return null;
+            }
+        });
+
+    }
 
     private Instructions() {
 

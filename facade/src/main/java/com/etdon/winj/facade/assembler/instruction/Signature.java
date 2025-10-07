@@ -43,7 +43,7 @@ public final class Signature {
         if (!this.constraints.isEmpty() && operands.length == 0)
             return false;
 
-        for (int i = 0; i < operands.length - 1; i++) {
+        for (int i = 0; i < operands.length; i++) {
             final Operand operand = operands[i];
             final Constraint constraint = this.constraints.get(i);
             if (!constraint.isSatisfying(operand))

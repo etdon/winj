@@ -12,7 +12,7 @@ public final class Assembler {
 
     public byte[] mov(@NotNull final Operand o1, @NotNull final Operand o2) {
 
-        final List<Instruction> instructions = Instructions.MOV.ENTRIES;
+        final List<Instruction> instructions = Instructions.resolve(Instructions.MOV.class);
         for (final Instruction instruction : instructions) {
             if (instruction.signature().isSatisfying(o1, o2))
                 return instruction.create(o1, o2);
