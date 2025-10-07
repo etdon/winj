@@ -78,99 +78,155 @@ public final class Instructions implements InstructionHolder {
 
     public static class ADD implements InstructionHolder {
 
-        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x00), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
-        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x01), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
-        public static final byte R8_RM8 = (byte) 0x02;
-        public static final byte R64_RM64 = (byte) 0x03;
-        public static final byte AL_IMM8 = (byte) 0x04;
-        public static final byte RAX_IMM32 = (byte) 0x05;
-        public static final byte RM8_IMM8 = (byte) 0x80;
-        public static final byte RM64_IMM32 = (byte) 0x81;
+        public static final Instruction AL_IMM8 = Instruction.of(Opcode.of(0x04), Signature.of(Constraint.of(Immediate.class, OperandSize.BYTE)), IMM.getInstance());
+        public static final Instruction AX_IMM16 = Instruction.of(Opcode.of(0x5), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
+        public static final Instruction EAX_IMM32 = Instruction.of(Opcode.of(0x5), Signature.of(Constraint.of(Immediate.class, OperandSize.DWORD)), IMM.getInstance());
+        public static final Instruction RAX_IMM32 = Instruction.of(Opcode.of(0x5), Signature.of(Constraint.of(Immediate.class, OperandSize.QWORD)), IMM.getInstance());
+        public static final Instruction RM8_IMM8 = Instruction.of(Opcode.of(0x80), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM16_IMM16 = Instruction.of(Opcode.of(0x81), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Immediate.class, OperandSize.WORD)), RM_IMM.getInstance());
+        public static final Instruction RM32_IMM32 = Instruction.of(Opcode.of(0x81), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM32 = Instruction.of(Opcode.of(0x81), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x00), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
+        public static final Instruction RM16_R16 = Instruction.of(Opcode.of(0x01), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Register.class, OperandSize.WORD)), RM_R.getInstance());
+        public static final Instruction RM32_R32 = Instruction.of(Opcode.of(0x01), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Register.class, OperandSize.DWORD)), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x01), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
+        public static final Instruction R8_RM8 = Instruction.of(Opcode.of(0x02), Signature.of(Constraint.of(Register.class, OperandSize.BYTE), Constraint.of(RegisterAddressor.class, OperandSize.BYTE)), R_RM.getInstance());
+        public static final Instruction R16_RM16 = Instruction.of(Opcode.of(0x03), Signature.of(Constraint.of(Register.class, OperandSize.WORD), Constraint.of(RegisterAddressor.class, OperandSize.WORD)), R_RM.getInstance());
+        public static final Instruction R32_RM32 = Instruction.of(Opcode.of(0x03), Signature.of(Constraint.of(Register.class, OperandSize.DWORD), Constraint.of(RegisterAddressor.class, OperandSize.DWORD)), R_RM.getInstance());
+        public static final Instruction R64_RM64 = Instruction.of(Opcode.of(0x03), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), R_RM.getInstance());
 
     }
 
     public static final class OR implements InstructionHolder {
 
-        public static final byte RM8_R8 = (byte) 0x08;
-        public static final byte RM64_R64 = (byte) 0x09;
-        public static final byte R8_RM8 = (byte) 0x0A;
-        public static final byte R64_RM64 = (byte) 0x0B;
-        public static final byte AL_IMM8 = (byte) 0x0C;
-        public static final byte RAX_IMM32 = (byte) 0x0D;
-        public static final byte RM8_IMM8 = (byte) 0x80;
-        public static final byte RM64_IMM32 = (byte) 0x81;
+        public static final Instruction AL_IMM8 = Instruction.of(Opcode.of(0x0C), Signature.of(Constraint.of(Immediate.class, OperandSize.BYTE)), IMM.getInstance());
+        public static final Instruction AX_IMM16 = Instruction.of(Opcode.of(0x0D), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
+        public static final Instruction EAX_IMM32 = Instruction.of(Opcode.of(0x0D), Signature.of(Constraint.of(Immediate.class, OperandSize.DWORD)), IMM.getInstance());
+        public static final Instruction RAX_IMM32 = Instruction.of(Opcode.of(0x0D), Signature.of(Constraint.of(Immediate.class, OperandSize.QWORD)), IMM.getInstance());
+        public static final Instruction RM8_IMM8 = Instruction.of(Opcode.of(0x80, 1), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM16_IMM16 = Instruction.of(Opcode.of(0x81, 1), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Immediate.class, OperandSize.WORD)), RM_IMM.getInstance());
+        public static final Instruction RM32_IMM32 = Instruction.of(Opcode.of(0x81, 1), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM32 = Instruction.of(Opcode.of(0x81, 1), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 1), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x08), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
+        public static final Instruction RM16_R16 = Instruction.of(Opcode.of(0x09), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Register.class, OperandSize.WORD)), RM_R.getInstance());
+        public static final Instruction RM32_R32 = Instruction.of(Opcode.of(0x09), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Register.class, OperandSize.DWORD)), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x09), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
+        public static final Instruction R8_RM8 = Instruction.of(Opcode.of(0x0A), Signature.of(Constraint.of(Register.class, OperandSize.BYTE), Constraint.of(RegisterAddressor.class, OperandSize.BYTE)), R_RM.getInstance());
+        public static final Instruction R16_RM16 = Instruction.of(Opcode.of(0x0B), Signature.of(Constraint.of(Register.class, OperandSize.WORD), Constraint.of(RegisterAddressor.class, OperandSize.WORD)), R_RM.getInstance());
+        public static final Instruction R32_RM32 = Instruction.of(Opcode.of(0x0B), Signature.of(Constraint.of(Register.class, OperandSize.DWORD), Constraint.of(RegisterAddressor.class, OperandSize.DWORD)), R_RM.getInstance());
+        public static final Instruction R64_RM64 = Instruction.of(Opcode.of(0x0B), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), R_RM.getInstance());
 
     }
 
     public static final class ADC implements InstructionHolder {
 
-        public static final byte RM8_R8 = (byte) 0x10;
-        public static final byte RM64_R64 = (byte) 0x11;
-        public static final byte R8_RM8 = (byte) 0x12;
-        public static final byte R64_RM64 = (byte) 0x13;
-        public static final byte AL_IMM8 = (byte) 0x14;
-        public static final byte RAX_IMM32 = (byte) 0x15;
-        public static final byte RM8_IMM8 = (byte) 0x80;
-        public static final byte RM64_IMM32 = (byte) 0x81;
+        public static final Instruction AL_IMM8 = Instruction.of(Opcode.of(0x14), Signature.of(Constraint.of(Immediate.class, OperandSize.BYTE)), IMM.getInstance());
+        public static final Instruction AX_IMM16 = Instruction.of(Opcode.of(0x15), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
+        public static final Instruction EAX_IMM32 = Instruction.of(Opcode.of(0x15), Signature.of(Constraint.of(Immediate.class, OperandSize.DWORD)), IMM.getInstance());
+        public static final Instruction RAX_IMM32 = Instruction.of(Opcode.of(0x15), Signature.of(Constraint.of(Immediate.class, OperandSize.QWORD)), IMM.getInstance());
+        public static final Instruction RM8_IMM8 = Instruction.of(Opcode.of(0x80, 2), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM16_IMM16 = Instruction.of(Opcode.of(0x81, 2), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Immediate.class, OperandSize.WORD)), RM_IMM.getInstance());
+        public static final Instruction RM32_IMM32 = Instruction.of(Opcode.of(0x81, 2), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM32 = Instruction.of(Opcode.of(0x81, 2), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 2), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x10), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
+        public static final Instruction RM16_R16 = Instruction.of(Opcode.of(0x11), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Register.class, OperandSize.WORD)), RM_R.getInstance());
+        public static final Instruction RM32_R32 = Instruction.of(Opcode.of(0x11), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Register.class, OperandSize.DWORD)), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x11), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
+        public static final Instruction R8_RM8 = Instruction.of(Opcode.of(0x12), Signature.of(Constraint.of(Register.class, OperandSize.BYTE), Constraint.of(RegisterAddressor.class, OperandSize.BYTE)), R_RM.getInstance());
+        public static final Instruction R16_RM16 = Instruction.of(Opcode.of(0x13), Signature.of(Constraint.of(Register.class, OperandSize.WORD), Constraint.of(RegisterAddressor.class, OperandSize.WORD)), R_RM.getInstance());
+        public static final Instruction R32_RM32 = Instruction.of(Opcode.of(0x13), Signature.of(Constraint.of(Register.class, OperandSize.DWORD), Constraint.of(RegisterAddressor.class, OperandSize.DWORD)), R_RM.getInstance());
+        public static final Instruction R64_RM64 = Instruction.of(Opcode.of(0x13), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), R_RM.getInstance());
 
     }
 
     public static final class SBB implements InstructionHolder {
 
-        public static final byte RM8_R8 = (byte) 0x18;
-        public static final byte RM64_R64 = (byte) 0x19;
-        public static final byte R8_RM8 = (byte) 0x1A;
-        public static final byte R64_RM64 = (byte) 0x1B;
-        public static final byte AL_IMM8 = (byte) 0x1C;
-        public static final byte RAX_IMM32 = (byte) 0x1D;
-        public static final byte RM8_IMM8 = (byte) 0x80;
-        public static final byte RM64_IMM32 = (byte) 0x81;
+        public static final Instruction AL_IMM8 = Instruction.of(Opcode.of(0x1C), Signature.of(Constraint.of(Immediate.class, OperandSize.BYTE)), IMM.getInstance());
+        public static final Instruction AX_IMM16 = Instruction.of(Opcode.of(0x1D), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
+        public static final Instruction EAX_IMM32 = Instruction.of(Opcode.of(0x1D), Signature.of(Constraint.of(Immediate.class, OperandSize.DWORD)), IMM.getInstance());
+        public static final Instruction RAX_IMM32 = Instruction.of(Opcode.of(0x1D), Signature.of(Constraint.of(Immediate.class, OperandSize.QWORD)), IMM.getInstance());
+        public static final Instruction RM8_IMM8 = Instruction.of(Opcode.of(0x80, 3), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM16_IMM16 = Instruction.of(Opcode.of(0x81, 3), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Immediate.class, OperandSize.WORD)), RM_IMM.getInstance());
+        public static final Instruction RM32_IMM32 = Instruction.of(Opcode.of(0x81, 3), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM32 = Instruction.of(Opcode.of(0x81, 3), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 3), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x18), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
+        public static final Instruction RM16_R16 = Instruction.of(Opcode.of(0x19), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Register.class, OperandSize.WORD)), RM_R.getInstance());
+        public static final Instruction RM32_R32 = Instruction.of(Opcode.of(0x19), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Register.class, OperandSize.DWORD)), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x19), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
+        public static final Instruction R8_RM8 = Instruction.of(Opcode.of(0x1A), Signature.of(Constraint.of(Register.class, OperandSize.BYTE), Constraint.of(RegisterAddressor.class, OperandSize.BYTE)), R_RM.getInstance());
+        public static final Instruction R16_RM16 = Instruction.of(Opcode.of(0x1B), Signature.of(Constraint.of(Register.class, OperandSize.WORD), Constraint.of(RegisterAddressor.class, OperandSize.WORD)), R_RM.getInstance());
+        public static final Instruction R32_RM32 = Instruction.of(Opcode.of(0x1B), Signature.of(Constraint.of(Register.class, OperandSize.DWORD), Constraint.of(RegisterAddressor.class, OperandSize.DWORD)), R_RM.getInstance());
+        public static final Instruction R64_RM64 = Instruction.of(Opcode.of(0x1B), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), R_RM.getInstance());
 
     }
 
     public static final class AND implements InstructionHolder {
 
-        public static final byte RM8_R8 = (byte) 0x20;
-        public static final byte RM64_R64 = (byte) 0x21;
-        public static final byte R8_RM8 = (byte) 0x22;
-        public static final byte R64_RM64 = (byte) 0x23;
-        public static final byte AL_IMM8 = (byte) 0x24;
-        public static final byte RAX_IMM32 = (byte) 0x25;
-        public static final byte RM8_IMM8 = (byte) 0x80;
-        public static final byte RM64_IMM32 = (byte) 0x81;
+        public static final Instruction AL_IMM8 = Instruction.of(Opcode.of(0x24), Signature.of(Constraint.of(Immediate.class, OperandSize.BYTE)), IMM.getInstance());
+        public static final Instruction AX_IMM16 = Instruction.of(Opcode.of(0x25), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
+        public static final Instruction EAX_IMM32 = Instruction.of(Opcode.of(0x25), Signature.of(Constraint.of(Immediate.class, OperandSize.DWORD)), IMM.getInstance());
+        public static final Instruction RAX_IMM32 = Instruction.of(Opcode.of(0x25), Signature.of(Constraint.of(Immediate.class, OperandSize.QWORD)), IMM.getInstance());
+        public static final Instruction RM8_IMM8 = Instruction.of(Opcode.of(0x80, 4), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM16_IMM16 = Instruction.of(Opcode.of(0x81, 4), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Immediate.class, OperandSize.WORD)), RM_IMM.getInstance());
+        public static final Instruction RM32_IMM32 = Instruction.of(Opcode.of(0x81, 4), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM32 = Instruction.of(Opcode.of(0x81, 4), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 4), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x20), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
+        public static final Instruction RM16_R16 = Instruction.of(Opcode.of(0x21), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Register.class, OperandSize.WORD)), RM_R.getInstance());
+        public static final Instruction RM32_R32 = Instruction.of(Opcode.of(0x21), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Register.class, OperandSize.DWORD)), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x21), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
+        public static final Instruction R8_RM8 = Instruction.of(Opcode.of(0x22), Signature.of(Constraint.of(Register.class, OperandSize.BYTE), Constraint.of(RegisterAddressor.class, OperandSize.BYTE)), R_RM.getInstance());
+        public static final Instruction R16_RM16 = Instruction.of(Opcode.of(0x23), Signature.of(Constraint.of(Register.class, OperandSize.WORD), Constraint.of(RegisterAddressor.class, OperandSize.WORD)), R_RM.getInstance());
+        public static final Instruction R32_RM32 = Instruction.of(Opcode.of(0x23), Signature.of(Constraint.of(Register.class, OperandSize.DWORD), Constraint.of(RegisterAddressor.class, OperandSize.DWORD)), R_RM.getInstance());
+        public static final Instruction R64_RM64 = Instruction.of(Opcode.of(0x23), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), R_RM.getInstance());
 
     }
 
     public static final class SUB implements InstructionHolder {
 
-        public static final byte RM8_R8 = (byte) 0x28;
-        public static final byte RM64_R64 = (byte) 0x29;
-        public static final byte R8_RM8 = (byte) 0x2A;
-        public static final byte R64_RM64 = (byte) 0x2B;
-        public static final byte AL_IMM8 = (byte) 0x2C;
-        public static final byte RAX_IMM32 = (byte) 0x2D;
-        public static final byte RM8_IMM8 = (byte) 0x80;
-        public static final byte RM64_IMM32 = (byte) 0x81;
+        public static final Instruction AL_IMM8 = Instruction.of(Opcode.of(0x2C), Signature.of(Constraint.of(Immediate.class, OperandSize.BYTE)), IMM.getInstance());
+        public static final Instruction AX_IMM16 = Instruction.of(Opcode.of(0x2D), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
+        public static final Instruction EAX_IMM32 = Instruction.of(Opcode.of(0x2D), Signature.of(Constraint.of(Immediate.class, OperandSize.DWORD)), IMM.getInstance());
+        public static final Instruction RAX_IMM32 = Instruction.of(Opcode.of(0x2D), Signature.of(Constraint.of(Immediate.class, OperandSize.QWORD)), IMM.getInstance());
+        public static final Instruction RM8_IMM8 = Instruction.of(Opcode.of(0x80, 5), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM16_IMM16 = Instruction.of(Opcode.of(0x81, 5), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Immediate.class, OperandSize.WORD)), RM_IMM.getInstance());
+        public static final Instruction RM32_IMM32 = Instruction.of(Opcode.of(0x81, 5), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM32 = Instruction.of(Opcode.of(0x81, 5), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 5), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x28), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
+        public static final Instruction RM16_R16 = Instruction.of(Opcode.of(0x29), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Register.class, OperandSize.WORD)), RM_R.getInstance());
+        public static final Instruction RM32_R32 = Instruction.of(Opcode.of(0x29), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Register.class, OperandSize.DWORD)), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x29), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
+        public static final Instruction R8_RM8 = Instruction.of(Opcode.of(0x2A), Signature.of(Constraint.of(Register.class, OperandSize.BYTE), Constraint.of(RegisterAddressor.class, OperandSize.BYTE)), R_RM.getInstance());
+        public static final Instruction R16_RM16 = Instruction.of(Opcode.of(0x2B), Signature.of(Constraint.of(Register.class, OperandSize.WORD), Constraint.of(RegisterAddressor.class, OperandSize.WORD)), R_RM.getInstance());
+        public static final Instruction R32_RM32 = Instruction.of(Opcode.of(0x2B), Signature.of(Constraint.of(Register.class, OperandSize.DWORD), Constraint.of(RegisterAddressor.class, OperandSize.DWORD)), R_RM.getInstance());
+        public static final Instruction R64_RM64 = Instruction.of(Opcode.of(0x2B), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), R_RM.getInstance());
 
     }
 
     public static class XOR implements InstructionHolder {
 
-        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x30), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
-        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x31), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
-        public static final byte R8_RM8 = (byte) 0x32;
-        public static final byte R64_RM64 = (byte) 0x33;
-        public static final byte AL_IMM8 = (byte) 0x34;
-        public static final byte RAX_IMM32 = (byte) 0x35;
-        public static final byte RM8_IMM8 = (byte) 0x80;
-        public static final byte RM64_IMM32 = (byte) 0x81;
+        public static final Instruction AL_IMM8 = Instruction.of(Opcode.of(0x34), Signature.of(Constraint.of(Immediate.class, OperandSize.BYTE)), IMM.getInstance());
+        public static final Instruction AX_IMM16 = Instruction.of(Opcode.of(0x35), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
+        public static final Instruction EAX_IMM32 = Instruction.of(Opcode.of(0x35), Signature.of(Constraint.of(Immediate.class, OperandSize.DWORD)), IMM.getInstance());
+        public static final Instruction RAX_IMM32 = Instruction.of(Opcode.of(0x35), Signature.of(Constraint.of(Immediate.class, OperandSize.QWORD)), IMM.getInstance());
+        public static final Instruction RM8_IMM8 = Instruction.of(Opcode.of(0x80, 6), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM16_IMM16 = Instruction.of(Opcode.of(0x81, 6), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Immediate.class, OperandSize.WORD)), RM_IMM.getInstance());
+        public static final Instruction RM32_IMM32 = Instruction.of(Opcode.of(0x81, 6), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
+        public static final Instruction RM64_IMM32 = Instruction.of(Opcode.of(0x81, 6), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 6), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x30), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
+        public static final Instruction RM16_R16 = Instruction.of(Opcode.of(0x31), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Register.class, OperandSize.WORD)), RM_R.getInstance());
+        public static final Instruction RM32_R32 = Instruction.of(Opcode.of(0x31), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Register.class, OperandSize.DWORD)), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x31), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
+        public static final Instruction R8_RM8 = Instruction.of(Opcode.of(0x32), Signature.of(Constraint.of(Register.class, OperandSize.BYTE), Constraint.of(RegisterAddressor.class, OperandSize.BYTE)), R_RM.getInstance());
+        public static final Instruction R16_RM16 = Instruction.of(Opcode.of(0x33), Signature.of(Constraint.of(Register.class, OperandSize.WORD), Constraint.of(RegisterAddressor.class, OperandSize.WORD)), R_RM.getInstance());
+        public static final Instruction R32_RM32 = Instruction.of(Opcode.of(0x33), Signature.of(Constraint.of(Register.class, OperandSize.DWORD), Constraint.of(RegisterAddressor.class, OperandSize.DWORD)), R_RM.getInstance());
+        public static final Instruction R64_RM64 = Instruction.of(Opcode.of(0x33), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), R_RM.getInstance());
 
     }
 
@@ -179,16 +235,20 @@ public final class Instructions implements InstructionHolder {
         public static final Instruction AL_IMM8 = Instruction.of(Opcode.of(0x3C), Signature.of(Constraint.of(Immediate.class, OperandSize.BYTE)), IMM.getInstance());
         public static final Instruction AX_IMM16 = Instruction.of(Opcode.of(0x3D), Signature.of(Constraint.of(Immediate.class, OperandSize.WORD)), IMM.getInstance());
         public static final Instruction EAX_IMM32 = Instruction.of(Opcode.of(0x3D), Signature.of(Constraint.of(Immediate.class, OperandSize.DWORD)), IMM.getInstance());
-        public static final Instruction RAX_IMM32 = Instruction.of(Opcode.of(0x3D), Signature.of(Constraint.of(Immediate.class, OperandSize.DWORD)), IMM.getInstance());
+        public static final Instruction RAX_IMM32 = Instruction.of(Opcode.of(0x3D), Signature.of(Constraint.of(Immediate.class, OperandSize.QWORD)), IMM.getInstance());
         public static final Instruction RM8_IMM8 = Instruction.of(Opcode.of(0x80, 7), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
         public static final Instruction RM16_IMM16 = Instruction.of(Opcode.of(0x81, 7), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Immediate.class, OperandSize.WORD)), RM_IMM.getInstance());
         public static final Instruction RM32_IMM32 = Instruction.of(Opcode.of(0x81, 7), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
         public static final Instruction RM64_IMM32 = Instruction.of(Opcode.of(0x81, 7), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.DWORD)), RM_IMM.getInstance());
-        public static final byte RM8_R8 = (byte) 0x38;
-        public static final byte RM64_R64 = (byte) 0x39;
-        public static final byte R8_RM8 = (byte) 0x3A;
-        public static final byte R64_RM64 = (byte) 0x3B;
         public static final Instruction RM64_IMM8 = Instruction.of(Opcode.of(0x83, 7), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD, OperandSize.DWORD, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.BYTE)), RM_IMM.getInstance());
+        public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x38), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
+        public static final Instruction RM16_R16 = Instruction.of(Opcode.of(0x39), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.WORD), Constraint.of(Register.class, OperandSize.WORD)), RM_R.getInstance());
+        public static final Instruction RM32_R32 = Instruction.of(Opcode.of(0x39), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Register.class, OperandSize.DWORD)), RM_R.getInstance());
+        public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x39), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
+        public static final Instruction R8_RM8 = Instruction.of(Opcode.of(0x3A), Signature.of(Constraint.of(Register.class, OperandSize.BYTE), Constraint.of(RegisterAddressor.class, OperandSize.BYTE)), R_RM.getInstance());
+        public static final Instruction R16_RM16 = Instruction.of(Opcode.of(0x3B), Signature.of(Constraint.of(Register.class, OperandSize.WORD), Constraint.of(RegisterAddressor.class, OperandSize.WORD)), R_RM.getInstance());
+        public static final Instruction R32_RM32 = Instruction.of(Opcode.of(0x3B), Signature.of(Constraint.of(Register.class, OperandSize.DWORD), Constraint.of(RegisterAddressor.class, OperandSize.DWORD)), R_RM.getInstance());
+        public static final Instruction R64_RM64 = Instruction.of(Opcode.of(0x3B), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(RegisterAddressor.class, OperandSize.QWORD)), R_RM.getInstance());
 
     }
 
