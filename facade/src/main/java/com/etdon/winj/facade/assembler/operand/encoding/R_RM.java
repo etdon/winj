@@ -25,9 +25,9 @@ public final class R_RM extends InstructionEncoding {
     public byte[] process(final Opcode opcode, final Operand... operands) {
 
         if (!(operands[0] instanceof Register destination))
-            throw new IllegalArgumentException("Expected RegisterAddressor operand, got " + operands[0].getClass().getName());
+            throw new IllegalArgumentException("Expected Register operand, got " + operands[0].getClass().getName());
         if (!(operands[1] instanceof RegisterAddressor source))
-            throw new IllegalArgumentException("Expected Immediate operand, got " + operands[1].getClass().getName());
+            throw new IllegalArgumentException("Expected RegisterAddressor operand, got " + operands[1].getClass().getName());
 
         final ByteBuffer byteBuffer = ByteBuffer.size(4);
         final boolean wideMode = destination.getSize() == OperandSize.QWORD || source.getSize() == OperandSize.QWORD;
