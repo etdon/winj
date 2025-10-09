@@ -2,6 +2,7 @@ package com.etdon.winj.marshal.primitive;
 
 import com.etdon.winj.marshal.Marshal;
 import com.etdon.winj.marshal.MarshalContext;
+import com.etdon.winj.util.ByteBuffer;
 import org.jetbrains.annotations.NotNull;
 
 public final class LongMarshal extends Marshal<Long, PrimitiveMarshalContext<Long>> {
@@ -22,10 +23,10 @@ public final class LongMarshal extends Marshal<Long, PrimitiveMarshalContext<Lon
         if (context.getStrategy().isPresent()) {
             return context.getStrategy().get().marshal(input, context);
         } else {
-            final byte[] buffer = new byte[Long.BYTES];
-            for (int i = 0; i < Long.BYTES; i++)
-                buffer[i] = (byte) ((input >>> (i * 8)) & 0xFF);
-            return buffer;
+            final ByteBuffer byteBuffer = ByteBuffer.size(Long.BYTES);
+            byteBuffer.setByteOrder(context.getByteOrder());
+            byteBuffer.put(input);
+            return byteBuffer.get();
         }
 
     }

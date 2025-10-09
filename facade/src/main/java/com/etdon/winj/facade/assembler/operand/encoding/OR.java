@@ -1,6 +1,6 @@
 package com.etdon.winj.facade.assembler.operand.encoding;
 
-import com.etdon.winj.facade.assembler.ByteBuffer;
+import com.etdon.winj.util.ByteBuffer;
 import com.etdon.winj.facade.assembler.Opcode;
 import com.etdon.winj.facade.assembler.Opcodes;
 import com.etdon.winj.facade.assembler.Prefix;
