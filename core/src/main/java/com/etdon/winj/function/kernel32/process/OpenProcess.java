@@ -45,7 +45,7 @@ public final class OpenProcess extends NativeFunction<MemorySegment> {
      * not inherit this handle.
      */
     @NativeName("bInheritHandle")
-    private final boolean inheritHandle;
+    private final int inheritHandle;
 
     /**
      * The identifier of the local process to be opened.
@@ -79,7 +79,7 @@ public final class OpenProcess extends NativeFunction<MemorySegment> {
     public static final class Builder implements FluentBuilder<OpenProcess> {
 
         private Integer access;
-        private Boolean inheritHandle;
+        private Integer inheritHandle;
         private Integer processId;
 
         private Builder() {
@@ -95,7 +95,7 @@ public final class OpenProcess extends NativeFunction<MemorySegment> {
 
         public Builder inheritHandle(final boolean inheritHandle) {
 
-            this.inheritHandle = inheritHandle;
+            this.inheritHandle = inheritHandle ? 1 : 0;
             return this;
 
         }
