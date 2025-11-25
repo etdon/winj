@@ -2,7 +2,7 @@ package com.etdon.winj.marshal.primitive;
 
 import com.etdon.winj.marshal.Marshal;
 import com.etdon.winj.marshal.MarshalContext;
-import com.etdon.winj.util.ByteBuffer;
+import com.etdon.commons.io.ByteBuffer;
 import org.jetbrains.annotations.NotNull;
 
 public final class ShortMarshal extends Marshal<Short, PrimitiveMarshalContext<Short>> {

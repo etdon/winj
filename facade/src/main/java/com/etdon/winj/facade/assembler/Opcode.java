@@ -1,7 +1,7 @@
 package com.etdon.winj.facade.assembler;
 
 import com.etdon.commons.builder.FluentBuilder;
-import com.etdon.winj.util.ByteBuffer;
+import com.etdon.commons.io.ByteBuffer;
 import org.jetbrains.annotations.NotNull;
 
 public final class Opcode {

@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public final class NativeDataTypeMapper extends Registry<String, ImmutablePair<String, ValueLayout>> {
 
-    private static final Map<String, String> JAVA_MAPPINGS = Map.of(
+    public static final Map<String, String> JAVA_MAPPINGS = Map.of(
             "OfBooleanImpl", "boolean",
             "OfCharImpl", "char",
             "OfByteImpl", "byte",
@@ -27,7 +27,7 @@ public final class NativeDataTypeMapper extends Registry<String, ImmutablePair<S
             "OfAddressImpl", "MemorySegment"
     );
 
-    private static final Map<String, String> PRIMITIVE_TO_NON_PRIMITIVE = Map.of(
+    public static final Map<String, String> PRIMITIVE_TO_NON_PRIMITIVE = Map.of(
             "boolean", "Boolean",
             "char", "Character",
             "byte", "Byte",

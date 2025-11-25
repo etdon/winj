@@ -2,6 +2,7 @@ package com.etdon.winjgen.component.impl;
 
 import com.etdon.commons.util.StringUtils;
 import com.etdon.winjgen.constant.Constants;
+import com.etdon.winjgen.type.NativeDataTypeMapper;
 import com.etdon.winjgen.util.Humanizer;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,8 +76,7 @@ public class BuilderMethodComponent extends ClassComponent {
                 .append(StringUtils.repeat(System.lineSeparator(), 1))
                 .append(StringUtils.repeat(Constants.PADDING, 2))
                 .append("public Builder ").append(this.fieldName)
-                // TODO: Only apply @NotNull to non-primitive values.
-                .append("(@NotNull final ").append(this.typeName).append(' ').append(this.fieldName).append(") {")
+                .append(NativeDataTypeMapper.PRIMITIVE_TO_NON_PRIMITIVE.containsKey(this.typeName) ? "(final " : "(@NotNull final ").append(this.typeName).append(' ').append(this.fieldName).append(") {")
                 .append(StringUtils.repeat(System.lineSeparator(), 2))
                 .append(StringUtils.repeat(Constants.PADDING, 3))
                 .append("this.").append(this.fieldName).append(" = ").append(this.fieldName).append(';')

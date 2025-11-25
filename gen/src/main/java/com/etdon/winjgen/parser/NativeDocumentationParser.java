@@ -4,7 +4,10 @@ import com.etdon.commons.conditional.Preconditions;
 import com.etdon.commons.util.Exceptional;
 import org.jetbrains.annotations.NotNull;
 
+import java.net.URI;
 import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +16,12 @@ public final class NativeDocumentationParser {
     private final HttpClient httpClient = HttpClient.newBuilder()
             .build();
 
-    public NativeDocumentationParser(@NotNull final String url) {
+    public void parse(@NotNull final String url) {
 
         if (!this.isValidUrl(url))
             throw Exceptional.of(RuntimeException.class, "The provided URL is not a valid native documentation URL.");
+
+        this.httpClient.sendAsync(HttpRequest.newBuilder().uri(URI.create(url)).GET().build(), HttpResponse.BodyHandlers.ofString());
 
     }
 
