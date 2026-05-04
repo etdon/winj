@@ -285,6 +285,7 @@ public final class Instructions implements InstructionHolder {
         public static final Instruction R64_IMM64 = Instruction.of(Opcode.of(0xB8), Signature.of(Constraint.of(Register.class, OperandSize.QWORD), Constraint.of(Immediate.class, OperandSize.QWORD)), OI.getInstance());
         public static final Instruction RM8_R8 = Instruction.of(Opcode.of(0x88), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.BYTE), Constraint.of(Register.class, OperandSize.BYTE)), RM_R.getInstance());
         public static final Instruction RM64_R64 = Instruction.of(Opcode.of(0x89), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.QWORD), Constraint.of(Register.class, OperandSize.QWORD)), RM_R.getInstance());
+        public static final Instruction RM32_R32 = Instruction.of(Opcode.of(0x89), Signature.of(Constraint.of(RegisterAddressor.class, OperandSize.DWORD), Constraint.of(Register.class, OperandSize.DWORD)), RM_R.getInstance());
 
     }
 

@@ -26,10 +26,9 @@ public final class RM extends InstructionEncoding {
         if (!(operands[0] instanceof RegisterAddressor rm))
             throw new IllegalArgumentException("Expected RegisterAddressor operand, got " + operands[0].getClass().getName());
 
-        final ByteBuffer byteBuffer = ByteBuffer.size(4);
+        final ByteBuffer byteBuffer = ByteBuffer.size(4 + rm.getDisplacement().length);
         final boolean wideMode = rm.getSize() == OperandSize.QWORD;
-        final boolean sibExtension = rm.requiresSIB() && rm.getSIB().getIndex().isExtended();
-        final byte prefix = Prefix.builder().w(wideMode).r(false).x(sibExtension).b(rm.getRegister().isExtended()).build();
+        final byte prefix = Prefix.builder().w(wideMode).r(false).x(rm.isIndexExtended()).b(rm.isBaseExtended()).build();
         if (prefix != Opcodes.Prefix.REX)
             byteBuffer.put(prefix);
         byteBuffer.put(opcode.getValues());
@@ -42,6 +41,7 @@ public final class RM extends InstructionEncoding {
         );
         if (rm.requiresSIB())
             byteBuffer.put(rm.getSIB().toByte());
+        byteBuffer.put(rm.getDisplacement());
 
         return byteBuffer.get();
 

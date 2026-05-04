@@ -29,10 +29,9 @@ public final class RM_IMM extends InstructionEncoding {
         if (!(operands[1] instanceof Immediate immediate))
             throw new IllegalArgumentException("Expected Immediate operand, got " + operands[1].getClass().getName());
 
-        final ByteBuffer byteBuffer = ByteBuffer.size(7);
+        final ByteBuffer byteBuffer = ByteBuffer.size(7 + destination.getDisplacement().length);
         final boolean wideMode = destination.getSize() == OperandSize.QWORD || immediate.getSize() == OperandSize.QWORD;
-        final boolean sibExtension = destination.requiresSIB() && destination.getSIB().getIndex().isExtended();
-        final byte prefix = Prefix.builder().w(wideMode).r(false).x(sibExtension).b(destination.getRegister().isExtended()).build();
+        final byte prefix = Prefix.builder().w(wideMode).r(false).x(destination.isIndexExtended()).b(destination.isBaseExtended()).build();
         if (prefix != Opcodes.Prefix.REX)
             byteBuffer.put(prefix);
         byteBuffer.put(opcode.getValues());
@@ -45,6 +44,7 @@ public final class RM_IMM extends InstructionEncoding {
         );
         if (destination.requiresSIB())
             byteBuffer.put(destination.getSIB().toByte());
+        byteBuffer.put(destination.getDisplacement());
         byteBuffer.put(immediate.marshal());
 
         return byteBuffer.get();

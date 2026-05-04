@@ -12,14 +12,17 @@ public final class RegisterAddressor extends Addressor implements Operand {
     private final Register register;
     private final byte mod;
     private final Opcodes.SIB sib;
+    private final byte[] displacement;
 
     private RegisterAddressor(final Register register,
                               final byte mod,
-                              final Opcodes.SIB sib) {
+                              final Opcodes.SIB sib,
+                              final byte[] displacement) {
 
         this.register = register;
         this.mod = mod;
         this.sib = sib;
+        this.displacement = displacement;
 
     }
 
@@ -41,9 +44,27 @@ public final class RegisterAddressor extends Addressor implements Operand {
 
     }
 
+    public byte[] getDisplacement() {
+
+        return this.displacement.clone();
+
+    }
+
     public boolean requiresSIB() {
 
         return this.mod != Opcodes.ModRM.Mod.RD && this.register.getValue() == 0b100;
+
+    }
+
+    public boolean isBaseExtended() {
+
+        return this.requiresSIB() ? this.sib.getBase().isExtended() : this.register.isExtended();
+
+    }
+
+    public boolean isIndexExtended() {
+
+        return this.requiresSIB() && this.sib.getIndex().isExtended();
 
     }
 
@@ -71,8 +92,31 @@ public final class RegisterAddressor extends Addressor implements Operand {
                                        final byte mod,
                                        final Opcodes.SIB sib) {
 
+        return of(register, mod, sib, new byte[0]);
+
+    }
+
+    public static RegisterAddressor of(@NotNull final Register register,
+                                       final byte mod,
+                                       final Opcodes.SIB sib,
+                                       final byte[] displacement) {
+
         Preconditions.checkNotNull(register);
-        return new RegisterAddressor(register, mod, sib);
+        Preconditions.checkNotNull(displacement);
+        if (mod == Opcodes.ModRM.Mod.RD && sib != null)
+            throw new IllegalArgumentException("SIB cannot be used in register-direct mode.");
+        if (sib != null && register.getValue() != 0b100)
+            throw new IllegalArgumentException("SIB requires ModR/M r/m field 0b100.");
+        if (mod != Opcodes.ModRM.Mod.RD && register.getValue() == 0b100 && sib == null)
+            throw new IllegalArgumentException("SIB required for register-indirect mode with ModR/M r/m field 0b100.");
+
+        if (mod == Opcodes.ModRM.Mod.RD && displacement.length > 0 ||
+                mod == Opcodes.ModRM.Mod.RI_D0 && displacement.length != 0 ||
+                mod == Opcodes.ModRM.Mod.RI_D8 && displacement.length != 1 ||
+                mod == Opcodes.ModRM.Mod.RI_D32 && displacement.length != 4)
+            throw new IllegalArgumentException("Displacement byte array length doesn't match specified displacement.");
+
+        return new RegisterAddressor(register, mod, sib, displacement.clone());
 
     }
 

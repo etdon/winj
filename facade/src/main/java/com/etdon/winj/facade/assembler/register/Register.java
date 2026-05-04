@@ -52,4 +52,18 @@ public abstract class Register implements Operand, Addressable {
 
     }
 
+    @NotNull
+    public RegisterAddressor addressor(final byte mod, final byte[] displacement) {
+
+        return RegisterAddressor.of(this, mod, null, displacement);
+
+    }
+
+    @NotNull
+    public RegisterAddressor addressor(final byte mod, final Opcodes.SIB sib, final byte[] displacement) {
+
+        return RegisterAddressor.of(this, mod, sib, displacement);
+
+    }
+
 }
