@@ -71,7 +71,7 @@ public class InputSender {
                     .build()
                     .createMemorySegment(this.arena), 0, inputArray, Input.INPUT.byteSize(), Input.INPUT.byteSize());
 
-            return (int) this.nativeCaller.call(
+            return this.nativeCaller.call(
                     SendInput.builder()
                             .inputArray(inputArray)
                             .inputCount(2)

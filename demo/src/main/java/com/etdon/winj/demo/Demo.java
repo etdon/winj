@@ -148,18 +148,20 @@ public final class Demo {
             this.debugRenderQueue.add(StringDebugRenderQueueItem.repeating("Hello!"));
             this.printDrivers(arena);
 
-            int state;
             final MemorySegment message = arena.allocate(Message.MSG.byteSize());
-            while ((state = this.nativeCaller.call(
-                    GetMessageW.builder()
-                            .messagePointer(message)
-                            .build())
-            ) != 0) {
-                if (state != -1) {
+            while (true) {
+                final int state = this.nativeCaller.call(
+                        GetMessageW.builder()
+                                .messagePointer(message)
+                                .build()
+                );
+                if (state == -1) {
+                    throw Exceptional.of(RuntimeException.class, "Received message state -1, last error: {}", this.nativeCaller.call(GetLastError.getInstance()));
+                } else if (state == 0) {
+                    break;
+                } else {
                     this.nativeCaller.call(TranslateMessage.ofMessagePointer(message));
                     this.nativeCaller.call(DispatchMessageW.ofMessagePointer(message));
-                } else {
-                    Exceptional.of(RuntimeException.class, "Received message state -1, last error: {}", this.nativeCaller.call(GetLastError.getInstance()));
                 }
             }
         } catch (final Throwable ex) {
