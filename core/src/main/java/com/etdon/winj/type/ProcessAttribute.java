@@ -83,7 +83,7 @@ public final class ProcessAttribute extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(PS_ATTRIBUTE.byteSize());
+        final MemorySegment memorySegment = arena.allocate(PS_ATTRIBUTE);
         memorySegment.set(JAVA_LONG, 0, this.attribute);
         memorySegment.set(JAVA_LONG, 8, this.size);
         memorySegment.set(ADDRESS, 16, this.value);

@@ -72,7 +72,7 @@ public final class UnicodeString extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(UNICODE_STRING.byteSize());
+        final MemorySegment memorySegment = arena.allocate(UNICODE_STRING);
         memorySegment.set(JAVA_SHORT, 0, this.length);
         memorySegment.set(JAVA_SHORT, 2, this.maximumLength);
         memorySegment.set(ADDRESS, 8, this.buffer);

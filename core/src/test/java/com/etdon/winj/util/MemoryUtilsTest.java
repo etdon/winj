@@ -1,4 +1,4 @@
-package com.etdon.winj.test.util;
+package com.etdon.winj.util;
 
 import com.etdon.jbinder.util.MemoryUtils;
 import org.junit.jupiter.api.Test;

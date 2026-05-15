@@ -1,6 +1,5 @@
-package com.etdon.winj.test.type;
+package com.etdon.winj.type;
 
-import com.etdon.winj.type.Guid;
 import org.junit.jupiter.api.Test;
 
 import java.lang.foreign.Arena;

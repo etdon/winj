@@ -55,7 +55,7 @@ public final class ProcessCreateFailExeName extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(PS_CREATE_FAIL_EXE_NAME.byteSize());
+        final MemorySegment memorySegment = arena.allocate(PS_CREATE_FAIL_EXE_NAME);
         memorySegment.set(ADDRESS, 0, this.ifeoKey);
 
         return memorySegment;

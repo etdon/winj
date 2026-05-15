@@ -71,7 +71,7 @@ public final class ProcessCreateInitialState extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(PS_CREATE_INITIAL_STATE.byteSize());
+        final MemorySegment memorySegment = arena.allocate(PS_CREATE_INITIAL_STATE);
         memorySegment.set(JAVA_INT, 0, this.initFlags);
         memorySegment.set(JAVA_INT, 4, this.additionalFileAccess);
 

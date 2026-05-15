@@ -66,7 +66,7 @@ public final class Guid extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(GUID.byteSize());
+        final MemorySegment memorySegment = arena.allocate(GUID);
         memorySegment.set(ValueLayout.JAVA_INT, 0, this.data1);
         memorySegment.set(ValueLayout.JAVA_SHORT, 4, this.data2);
         memorySegment.set(ValueLayout.JAVA_SHORT, 6, this.data3);
@@ -122,7 +122,7 @@ public final class Guid extends NativeType {
 
         final long mostSignificantBits = uuid.getMostSignificantBits();
         final long leastSignificantBits = uuid.getLeastSignificantBits();
-        final MemorySegment memorySegment = arena.allocate(GUID.byteSize());
+        final MemorySegment memorySegment = arena.allocate(GUID);
         memorySegment.set(ValueLayout.JAVA_INT, 0, (int) (mostSignificantBits >>> 32));
         memorySegment.set(ValueLayout.JAVA_SHORT, 4, (short) ((mostSignificantBits >>> 16) & 0xFFFF));
         memorySegment.set(ValueLayout.JAVA_SHORT, 6, (short) (mostSignificantBits & 0xFFFF));

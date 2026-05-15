@@ -103,7 +103,7 @@ public final class ProcessCreateInfo extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(PS_CREATE_INFO.byteSize());
+        final MemorySegment memorySegment = arena.allocate(PS_CREATE_INFO);
         memorySegment.set(JAVA_LONG, 0, this.size);
         memorySegment.set(JAVA_INT, 8, this.state);
         final MemorySegment infoMemorySegment = this.info.createMemorySegment(arena);

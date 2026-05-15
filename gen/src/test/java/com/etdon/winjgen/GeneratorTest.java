@@ -1,7 +1,5 @@
-package com.etdon.winjgen.test;
+package com.etdon.winjgen;
 
-import com.etdon.winjgen.Generator;
-import com.etdon.winjgen.Tokenizer;
 import org.junit.jupiter.api.Test;
 
 public class GeneratorTest {

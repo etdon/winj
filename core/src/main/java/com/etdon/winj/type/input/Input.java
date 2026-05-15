@@ -67,7 +67,7 @@ public final class Input extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(INPUT.byteSize());
+        final MemorySegment memorySegment = arena.allocate(INPUT);
         memorySegment.set(JAVA_INT, 0, this.type);
         this.data.merge(memorySegment, 8);
 

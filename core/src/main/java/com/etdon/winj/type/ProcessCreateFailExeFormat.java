@@ -53,7 +53,7 @@ public final class ProcessCreateFailExeFormat extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(PS_CREATE_FAIL_EXE_FORMAT.byteSize());
+        final MemorySegment memorySegment = arena.allocate(PS_CREATE_FAIL_EXE_FORMAT);
         memorySegment.set(JAVA_SHORT, 0, this.dllCharacteristics);
 
         return memorySegment;

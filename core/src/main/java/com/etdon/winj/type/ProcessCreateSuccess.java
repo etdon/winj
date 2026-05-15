@@ -130,7 +130,7 @@ public final class ProcessCreateSuccess extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(PS_CREATE_SUCCESS.byteSize());
+        final MemorySegment memorySegment = arena.allocate(PS_CREATE_SUCCESS);
         memorySegment.set(JAVA_INT, 0, this.outputFlags);
         memorySegment.set(ADDRESS, 4, this.fileHandle);
         memorySegment.set(ADDRESS, 12, this.sectionHandle);

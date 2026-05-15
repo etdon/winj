@@ -89,7 +89,7 @@ public final class KeyboardInput extends InputData {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(KEYBDINPUT.byteSize());
+        final MemorySegment memorySegment = arena.allocate(KEYBDINPUT);
         memorySegment.set(JAVA_SHORT, 0, this.virtualKeyCode);
         memorySegment.set(JAVA_SHORT, 2, this.scanCode);
         memorySegment.set(JAVA_INT, 4, this.flags);

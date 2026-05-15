@@ -95,7 +95,7 @@ public final class Message extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(MSG.byteSize());
+        final MemorySegment memorySegment = arena.allocate(MSG);
         memorySegment.set(ADDRESS, 0, this.windowHandle);
         memorySegment.set(JAVA_INT, 8, this.messageId);
         memorySegment.set(JAVA_LONG, 12, this.firstParameter);

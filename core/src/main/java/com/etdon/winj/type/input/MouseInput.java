@@ -122,7 +122,7 @@ public final class MouseInput extends InputData {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(MOUSEINPUT.byteSize());
+        final MemorySegment memorySegment = arena.allocate(MOUSEINPUT);
         memorySegment.set(JAVA_LONG, 0, this.x);
         memorySegment.set(JAVA_LONG, 8, this.y);
         memorySegment.set(JAVA_INT, 16, this.mouseData);

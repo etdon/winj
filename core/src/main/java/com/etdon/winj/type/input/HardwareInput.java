@@ -64,7 +64,7 @@ public final class HardwareInput extends InputData {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(HARDWAREINPUT.byteSize());
+        final MemorySegment memorySegment = arena.allocate(HARDWAREINPUT);
         memorySegment.set(JAVA_INT, 0, this.message);
         memorySegment.set(JAVA_SHORT, 4, this.lowOrderWord);
         memorySegment.set(JAVA_SHORT, 6, this.highOrderWord);

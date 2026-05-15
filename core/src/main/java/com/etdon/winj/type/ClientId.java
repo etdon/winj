@@ -65,7 +65,7 @@ public final class ClientId extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(CLIENT_ID.byteSize());
+        final MemorySegment memorySegment = arena.allocate(CLIENT_ID);
         memorySegment.set(JAVA_LONG, 0, this.uniqueProcess);
         memorySegment.set(JAVA_LONG, JAVA_LONG.byteSize(), this.uniqueThread);
 

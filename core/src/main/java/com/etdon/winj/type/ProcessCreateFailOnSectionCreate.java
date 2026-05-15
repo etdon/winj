@@ -55,7 +55,7 @@ public final class ProcessCreateFailOnSectionCreate extends NativeType {
     @Override
     public MemorySegment createMemorySegment(@NotNull final Arena arena) {
 
-        final MemorySegment memorySegment = arena.allocate(PS_CREATE_FAIL_ON_SECTION_CREATE.byteSize());
+        final MemorySegment memorySegment = arena.allocate(PS_CREATE_FAIL_ON_SECTION_CREATE);
         memorySegment.set(ADDRESS, 0, this.fileHandle);
 
         return memorySegment;
